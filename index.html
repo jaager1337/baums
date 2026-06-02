@@ -1,0 +1,1295 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baumstein — Wood & Stone</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:    #130F0B;
+  --bg-dark:    #181410;
+  --bg-mid:     #1E1A15;
+  --bg-surface: #252018;
+  --silver-100: #F0EFED;
+  --silver-300: #C8C6C2;
+  --silver-500: #8A8880;
+  --silver-700: #4A4844;
+  --gold:       #B8965A;
+  --gold-light: #D4AE72;
+  --border:     rgba(200,198,194,0.12);
+  --border-mid: rgba(200,198,194,0.22);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Jost', sans-serif;
+  background: var(--bg-deep);
+  color: var(--silver-300);
+  font-weight: 300;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── SITE HEADER (scroll-aware) ── */
+.site-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  height: 96px;
+  padding: 0 48px;
+  background: transparent;
+  transition: height 0.45s ease, background 0.45s ease, box-shadow 0.45s ease, border-color 0.45s ease;
+}
+.site-header.scrolled {
+  height: 72px;
+  background: linear-gradient(180deg, rgba(10,10,9,0.98) 0%, rgba(17,17,16,0.96) 100%);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  box-shadow: 0 1px 40px rgba(0,0,0,0.6);
+  border-bottom: 0.5px solid rgba(184,150,90,0.2);
+}
+
+/* Hamburger — hidden until scroll */
+.hamburger {
+  position: absolute; left: 48px;
+  display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 36px; height: 36px; background: none; border: none; cursor: pointer;
+  padding: 4px; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s ease 0.05s, transform 0.4s ease;
+  transform: translateX(-8px);
+}
+.hamburger span {
+  display: block; height: 1px; background: var(--silver-300);
+  transition: background 0.2s, width 0.25s ease, transform 0.38s cubic-bezier(0.23,1,0.32,1), opacity 0.25s ease;
+  transform-origin: center center;
+}
+/* Hamburger → X when nav is open */
+.hamburger.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); width: 20px; }
+.hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); width: 20px; }
+.hamburger span:nth-child(1) { width: 22px; }
+.hamburger span:nth-child(2) { width: 16px; }
+.hamburger span:nth-child(3) { width: 20px; }
+.hamburger:hover span { background: var(--silver-100); }
+.site-header.scrolled .hamburger {
+  opacity: 1; pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* Brand wordmark */
+.header-brand {
+  font-family: 'Jost', sans-serif;
+  font-size: 26px; font-weight: 500;
+  letter-spacing: 0.55em; text-transform: uppercase;
+  color: var(--silver-100); text-decoration: none;
+  transition: letter-spacing 0.4s ease, font-size 0.4s ease;
+  white-space: nowrap;
+}
+.site-header.scrolled .header-brand {
+  font-size: 14px; letter-spacing: 0.38em;
+}
+
+/* Enquire CTA — right side, hidden until scroll */
+.header-cta {
+  position: absolute; right: 48px;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-light); border: 0.5px solid rgba(184,150,90,0.4);
+  padding: 9px 24px; text-decoration: none;
+  background: rgba(184,150,90,0.04);
+  transition: all 0.3s ease, opacity 0.4s ease 0.05s;
+  opacity: 0; pointer-events: none;
+}
+.header-cta:hover { border-color: var(--gold-light); background: rgba(184,150,90,0.1); color: var(--silver-100); }
+.site-header.scrolled .header-cta { opacity: 1; pointer-events: auto; }
+
+/* Gold accent line along bottom of scrolled header */
+.site-header::after {
+  content: '';
+  position: absolute; bottom: 0; left: 48px; right: 48px; height: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(184,150,90,0.3) 30%, rgba(184,150,90,0.3) 70%, transparent);
+  opacity: 0; transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+.site-header.scrolled::after { opacity: 1; }
+
+/* ── FULL-VIEWPORT HERO ── */
+.hero-full {
+  position: relative;
+  width: 100%; height: 100vh; min-height: 600px;
+  overflow: hidden;
+  background: var(--bg-deep);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Hero photo — Ken Burns slow zoom */
+.hero-img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  transform-origin: center center;
+  animation: kenBurns 18s ease-in-out infinite alternate;
+  will-change: transform;
+  filter: saturate(1.18) contrast(1.04);
+}
+@keyframes kenBurns {
+  0%   { transform: scale(1)    translateX(0)      translateY(0); }
+  100% { transform: scale(1.07) translateX(-1.5%)  translateY(-1%); }
+}
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-img { animation: none; }
+}
+.hero-dark-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8,6,4,0.18);
+}
+
+
+/* Subtle bottom vignette — eases the hero into the dark page below */
+.hero-text-fade {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 28%;
+  background: linear-gradient(to top, rgba(10,8,6,0.72) 0%, rgba(10,8,6,0.2) 55%, transparent 100%);
+  pointer-events: none;
+}
+
+
+
+.btn-primary { background: var(--silver-100); color: var(--bg-deep); font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; padding: 15px 36px; border: none; cursor: pointer; text-decoration: none; transition: background 0.25s; display: inline-block; }
+.btn-primary:hover { background: var(--silver-300); }
+
+.marquee-bar {
+  background: var(--bg-surface); padding: 15px 0;
+  overflow: hidden; white-space: nowrap;
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  position: relative;
+}
+/* Fade edges to feel infinite */
+.marquee-bar::before,
+.marquee-bar::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 1;
+  pointer-events: none;
+}
+.marquee-bar::before { left: 0; background: linear-gradient(to right, var(--bg-surface), transparent); }
+.marquee-bar::after  { right: 0; background: linear-gradient(to left,  var(--bg-surface), transparent); }
+
+.marquee-track {
+  display: inline-block;
+  animation: marquee 48s linear infinite;
+}
+.marquee-bar:hover .marquee-track { animation-play-state: paused; }
+
+/* Material names — dim, uppercase */
+.marquee-track .mat {
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--silver-500); padding: 0 32px;
+}
+/* Brand phrases — brighter, italic serif */
+.marquee-track .phrase {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-style: italic; letter-spacing: 0.06em;
+  color: var(--silver-300); padding: 0 32px;
+}
+/* Diamond separator */
+.marquee-track .sep {
+  font-size: 7px; color: var(--gold); padding: 0;
+  vertical-align: middle; opacity: 0.7;
+}
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+section { padding: 120px 60px; }
+.section-label { font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: flex; align-items: center; gap: 14px; }
+.section-label::before { content: ''; display: block; width: 22px; height: 0.5px; background: var(--gold); }
+.section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 4vw, 54px); font-weight: 300; line-height: 1.1; color: var(--silver-100); margin-bottom: 24px; }
+.section-title em { font-style: italic; color: var(--gold-light); }
+
+/* ── COLLECTION CAROUSEL ── */
+#collection { background: var(--bg-deep); padding: 80px 0 60px; }
+
+.collection-intro {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  padding: 0 60px; margin-bottom: 52px; gap: 32px;
+}
+.collection-desc {
+  font-size: 13px; color: var(--silver-500); line-height: 1.8;
+  max-width: 280px; font-weight: 300; text-align: right;
+}
+
+/* Carousel wrapper */
+.carousel-outer {
+  position: relative; overflow: hidden;
+  cursor: grab; user-select: none; touch-action: pan-y;
+}
+.carousel-outer:active { cursor: grabbing; }
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.68s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+/* Each slide */
+.carousel-slide {
+  flex: 0 0 100%; min-width: 0;
+  display: flex; flex-direction: column;
+}
+
+.slide-visual {
+  height: 66vh; min-height: 400px;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  transition: background-color 0.68s ease;
+}
+
+/* Atmospheric glow behind illustration */
+.slide-glow {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  transition: opacity 0.68s ease;
+}
+
+.slide-visual svg {
+  position: relative; z-index: 1;
+  width: min(380px, 72%);
+  height: auto;
+  transition: transform 0.68s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease;
+}
+.carousel-slide:not(.is-active) .slide-visual svg {
+  transform: scale(0.94);
+  opacity: 0.55;
+}
+.carousel-slide.is-active .slide-visual svg {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Info bar */
+.slide-info {
+  padding: 24px 60px 28px;
+  border-top: 0.5px solid var(--border);
+  background: var(--bg-dark);
+  display: flex; align-items: center;
+  justify-content: space-between; gap: 24px;
+}
+
+.slide-meta { flex: 1; min-width: 0; }
+
+.slide-counter {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+  opacity: 0.75;
+}
+
+.slide-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 400;
+  color: var(--silver-100); line-height: 1;
+  margin-bottom: 5px;
+  transition: opacity 0.3s ease;
+}
+
+.slide-material {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--silver-700);
+}
+
+.slide-enquire {
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--gold-light); text-decoration: none;
+  border: 0.5px solid rgba(184,150,90,0.35);
+  padding: 10px 22px;
+  display: flex; align-items: center; gap: 8px;
+  transition: all 0.25s; white-space: nowrap; flex-shrink: 0;
+}
+.slide-enquire::after { content: '→'; transition: transform 0.2s; }
+.slide-enquire:hover {
+  border-color: var(--gold-light);
+  background: rgba(184,150,90,0.08);
+  gap: 12px;
+}
+
+/* Arrow buttons — desktop only */
+.carousel-btn {
+  position: absolute; top: calc(33vh - 24px);
+  width: 48px; height: 48px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(17,17,16,0.75);
+  border: 0.5px solid var(--border);
+  color: var(--silver-500); font-size: 18px;
+  cursor: pointer; z-index: 10;
+  opacity: 0; transition: all 0.25s;
+  backdrop-filter: blur(8px);
+}
+.carousel-outer:hover .carousel-btn { opacity: 1; }
+.carousel-btn:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(184,150,90,0.12); }
+.carousel-btn-prev { left: 20px; }
+.carousel-btn-next { right: 20px; }
+.carousel-btn:disabled { opacity: 0 !important; pointer-events: none; }
+
+/* Dots */
+.carousel-dots {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 28px 0 0;
+}
+.carousel-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--silver-700); border: none;
+  cursor: pointer; padding: 0; transition: all 0.35s ease;
+}
+.carousel-dot.is-active {
+  background: var(--gold);
+  width: 24px; border-radius: 3px;
+}
+
+/* ── ABOUT (redesigned) ── */
+#about {
+  background: var(--bg-dark);
+  border-top: 0.5px solid var(--border);
+  padding: 0;
+}
+
+.about-opening {
+  padding: 100px 60px 80px;
+  border-bottom: 0.5px solid var(--border);
+}
+.about-statement {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 4.8vw, 66px);
+  font-weight: 300; line-height: 1.06;
+  color: var(--silver-100);
+  margin: 16px 0 28px; letter-spacing: -0.01em;
+  max-width: 860px;
+}
+.about-statement em { font-style: italic; color: var(--gold-light); }
+.about-substatement {
+  font-size: 14px; color: var(--silver-500);
+  line-height: 1.85; max-width: 520px; font-weight: 300;
+}
+
+.about-body {
+  display: grid; grid-template-columns: 1fr 1fr;
+  border-bottom: 0.5px solid var(--border);
+}
+.about-text-col {
+  padding: 72px 60px;
+  border-right: 0.5px solid var(--border);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.about-text-col p {
+  font-size: 14px; color: var(--silver-500);
+  line-height: 1.85; margin-bottom: 20px; font-weight: 300;
+}
+.about-signature {
+  display: flex; align-items: center; gap: 18px; margin-top: 8px;
+}
+.about-sig-line {
+  display: block; width: 28px; height: 0.5px;
+  background: var(--gold); flex-shrink: 0;
+}
+.about-signature em {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-style: italic;
+  color: var(--silver-300); letter-spacing: 0.02em;
+}
+
+.about-pillars { display: flex; flex-direction: column; }
+.about-pillar {
+  display: flex; gap: 28px; padding: 36px 52px;
+  border-bottom: 0.5px solid var(--border);
+  align-items: flex-start;
+}
+.about-pillar:last-child { border-bottom: none; }
+.pillar-numeral {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 30px; font-weight: 300; color: var(--gold);
+  line-height: 1; flex-shrink: 0; min-width: 26px; opacity: 0.8;
+}
+.pillar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 400; color: var(--silver-100);
+  margin-bottom: 10px; letter-spacing: 0.01em;
+}
+.pillar-desc {
+  font-size: 13px; color: var(--silver-700);
+  line-height: 1.75; font-weight: 300;
+}
+
+
+.about-close {
+  padding: 100px 60px;
+  text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 40px;
+}
+.about-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(22px, 3vw, 42px);
+  font-weight: 300; font-style: italic;
+  color: var(--silver-100); line-height: 1.32;
+  max-width: 660px; letter-spacing: 0.01em;
+}
+
+/* ── PROCESS (roadmap) ── */
+.process-strip {
+  background: var(--bg-surface);
+  padding: 100px 0;
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+}
+.process-heading { text-align: center; padding: 0 60px 72px; }
+.process-heading .section-label { justify-content: center; }
+.process-heading .section-label::before { display: none; }
+.process-lead {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-style: italic;
+  color: var(--silver-500); margin-top: 20px;
+  letter-spacing: 0.02em; line-height: 1.6;
+}
+
+/* Four-column roadmap grid */
+.process-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 960px; margin: 0 auto; padding: 0 60px;
+}
+.process-moment {
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+/* Horizontal connecting line: runs from this dot-centre to the next */
+.process-moment:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: calc(72px + 5px); /* pm-upper height + half dot size */
+  left: 50%; right: -50%;
+  height: 0.5px;
+  background: rgba(184,150,90,0.25);
+  z-index: 0;
+}
+
+/* Number sits above the dot */
+.pm-upper {
+  height: 72px;
+  display: flex; align-items: flex-end; padding-bottom: 14px;
+}
+.pm-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 38px; font-weight: 300; font-style: italic;
+  color: var(--gold); line-height: 1;
+}
+
+/* The dot — sits on the connecting line */
+.pm-node {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg-surface); /* gap between dot and line */
+  outline: 1px solid var(--gold);
+  position: relative; z-index: 1; flex-shrink: 0;
+}
+
+/* Content below the dot */
+.pm-lower { padding-top: 22px; }
+.pm-duration {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.6; margin-bottom: 10px;
+}
+.pm-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 300;
+  color: var(--silver-100); margin-bottom: 10px; line-height: 1.1;
+}
+.pm-desc {
+  font-size: 13px; color: var(--silver-500);
+  line-height: 1.8; font-weight: 300;
+}
+
+/* ── CONTACT ── */
+#contact {
+  background: var(--bg-deep);
+  display: grid; grid-template-columns: 5fr 7fr;
+  padding: 0; border-top: 0.5px solid var(--border);
+}
+.contact-left {
+  padding: 100px 60px; border-right: 0.5px solid var(--border);
+  background: var(--bg-dark);
+  display: flex; flex-direction: column;
+}
+.contact-intro {
+  font-size: 14px; color: var(--silver-500);
+  line-height: 1.85; margin-bottom: 52px; font-weight: 300;
+}
+.contact-details { display: flex; flex-direction: column; gap: 32px; }
+.contact-detail {
+  border-left: 1px solid rgba(184,150,90,0.32);
+  padding-left: 18px;
+}
+.cd-label {
+  font-size: 9px; letter-spacing: 0.38em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; display: block; margin-bottom: 7px;
+}
+.cd-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 19px; font-weight: 300;
+  color: var(--silver-300); text-decoration: none;
+  display: block; line-height: 1.5; letter-spacing: 0.01em;
+  transition: color 0.2s;
+}
+a.cd-value:hover { color: var(--gold-light); }
+.cd-muted { font-style: italic; color: var(--silver-500); }
+
+.contact-form-wrap { padding: 100px 72px; }
+.contact-form { display: flex; flex-direction: column; gap: 4px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+/* Floating label groups */
+.form-group { position: relative; padding-top: 22px; margin-bottom: 14px; }
+.form-label {
+  position: absolute; left: 0; top: 28px;
+  font-family: 'Jost', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--silver-700);
+  pointer-events: none;
+  transition: top 0.22s ease, font-size 0.22s ease,
+              color 0.22s ease, letter-spacing 0.22s ease;
+}
+/* Float up on fill or focus */
+.form-input:not(:placeholder-shown) ~ .form-label,
+.form-input:focus ~ .form-label,
+.form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-textarea:focus ~ .form-label {
+  top: 0; font-size: 9px;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.85;
+}
+.form-label-static {
+  display: block; font-family: 'Jost', sans-serif;
+  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); opacity: 0.8; margin-bottom: 10px;
+}
+.form-input, .form-textarea {
+  background: transparent; border: none;
+  border-bottom: 0.5px solid var(--silver-700);
+  padding: 8px 0; width: 100%;
+  font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300;
+  color: var(--silver-100); outline: none;
+  transition: border-color 0.22s; -webkit-appearance: none;
+}
+.form-input::placeholder, .form-textarea::placeholder { color: transparent; }
+.form-input:focus, .form-textarea:focus { border-bottom-color: var(--gold); }
+.form-textarea { resize: none; min-height: 100px; }
+.form-select {
+  background: transparent; border: none;
+  border-bottom: 0.5px solid var(--silver-700);
+  padding: 8px 0; width: 100%;
+  font-family: 'Jost', sans-serif; font-size: 15px; font-weight: 300;
+  color: var(--silver-500); outline: none; cursor: pointer;
+  -webkit-appearance: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234A4844' stroke-width='1' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 4px center;
+  transition: border-color 0.22s, color 0.22s;
+}
+.form-select:focus { border-bottom-color: var(--gold); color: var(--silver-100); }
+.form-select option { background: var(--bg-dark); color: var(--silver-100); }
+
+/* Submit — gold border with sweep fill */
+.submit-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  align-self: flex-start; margin-top: 24px;
+  background: transparent; border: 0.5px solid rgba(184,150,90,0.5);
+  padding: 14px 36px; font-family: 'Jost', sans-serif;
+  font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-light); cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: color 0.3s, gap 0.25s, border-color 0.3s;
+}
+.submit-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(184,150,90,0.1);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.submit-btn:hover { color: var(--silver-100); gap: 18px; border-color: var(--gold); }
+.submit-btn:hover::before { transform: scaleX(1); }
+.submit-btn span { position: relative; z-index: 1; }
+
+footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-items: center; justify-content: space-between; border-top: 0.5px solid var(--border); }
+.footer-logo-wrap { display: flex; align-items: center; gap: 12px; }
+.footer-wordmark { font-family: 'Jost', sans-serif; font-size: 13px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--silver-300); }
+.footer-wordmark small { display: block; font-size: 9px; font-weight: 300; letter-spacing: 0.2em; color: var(--silver-700); margin-top: 2px; }
+.footer-nav { display: flex; gap: 28px; }
+.footer-nav a { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver-700); text-decoration: none; transition: color 0.2s; }
+.footer-nav a:hover { color: var(--silver-300); }
+.footer-copy { font-size: 10px; color: var(--silver-700); letter-spacing: 0.08em; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-d1 { transition-delay: 0.12s; }
+.reveal-d2 { transition-delay: 0.22s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── NAV OVERLAY ── */
+.nav-overlay {
+  position: fixed; inset: 0; z-index: 190;
+  background: rgba(10,9,8,0.97);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0; visibility: hidden;
+  transition: opacity 0.42s ease, visibility 0.42s ease;
+  /* Thin gold line at very top */
+}
+.nav-overlay::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 0.5px;
+  background: linear-gradient(90deg, transparent, rgba(184,150,90,0.45) 35%, rgba(184,150,90,0.45) 65%, transparent);
+}
+.nav-overlay.is-open { opacity: 1; visibility: visible; }
+
+.nav-overlay-links {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 6px;
+}
+.nav-ol {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(46px, 9vw, 80px);
+  font-weight: 300;
+  color: var(--silver-300);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  position: relative;
+  padding-left: 36px;
+  /* staggered entrance */
+  opacity: 0;
+  transform: translateY(22px);
+  transition: color 0.25s ease, opacity 0.52s ease, transform 0.52s cubic-bezier(0.22,1,0.36,1);
+}
+.nav-overlay.is-open .nav-ol:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.09s; }
+.nav-overlay.is-open .nav-ol:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.16s; }
+.nav-overlay.is-open .nav-ol:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.23s; }
+.nav-overlay.is-open .nav-ol:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.30s; }
+/* Gold line slides in from left on hover */
+.nav-ol::before {
+  content: '';
+  position: absolute; left: 0; top: 50%;
+  width: 20px; height: 0.5px;
+  background: var(--gold);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.32s ease;
+}
+.nav-ol:hover { color: var(--gold-light); }
+.nav-ol:hover::before { transform: translateY(-50%) scaleX(1); }
+
+.nav-overlay-foot {
+  position: absolute; bottom: 42px; left: 0; right: 0;
+  display: flex; align-items: center; justify-content: center; gap: 18px;
+  font-family: 'Jost', sans-serif;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--silver-700);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.34s;
+}
+.nav-overlay.is-open .nav-overlay-foot { opacity: 1; }
+.nav-overlay-foot .nav-foot-sep { font-size: 6px; color: var(--gold); opacity: 0.7; }
+
+@media (max-width: 900px) {
+  .site-header { padding: 0 24px; }
+  .hamburger { left: 24px; }
+  .header-cta { display: none; }
+  section { padding: 80px 24px; }
+  .process-strip { padding: 72px 0; }
+  .process-heading { padding: 0 24px 48px; }
+  /* 2×2 grid on mobile — all 4 steps visible without scrolling */
+  .process-timeline { grid-template-columns: 1fr 1fr; padding: 0; max-width: 100%; }
+  .process-moment { padding: 32px 20px; }
+  .process-moment::after { display: none; } /* no horizontal line in 2×2 */
+  /* Thin borders between the four cells */
+  .process-moment:nth-child(1),
+  .process-moment:nth-child(2) { border-bottom: 0.5px solid var(--border); }
+  .process-moment:nth-child(1),
+  .process-moment:nth-child(3) { border-right: 0.5px solid var(--border); }
+  .pm-upper { height: 52px; padding-bottom: 10px; }
+  .pm-num { font-size: 28px; }
+  .pm-lower { padding-top: 16px; }
+  #about { padding: 0; }
+  .about-opening { padding: 64px 24px 52px; }
+  .about-body { grid-template-columns: 1fr; }
+  .about-text-col { padding: 52px 24px; border-right: none; border-bottom: 0.5px solid var(--border); }
+  .about-pillar { padding: 28px 24px; }
+  .about-close { padding: 72px 24px; }
+  #contact { grid-template-columns: 1fr; padding: 0; }
+  .contact-left { padding: 64px 24px 52px; border-right: none; border-bottom: 0.5px solid var(--border); }
+  .contact-form-wrap { padding: 52px 24px 72px; }
+  .collection-intro { padding: 0 24px; margin-bottom: 36px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .collection-desc { text-align: left; max-width: 100%; }
+  .slide-visual { height: 58vh; min-height: 340px; }
+  .slide-info { padding: 20px 24px 24px; gap: 16px; }
+  .slide-name { font-size: 24px; }
+  .slide-enquire { padding: 9px 16px; font-size: 9px; }
+  .carousel-btn { display: none; }
+  footer { flex-direction: column; gap: 28px; text-align: center; }
+  .form-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- SITE HEADER -->
+<header class="site-header" id="siteHeader">
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+  <a href="#" class="header-brand">Baumstein</a>
+  <a href="#contact" class="header-cta">Enquire</a>
+</header>
+
+<!-- NAV OVERLAY -->
+<div class="nav-overlay" id="navOverlay" role="dialog" aria-modal="true" aria-label="Site navigation" aria-hidden="true">
+  <nav class="nav-overlay-links">
+    <a href="#collection" class="nav-ol">Collection</a>
+    <a href="#about" class="nav-ol">About</a>
+    <a href="#process" class="nav-ol">Process</a>
+    <a href="#contact" class="nav-ol">Contact</a>
+  </nav>
+  <div class="nav-overlay-foot">
+    <span>hello@baumstein.com</span>
+    <span class="nav-foot-sep">◆</span>
+    <span>Handcrafted in Europe</span>
+  </div>
+</div>
+
+<!-- HERO FULL -->
+<section class="hero-full">
+  <img src="heroimage.png" alt="Baumstein table" class="hero-img">
+  <div class="hero-dark-overlay"></div>
+  <div class="hero-text-fade"></div>
+
+</section>
+
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track">
+    <span class="mat">Oak</span><span class="sep">◆</span>
+    <span class="phrase">Each table is unique</span><span class="sep">◆</span>
+    <span class="mat">Black Marble</span><span class="sep">◆</span>
+    <span class="mat">Walnut</span><span class="sep">◆</span>
+    <span class="phrase">Made entirely to order</span><span class="sep">◆</span>
+    <span class="mat">Onyx</span><span class="sep">◆</span>
+    <span class="mat">Travertine</span><span class="sep">◆</span>
+    <span class="phrase">Handcrafted in Europe</span><span class="sep">◆</span>
+    <span class="mat">White Carrara</span><span class="sep">◆</span>
+    <span class="mat">Ash</span><span class="sep">◆</span>
+    <span class="phrase">No two pieces alike</span><span class="sep">◆</span>
+    <span class="mat">Granite</span><span class="sep">◆</span>
+    <span class="phrase">Built for generations</span><span class="sep">◆</span>
+    <span class="mat">Smoked Oak</span><span class="sep">◆</span>
+    <span class="phrase">Your vision, our craft</span><span class="sep">◆</span>
+    <span class="mat">Black Marble</span><span class="sep">◆</span>
+    <span class="phrase">Each table is unique</span><span class="sep">◆</span>
+    <span class="mat">Oak</span><span class="sep">◆</span>
+    <span class="phrase">Made entirely to order</span><span class="sep">◆</span>
+    <span class="mat">Walnut</span><span class="sep">◆</span>
+    <span class="phrase">Handcrafted in Europe</span><span class="sep">◆</span>
+    <span class="mat">Onyx</span><span class="sep">◆</span>
+    <span class="mat">Travertine</span><span class="sep">◆</span>
+    <span class="phrase">No two pieces alike</span><span class="sep">◆</span>
+    <span class="mat">White Carrara</span><span class="sep">◆</span>
+    <span class="phrase">Built for generations</span><span class="sep">◆</span>
+    <span class="mat">Ash</span><span class="sep">◆</span>
+    <span class="phrase">Your vision, our craft</span><span class="sep">◆</span>
+    <span class="mat">Granite</span><span class="sep">◆</span>
+    <span class="mat">Smoked Oak</span><span class="sep">◆</span>
+  </div>
+</div>
+
+<!-- COLLECTION -->
+<section id="collection">
+
+  <div class="collection-intro reveal">
+    <div>
+      <div class="section-label">Our Collection</div>
+      <h2 class="section-title">Nature Becomes<br><em>Furniture</em></h2>
+    </div>
+    <p class="collection-desc">Our most sought-after designs — each one a proven combination of material, form and craft. A starting point for your own commission.</p>
+  </div>
+
+  <div class="carousel-outer" id="collectionCarousel">
+    <div class="carousel-track" id="carouselTrack">
+
+      <!-- 01 · The Nero Ovale -->
+      <div class="carousel-slide is-active">
+        <div class="slide-visual" style="background:#0B0A09;">
+          <div class="slide-glow" style="background:radial-gradient(ellipse 55% 50% at 50% 48%, rgba(40,28,55,0.55) 0%, transparent 70%);"></div>
+          <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="c1oak" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#6A4820"/><stop offset="40%" stop-color="#A87838"/><stop offset="100%" stop-color="#6A4820"/></linearGradient>
+            <linearGradient id="c1mar" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1C1C1E"/><stop offset="100%" stop-color="#0E0E10"/></linearGradient></defs>
+            <ellipse cx="160" cy="172" rx="148" ry="66" fill="url(#c1oak)"/>
+            <ellipse cx="160" cy="172" rx="130" ry="50" fill="url(#c1mar)"/>
+            <path d="M28 160 Q100 143 175 165 Q220 178 292 155" stroke="rgba(160,155,150,0.2)" stroke-width="1.2" fill="none"/>
+            <path d="M35 178 Q108 162 182 182 Q226 194 290 173" stroke="rgba(140,135,130,0.14)" stroke-width="0.9" fill="none"/>
+            <ellipse cx="160" cy="172" rx="148" ry="66" fill="none" stroke="rgba(220,185,110,0.15)" stroke-width="1.5"/>
+            <rect x="128" y="233" width="64" height="130" rx="32" fill="#7A5830"/>
+            <line x1="140" y1="237" x2="140" y2="357" stroke="rgba(25,12,2,0.5)" stroke-width="2"/>
+            <line x1="152" y1="235" x2="152" y2="360" stroke="rgba(25,12,2,0.5)" stroke-width="2"/>
+            <line x1="164" y1="234" x2="164" y2="362" stroke="rgba(25,12,2,0.5)" stroke-width="2"/>
+            <line x1="176" y1="235" x2="176" y2="360" stroke="rgba(25,12,2,0.5)" stroke-width="2"/>
+            <ellipse cx="160" cy="235" rx="32" ry="7" fill="#9A7040"/>
+            <ellipse cx="160" cy="365" rx="88" ry="9" fill="rgba(0,0,0,0.45)"/>
+          </svg>
+        </div>
+        <div class="slide-info">
+          <div class="slide-meta">
+            <div class="slide-counter">Baumstein Originals</div>
+            <div class="slide-name">The Nero Ovale</div>
+            <div class="slide-material">Oak · Black Marquina Marble</div>
+          </div>
+          <a href="#contact" class="slide-enquire">Interested?</a>
+        </div>
+      </div>
+
+      <!-- 02 · The Aurum -->
+      <div class="carousel-slide">
+        <div class="slide-visual" style="background:#120F08;">
+          <div class="slide-glow" style="background:radial-gradient(ellipse 55% 50% at 50% 48%, rgba(90,58,10,0.5) 0%, transparent 70%);"></div>
+          <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="c2on" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C8A020"/><stop offset="50%" stop-color="#E0BC48"/><stop offset="100%" stop-color="#A88018"/></linearGradient></defs>
+            <rect x="30" y="118" width="260" height="110" rx="5" fill="#0E0A04"/>
+            <rect x="22" y="110" width="276" height="126" rx="5" fill="none" stroke="url(#c2on)" stroke-width="14"/>
+            <path d="M50 125 Q160 108 270 128" stroke="rgba(200,170,60,0.18)" stroke-width="1" fill="none"/>
+            <line x1="110" y1="236" x2="100" y2="334" stroke="#8A6820" stroke-width="18"/>
+            <line x1="210" y1="236" x2="220" y2="334" stroke="#8A6820" stroke-width="18"/>
+            <rect x="85" y="328" width="150" height="14" rx="5" fill="#6A5010"/>
+            <ellipse cx="160" cy="348" rx="120" ry="10" fill="rgba(0,0,0,0.4)"/>
+          </svg>
+        </div>
+        <div class="slide-info">
+          <div class="slide-meta">
+            <div class="slide-counter">Baumstein Originals</div>
+            <div class="slide-name">The Aurum</div>
+            <div class="slide-material">Walnut · Golden Onyx</div>
+          </div>
+          <a href="#contact" class="slide-enquire">Interested?</a>
+        </div>
+      </div>
+
+      <!-- 03 · The Cinder -->
+      <div class="carousel-slide">
+        <div class="slide-visual" style="background:#0C0C0E;">
+          <div class="slide-glow" style="background:radial-gradient(ellipse 55% 50% at 50% 48%, rgba(30,30,45,0.5) 0%, transparent 70%);"></div>
+          <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="c3gr" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#38363E"/><stop offset="50%" stop-color="#504E58"/><stop offset="100%" stop-color="#38363E"/></linearGradient></defs>
+            <ellipse cx="160" cy="168" rx="148" ry="62" fill="#141418"/>
+            <ellipse cx="160" cy="168" rx="152" ry="66" fill="none" stroke="url(#c3gr)" stroke-width="14"/>
+            <path d="M30 160 Q110 144 190 162 Q240 174 295 155" stroke="rgba(120,118,130,0.2)" stroke-width="1" fill="none"/>
+            <line x1="118" y1="228" x2="108" y2="328" stroke="#444252" stroke-width="18"/>
+            <line x1="202" y1="228" x2="212" y2="328" stroke="#444252" stroke-width="18"/>
+            <rect x="90" y="322" width="140" height="12" rx="4" fill="#32303A"/>
+            <ellipse cx="160" cy="340" rx="110" ry="9" fill="rgba(0,0,0,0.4)"/>
+          </svg>
+        </div>
+        <div class="slide-info">
+          <div class="slide-meta">
+            <div class="slide-counter">Baumstein Originals</div>
+            <div class="slide-name">The Cinder</div>
+            <div class="slide-material">Smoked Oak · Dark Granite</div>
+          </div>
+          <a href="#contact" class="slide-enquire">Interested?</a>
+        </div>
+      </div>
+
+      <!-- 04 · The Alba -->
+      <div class="carousel-slide">
+        <div class="slide-visual" style="background:#0F0E0D;">
+          <div class="slide-glow" style="background:radial-gradient(ellipse 55% 50% at 50% 48%, rgba(55,50,42,0.45) 0%, transparent 70%);"></div>
+          <svg viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+            <defs><linearGradient id="c4car" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C8C4BC"/><stop offset="50%" stop-color="#E8E4DC"/><stop offset="100%" stop-color="#A8A49C"/></linearGradient></defs>
+            <ellipse cx="160" cy="168" rx="148" ry="62" fill="#151412"/>
+            <ellipse cx="160" cy="168" rx="152" ry="66" fill="none" stroke="url(#c4car)" stroke-width="13"/>
+            <path d="M30 158 Q100 142 180 162 Q230 174 292 155" stroke="rgba(200,196,188,0.25)" stroke-width="1.2" fill="none"/>
+            <path d="M40 175 Q112 160 188 178 Q235 190 290 172" stroke="rgba(180,176,168,0.15)" stroke-width="0.8" fill="none"/>
+            <rect x="128" y="228" width="64" height="130" rx="32" fill="#8A7055"/>
+            <line x1="140" y1="232" x2="140" y2="352" stroke="rgba(30,20,10,0.4)" stroke-width="1.8"/>
+            <line x1="152" y1="230" x2="152" y2="355" stroke="rgba(30,20,10,0.4)" stroke-width="1.8"/>
+            <line x1="164" y1="229" x2="164" y2="357" stroke="rgba(30,20,10,0.4)" stroke-width="1.8"/>
+            <line x1="176" y1="230" x2="176" y2="355" stroke="rgba(30,20,10,0.4)" stroke-width="1.8"/>
+            <ellipse cx="160" cy="230" rx="32" ry="7" fill="#A08870"/>
+            <ellipse cx="160" cy="362" rx="88" ry="9" fill="rgba(0,0,0,0.4)"/>
+          </svg>
+        </div>
+        <div class="slide-info">
+          <div class="slide-meta">
+            <div class="slide-counter">Baumstein Originals</div>
+            <div class="slide-name">The Alba</div>
+            <div class="slide-material">Ash · White Carrara</div>
+          </div>
+          <a href="#contact" class="slide-enquire">Interested?</a>
+        </div>
+      </div>
+
+    </div><!-- /track -->
+
+    <button class="carousel-btn carousel-btn-prev" aria-label="Previous">&#8592;</button>
+    <button class="carousel-btn carousel-btn-next" aria-label="Next">&#8594;</button>
+  </div><!-- /outer -->
+
+  <div class="carousel-dots">
+    <button class="carousel-dot is-active" aria-label="Slide 1"></button>
+    <button class="carousel-dot" aria-label="Slide 2"></button>
+    <button class="carousel-dot" aria-label="Slide 3"></button>
+    <button class="carousel-dot" aria-label="Slide 4"></button>
+  </div>
+
+</section>
+
+
+
+<!-- ABOUT -->
+<section id="about">
+
+  <!-- Opening statement — full editorial width -->
+  <div class="about-opening reveal">
+    <div class="section-label">Our Philosophy</div>
+    <h2 class="about-statement">
+      No two Baumstein tables<br>have ever been <em>the same.</em>
+    </h2>
+    <p class="about-substatement">Every piece is conceived in conversation with you — and built entirely to your specification, from first sketch to final polish.</p>
+  </div>
+
+  <!-- Two-column: brand text left, three pillars right -->
+  <div class="about-body reveal reveal-d1">
+    <div class="about-text-col">
+      <p>Baumstein was founded on a simple belief: that a table is more than furniture. It is the centre of a home — where meals are shared, decisions are made, and memories are formed.</p>
+      <p>We source only the finest European hardwoods and hand-select each stone slab for its unique character. Your table will never be catalogued, numbered, or repeated.</p>
+      <div class="about-signature">
+        <span class="about-sig-line"></span>
+        <em>Made entirely to order. No exceptions.</em>
+      </div>
+    </div>
+
+    <div class="about-pillars">
+      <div class="about-pillar">
+        <span class="pillar-numeral">I</span>
+        <div>
+          <div class="pillar-title">The Wood</div>
+          <p class="pillar-desc">European hardwoods — Oak, Walnut, Ash, Smoked Oak — each hand-selected for its grain, colour, and character. Your choice shapes the warmth of the entire piece.</p>
+        </div>
+      </div>
+      <div class="about-pillar">
+        <span class="pillar-numeral">II</span>
+        <div>
+          <div class="pillar-title">The Stone</div>
+          <p class="pillar-desc">Black Marquina, White Carrara, Verde Guatemala, Travertine, Golden Onyx. Each slab is unique — chosen by you, set by our craftsmen, never replicated.</p>
+        </div>
+      </div>
+      <div class="about-pillar">
+        <span class="pillar-numeral">III</span>
+        <div>
+          <div class="pillar-title">The Form</div>
+          <p class="pillar-desc">Pedestal, trestle, four-post, arch — dimensions, edge treatment, leg design. Every structural decision is yours to make. We execute it to perfection.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Closing pull-quote → leads naturally into the contact form -->
+  <div class="about-close reveal">
+    <blockquote class="about-quote">Tell us what you imagine.<br>We will build it exactly as you dreamed.</blockquote>
+    <a href="#contact" class="btn-primary">Tell Us Your Vision</a>
+  </div>
+
+</section>
+
+<!-- PROCESS -->
+<div class="process-strip" id="process">
+  <div class="process-heading">
+    <div class="section-label reveal">How it works</div>
+    <h2 class="section-title reveal reveal-d1">From Vision<br>to <em>Heirloom</em></h2>
+    <p class="process-lead reveal reveal-d2">Four stages. Six to ten weeks. One table made entirely for you.</p>
+  </div>
+
+  <div class="process-timeline reveal reveal-d2">
+
+    <div class="process-moment">
+      <div class="pm-upper"><div class="pm-num">I</div></div>
+      <div class="pm-node"></div>
+      <div class="pm-lower">
+        <div class="pm-duration">Week 1</div>
+        <h3 class="pm-title">Consultation</h3>
+        <p class="pm-desc">We discuss your space, vision, and materials — in person or by video call. No catalogue, no templates.</p>
+      </div>
+    </div>
+
+    <div class="process-moment">
+      <div class="pm-upper"><div class="pm-num">II</div></div>
+      <div class="pm-node"></div>
+      <div class="pm-lower">
+        <div class="pm-duration">Weeks 2 – 3</div>
+        <h3 class="pm-title">Design</h3>
+        <p class="pm-desc">Technical drawings and material samples prepared for your approval. You see exactly what will be built.</p>
+      </div>
+    </div>
+
+    <div class="process-moment">
+      <div class="pm-upper"><div class="pm-num">III</div></div>
+      <div class="pm-node"></div>
+      <div class="pm-lower">
+        <div class="pm-duration">Weeks 3 – 10</div>
+        <h3 class="pm-title">Crafting</h3>
+        <p class="pm-desc">Hand-built in our Latvian workshop. The same craftsmen work the piece from first cut to final polish.</p>
+      </div>
+    </div>
+
+    <div class="process-moment">
+      <div class="pm-upper"><div class="pm-num">IV</div></div>
+      <div class="pm-node"></div>
+      <div class="pm-lower">
+        <div class="pm-duration">On completion</div>
+        <h3 class="pm-title">Delivery</h3>
+        <p class="pm-desc">White-glove delivery and placement into your home. We don't leave until every detail is right.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section id="contact">
+
+  <div class="contact-left reveal">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Begin Your<br><em>Commission</em></h2>
+    <p class="contact-intro">We'd love to create something exceptional for your home. Tell us about your project — there's no obligation, only a conversation.</p>
+    <div class="contact-details">
+      <div class="contact-detail">
+        <span class="cd-label">Email</span>
+        <a href="mailto:info.baumstein@gmail.com" class="cd-value">info.baumstein@gmail.com</a>
+      </div>
+      <div class="contact-detail">
+        <span class="cd-label">Phone</span>
+        <a href="tel:+37122056266" class="cd-value">+371 22 056 266</a>
+        <a href="tel:+37126660168" class="cd-value">+371 26 660 168</a>
+      </div>
+      <div class="contact-detail">
+        <span class="cd-label">Based in</span>
+        <span class="cd-value cd-muted">Latvia, Europe</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form-wrap reveal reveal-d1">
+    <!-- Replace YOUR_FORM_ID with your Formspree ID when ready -->
+    <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+
+      <div class="form-row">
+        <div class="form-group">
+          <input type="text" name="first_name" id="cf-fname" class="form-input" placeholder=" " autocomplete="given-name">
+          <label class="form-label" for="cf-fname">First name</label>
+        </div>
+        <div class="form-group">
+          <input type="text" name="last_name" id="cf-lname" class="form-input" placeholder=" " autocomplete="family-name">
+          <label class="form-label" for="cf-lname">Last name</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <input type="email" name="email" id="cf-email" class="form-input" placeholder=" " required autocomplete="email">
+        <label class="form-label" for="cf-email">Email address</label>
+      </div>
+
+      <div class="form-group" style="padding-top:0; margin-bottom:20px;">
+        <label class="form-label-static">Interested in</label>
+        <select name="interest" class="form-select">
+          <option value="" disabled selected>— Choose one —</option>
+          <option>Dining Table</option>
+          <option>Coffee Table</option>
+          <option>Console / Sideboard</option>
+          <option>Custom Commission</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <textarea name="message" id="cf-message" class="form-textarea" placeholder=" " rows="4"></textarea>
+        <label class="form-label" for="cf-message">Tell us about your project</label>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <span>Send Enquiry</span>
+        <span>→</span>
+      </button>
+
+    </form>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo-wrap">
+    <svg width="32" height="32" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="37" stroke="#4A4844" stroke-width="1.2"/>
+      <defs><linearGradient id="fsg" x1="18" y1="18" x2="62" y2="62" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C8C6C2"/><stop offset="50%" stop-color="#6A6860"/><stop offset="100%" stop-color="#A0A09A"/></linearGradient></defs>
+      <path d="M22 24 L22 56 L33 56 Q40 56 40 49.5 Q40 44 35 43 Q39.5 42 39.5 36.5 Q39.5 24 32 24 Z M28 30 L31 30 Q34 30 34 35 Q34 40 31 40 L28 40 Z M28 46 L32 46 Q36 46 36 50 Q36 55 32 55 L28 55 Z" fill="url(#fsg)"/>
+      <path d="M43 48 Q43 56 52 56 Q61 56 61 49 Q61 43 54 41 Q49 39.5 49 36 Q49 31 53 31 Q57 31 57 35 L62 33 Q61 24 53 24 Q44 24 44 32 Q44 38 51 40 Q57 42 57 48 Q57 53 52 53 Q47 53 47 49 Z" fill="url(#fsg)"/>
+    </svg>
+    <div><div class="footer-wordmark">Baumstein<small>Wood &amp; Stone</small></div></div>
+  </div>
+  <nav class="footer-nav">
+    <a href="#collection">Collection</a><a href="#about">About</a><a href="#process">Process</a><a href="#contact">Contact</a>
+  </nav>
+  <div class="footer-copy">© 2026 Baumstein</div>
+</footer>
+
+
+<script>
+  // ── Hamburger nav overlay ──
+  (function () {
+    const burger  = document.getElementById('hamburger');
+    const overlay = document.getElementById('navOverlay');
+    const navLinks = overlay.querySelectorAll('.nav-ol');
+
+    function openNav() {
+      burger.classList.add('is-open');
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeNav() {
+      burger.classList.remove('is-open');
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    burger.addEventListener('click', () => {
+      burger.classList.contains('is-open') ? closeNav() : openNav();
+    });
+
+    // Close on link click — wait for overlay to fade out, then scroll
+    navLinks.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = link.getAttribute('href');
+        closeNav();
+        setTimeout(() => {
+          const el = document.querySelector(target);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 440);
+      });
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && burger.classList.contains('is-open')) closeNav();
+    });
+  })();
+
+  // ── Collection Carousel ──
+  (function () {
+    const outer   = document.getElementById('collectionCarousel');
+    const track   = document.getElementById('carouselTrack');
+    const slides  = Array.from(track.querySelectorAll('.carousel-slide'));
+    const dots    = Array.from(document.querySelectorAll('.carousel-dot'));
+    const btnPrev = outer.querySelector('.carousel-btn-prev');
+    const btnNext = outer.querySelector('.carousel-btn-next');
+    const total   = slides.length;
+    let current   = 0;
+    let dragStartX = 0;
+    let isDragging = false;
+
+    function goTo(index) {
+      index = ((index % total) + total) % total; // wrap around
+      slides[current].classList.remove('is-active');
+      dots[current].classList.remove('is-active');
+      current = index;
+      slides[current].classList.add('is-active');
+      dots[current].classList.add('is-active');
+      track.style.transform = `translateX(-${current * 100}%)`;
+    }
+
+    // Buttons
+    btnPrev.addEventListener('click', () => goTo(current - 1));
+    btnNext.addEventListener('click', () => goTo(current + 1));
+
+    // Dots
+    dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+    // Keyboard
+    document.addEventListener('keydown', e => {
+      if (!outer.closest('section').matches(':hover') && document.activeElement.closest('#collectionCarousel') === null) return;
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    });
+
+    // Touch swipe
+    outer.addEventListener('touchstart', e => {
+      dragStartX = e.touches[0].clientX;
+    }, { passive: true });
+
+    outer.addEventListener('touchend', e => {
+      const diff = dragStartX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 44) goTo(current + (diff > 0 ? 1 : -1));
+    }, { passive: true });
+
+    // Mouse drag
+    outer.addEventListener('mousedown', e => {
+      isDragging = true;
+      dragStartX = e.clientX;
+    });
+    document.addEventListener('mouseup', e => {
+      if (!isDragging) return;
+      isDragging = false;
+      const diff = dragStartX - e.clientX;
+      if (Math.abs(diff) > 60) goTo(current + (diff > 0 ? 1 : -1));
+    });
+  })();
+
+  // ── Scroll reveal ──
+  (function () {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '-60px 0px', threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  })();
+
+  // ── Scroll-aware header
+  const header = document.getElementById('siteHeader');
+  const onScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+</script>
+</body>
+</html>
+
+
+
