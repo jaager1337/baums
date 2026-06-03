@@ -812,41 +812,8 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
 }
 .hero-full.variant-c .hero-eyebrow::before { display: none; }
 
-/* ── VARIANT TOGGLE ── */
-.hero-variant-toggle {
-  position: fixed;
-  bottom: 32px; right: 32px;
-  z-index: 300;
-  display: flex; flex-direction: column; gap: 8px;
-  align-items: flex-end;
-}
-.hero-variant-toggle .toggle-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
-  color: rgba(240,239,237,0.4); margin-bottom: 2px;
-  text-align: right;
-}
-.hero-variant-toggle .toggle-btns {
-  display: flex; gap: 6px;
-}
-.hero-variant-toggle button {
-  font-family: 'Jost', sans-serif;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 7px 14px;
-  background: rgba(10,8,6,0.7);
-  border: 0.5px solid rgba(184,150,90,0.35);
-  color: rgba(240,239,237,0.55);
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
-}
-.hero-variant-toggle button:hover {
-  border-color: var(--gold-light); color: var(--gold-light);
-}
-.hero-variant-toggle button.active {
-  background: rgba(184,150,90,0.15);
-  border-color: var(--gold-light); color: var(--gold-light);
-}
+/* ── VARIANT TOGGLE (moved to burger menu) ── */
+.toggle-btns { display: flex; gap: 6px; }
 
 @media (max-width: 900px) {
   .hero-full.variant-a .hero-copy,
@@ -856,41 +823,40 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
   .hero-full.variant-b .hero-headline { font-size: clamp(40px, 10vw, 64px); }
   .hero-full.variant-c .hero-headline { font-size: clamp(64px, 15.5vw, 80px); }
   .hero-full.variant-c .hero-calligraphy { width: clamp(260px, 80vw, 360px); }
-  .hero-variant-toggle { bottom: 20px; right: 16px; }
-  .hero-variant-toggle button { padding: 6px 11px; }
-  .texture-toggle { bottom: 20px; left: 16px; }
-  .texture-toggle button { padding: 6px 11px; }
 }
 
-/* ── TEXTURE TOGGLE ── */
-.texture-toggle {
-  position: fixed;
-  bottom: 32px; left: 32px;
-  z-index: 300;
-  display: flex; flex-direction: column; gap: 8px;
-  align-items: flex-start;
+/* ── DEV TOGGLES (inside nav overlay) ── */
+.nav-dev-toggles {
+  position: relative; z-index: 2;
+  display: flex; gap: 32px; align-items: center;
+  margin-top: 40px;
+  opacity: 0; transition: opacity 0.5s ease 0.38s;
+  padding: 0 4px;
 }
-.texture-toggle .toggle-label {
+.nav-overlay.is-open .nav-dev-toggles { opacity: 1; }
+.nav-dev-group {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-dev-label {
   font-family: 'Jost', sans-serif;
-  font-size: 8px; letter-spacing: 0.25em; text-transform: uppercase;
+  font-size: 8px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(240,239,237,0.3);
+}
+.nav-dev-toggles button {
+  font-family: 'Jost', sans-serif;
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  padding: 5px 12px;
+  background: transparent;
+  border: 0.5px solid rgba(184,150,90,0.25);
   color: rgba(240,239,237,0.4);
-}
-.texture-toggle button {
-  font-family: 'Jost', sans-serif;
-  font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
-  padding: 7px 14px;
-  background: rgba(10,8,6,0.7);
-  border: 0.5px solid rgba(184,150,90,0.35);
-  color: rgba(240,239,237,0.55);
   cursor: pointer;
-  backdrop-filter: blur(8px);
   transition: border-color 0.2s, color 0.2s, background 0.2s;
 }
-.texture-toggle button:hover {
+.nav-dev-toggles button:hover {
   border-color: var(--gold-light); color: var(--gold-light);
 }
-.texture-toggle button.active {
-  background: rgba(184,150,90,0.15);
+.nav-dev-toggles button.active {
+  background: rgba(184,150,90,0.12);
   border-color: var(--gold-light); color: var(--gold-light);
 }
 
@@ -903,7 +869,7 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
   transition: opacity 0.7s ease;
   mix-blend-mode: screen;
 }
-#pageTexture.is-on { opacity: 0.018; }
+#pageTexture.is-on { opacity: 0.045; }
 
 /* ── LANGUAGE SELECTOR ── */
 .lang-select {
@@ -1107,6 +1073,23 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
     <a href="#process" class="nav-ol">Process</a>
     <a href="#contact" class="nav-ol">Contact</a>
   </nav>
+
+  <!-- Dev toggles inside overlay -->
+  <div class="nav-dev-toggles">
+    <div class="nav-dev-group">
+      <span class="nav-dev-label">Hero</span>
+      <div class="toggle-btns">
+        <button data-variant="variant-a">A</button>
+        <button data-variant="variant-b">B</button>
+        <button class="active" data-variant="variant-c">C</button>
+      </div>
+    </div>
+    <div class="nav-dev-group">
+      <span class="nav-dev-label">Texture</span>
+      <button id="textureBtn">Off</button>
+    </div>
+  </div>
+
   <div class="nav-overlay-foot">
     <span>info.baumstein@gmail.com</span>
     <span class="nav-foot-sep">◆</span>
@@ -1122,22 +1105,6 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
   </filter>
   <rect width="100%" height="100%" filter="url(#grainFilter)"/>
 </svg>
-
-<!-- TEXTURE TOGGLE -->
-<div class="texture-toggle">
-  <div class="toggle-label">Texture</div>
-  <button id="textureBtn">Off</button>
-</div>
-
-<!-- HERO VARIANT TOGGLE -->
-<div class="hero-variant-toggle">
-  <div class="toggle-label">Hero style</div>
-  <div class="toggle-btns">
-    <button data-variant="variant-a">A</button>
-    <button data-variant="variant-b">B</button>
-    <button class="active" data-variant="variant-c">C</button>
-  </div>
-</div>
 
 <!-- HERO FULL -->
 <section class="hero-full variant-c">
@@ -1624,7 +1591,7 @@ footer { background: var(--bg-mid); padding: 48px 60px; display: flex; align-ite
 
   // ── Hero variant toggle
   const heroSection = document.querySelector('.hero-full');
-  const variantBtns = document.querySelectorAll('.hero-variant-toggle button');
+  const variantBtns = document.querySelectorAll('[data-variant]');
   const copies = {
     'variant-a': document.querySelector('.hero-copy-a'),
     'variant-b': document.querySelector('.hero-copy-b'),
