@@ -15,12 +15,17 @@ html { overflow-x: hidden; }
   --platinum:   #C2BDB5;
   --walnut:     #A07850;
   --stone:      #D4CCBC;
-  --dim:        #6B6860;
+  --dim:        #8A867C;
   --border:     rgba(194,189,181,0.10);
   --border-mid: rgba(194,189,181,0.20);
 }
 
 html { scroll-behavior: smooth; }
+
+:focus-visible {
+  outline: 2px solid var(--walnut);
+  outline-offset: 3px;
+}
 
 body {
   font-family: 'DM Sans', sans-serif;
@@ -156,7 +161,7 @@ body {
 }
 .hero-headline .hero-script {
   font-family: 'Great Vibes', cursive;
-  font-style: normal; font-size: 1.2em;
+  font-style: normal; font-size: 1.45em;
   color: var(--stone); display: inline-block;
 }
 .hero-rules-bottom {
@@ -198,7 +203,10 @@ body {
 .btn-primary:hover::after { transform: translateX(4px); }
 
 @media (max-width: 900px) {
-  .carousel-outer { height: 600px; min-height: 600px; }
+  .carousel-outer { height: 560px; min-height: 560px; }
+  .slide-overlay-top { padding: 28px 24px; }
+  .slide-overlay-bottom { padding: 24px; }
+  .slide-name { font-size: clamp(32px, 9vw, 48px); white-space: normal; }
   .collection-intro {
     padding: 36px 24px 24px;
     flex-direction: column;
@@ -266,7 +274,7 @@ section { padding: 120px 60px; }
 /* Carousel wrapper — crossfade */
 .carousel-outer {
   position: relative;
-  height: 48vh; min-height: 800px;
+  height: 700px; min-height: 700px;
   cursor: grab; user-select: none; touch-action: pan-y;
   overflow: hidden;
 }
@@ -288,46 +296,46 @@ section { padding: 120px 60px; }
 }
 .slide-gradient {
   position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(6,5,4,0.90) 0%, rgba(6,5,4,0.45) 38%, transparent 68%);
-  pointer-events: none;
+  background: linear-gradient(to top, rgba(6,5,4,0.88) 0%, rgba(6,5,4,0.35) 35%, transparent 60%);
+  pointer-events: none; z-index: 1;
 }
-.slide-overlay {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 40px 60px;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 24px; z-index: 2;
+.slide-gradient-top {
+  position: absolute; top: 0; left: 0; right: 0; height: 55%;
+  background: linear-gradient(to bottom, rgba(6,5,4,0.80) 0%, rgba(6,5,4,0.3) 55%, transparent 100%);
+  pointer-events: none; z-index: 1;
 }
-.slide-meta { flex: 1; min-width: 0; }
-.slide-counter {
+/* top overlay — badge + large name */
+.slide-overlay-top {
+  position: absolute; top: 0; left: 0; right: 0;
+  padding: 36px 60px; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.slide-badge {
   font-family: 'DM Sans', sans-serif;
-  font-size: 9px; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--platinum); opacity: 0.7; margin-bottom: 10px;
+  font-size: 9px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(240,237,232,0.7);
+  display: flex; align-items: center; gap: 14px;
+  margin-bottom: 18px;
 }
+.slide-badge::before { content: ''; display: block; width: 22px; height: 0.5px; background: rgba(240,237,232,0.5); }
+.slide-badge::after  { content: ''; display: block; width: 22px; height: 0.5px; background: rgba(240,237,232,0.5); }
 .slide-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(32px, 4vw, 52px); font-weight: 400; font-style: italic;
-  color: var(--stone); line-height: 1; margin-bottom: 8px;
+  font-size: clamp(48px, 7vw, 88px); font-weight: 300; font-style: italic;
+  color: #F2EEE8; line-height: 1;
+  text-shadow: 0 2px 40px rgba(6,4,2,0.5);
+}
+/* bottom overlay — material in one line */
+.slide-overlay-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 32px 60px; z-index: 2;
+  display: flex; align-items: center; justify-content: center;
 }
 .slide-material {
   font-family: 'DM Sans', sans-serif;
-  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase;
   color: var(--dim);
 }
-.slide-enquire {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(194,189,181,0.75); text-decoration: none;
-  border: 0.5px solid rgba(194,189,181,0.28);
-  padding: 11px 22px;
-  display: flex; align-items: center; gap: 9px;
-  transition: color 0.28s, border-color 0.28s, gap 0.22s, background 0.28s;
-  white-space: nowrap; flex-shrink: 0;
-  background: rgba(6,5,4,0.45); backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.slide-enquire::after { content: '→'; font-size: 11px; transition: transform 0.22s ease; display: inline-block; }
-.slide-enquire:hover { color: var(--stone); border-color: rgba(194,189,181,0.6); background: rgba(194,189,181,0.06); gap: 14px; }
-.slide-enquire:hover::after { transform: translateX(3px); }
 
 .carousel-btn {
   position: absolute; top: 50%; transform: translateY(-50%);
@@ -354,6 +362,12 @@ section { padding: 120px 60px; }
   width: 5px; height: 5px; border-radius: 50%;
   background: var(--dim); border: none;
   cursor: pointer; padding: 0; transition: all 0.35s ease;
+  position: relative;
+}
+.carousel-dot::after {
+  content: ''; position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 44px; height: 44px;
 }
 .carousel-dot.is-active { background: var(--platinum); width: 24px; border-radius: 3px; }
 
@@ -451,6 +465,11 @@ section { padding: 120px 60px; }
   content: ''; display: block; width: 200px; height: 0.5px;
   background: var(--border-mid); margin: 0 auto 40px;
 }
+.craft-close-link {
+  text-decoration: none; display: inline-block;
+  transition: opacity 0.25s;
+}
+.craft-close-link:hover { opacity: 0.7; }
 .craft-close em {
   font-family: 'Great Vibes', cursive; font-style: normal;
   font-size: clamp(28px, 3.5vw, 44px); color: var(--stone);
@@ -515,10 +534,10 @@ section { padding: 120px 60px; }
   padding: 24px 0; border-bottom: 0.5px solid var(--border);
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(17px, 2vw, 24px); font-style: italic; font-weight: 300;
-  color: var(--dim);
+  color: var(--stone);
   transition: color 0.25s;
 }
-.promise-statement:hover { color: var(--stone); }
+.promise-statement:hover { color: var(--platinum); }
 @media (max-width: 900px) {
   #promise { padding: 80px 24px; }
   .promise-heading { padding-bottom: 52px; }
@@ -695,6 +714,89 @@ footer {
   .bg-vein { opacity: 0.048; }
 }
 
+/* ── PASSWORD GATE ── */
+#passGate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#passGate.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
+.gate-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.55em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 6px;
+}
+.gate-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-style: italic; font-weight: 300;
+  color: var(--dim); letter-spacing: 0.06em; margin-bottom: 56px;
+}
+.gate-form {
+  width: 280px; display: flex; flex-direction: column; gap: 0;
+}
+.gate-input-wrap {
+  position: relative; padding-top: 22px; margin-bottom: 24px;
+}
+.gate-label {
+  position: absolute; left: 0; top: 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--dim);
+  pointer-events: none;
+  transition: top 0.22s ease, font-size 0.22s ease, color 0.22s ease, letter-spacing 0.22s ease;
+}
+.gate-input:not(:placeholder-shown) ~ .gate-label,
+.gate-input:focus ~ .gate-label {
+  top: 0; font-size: 9px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--walnut); opacity: 0.9;
+}
+.gate-input {
+  background: transparent; border: none;
+  border-bottom: 0.5px solid rgba(194,189,181,0.25);
+  padding: 8px 0; width: 100%;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
+  color: var(--stone); outline: none;
+  transition: border-color 0.22s; -webkit-appearance: none;
+}
+.gate-input::placeholder { color: transparent; }
+.gate-input:focus { border-bottom-color: var(--walnut); }
+.gate-input.is-wrong { border-bottom-color: rgba(180,80,60,0.7); animation: gateShake 0.38s ease; }
+@keyframes gateShake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+}
+.gate-error {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: rgba(200,100,80,0.8); margin-top: -16px; margin-bottom: 20px;
+  min-height: 14px; transition: opacity 0.2s;
+}
+.gate-btn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  background: transparent; border: 0.5px solid rgba(160,120,80,0.5);
+  padding: 14px 0; width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--walnut); cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: color 0.3s, gap 0.25s, border-color 0.3s;
+}
+.gate-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(160,120,80,0.1);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gate-btn:hover { color: var(--stone); gap: 18px; border-color: var(--walnut); }
+.gate-btn:hover::before { transform: scaleX(1); }
+.gate-btn span { position: relative; z-index: 1; }
+.gate-hairline {
+  width: 40px; height: 0.5px; background: var(--border-mid); margin: 0 auto 40px;
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
@@ -848,6 +950,21 @@ footer {
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
+<div id="passGate">
+  <p class="gate-brand">Baumstein</p>
+  <p class="gate-sub">Wood &amp; Stone</p>
+  <div class="gate-hairline"></div>
+  <form class="gate-form" id="gateForm" autocomplete="off">
+    <div class="gate-input-wrap">
+      <input type="password" id="gateInput" class="gate-input" placeholder=" " autocomplete="new-password">
+      <label class="gate-label" for="gateInput">Passphrase</label>
+    </div>
+    <p class="gate-error" id="gateError"></p>
+    <button type="submit" class="gate-btn"><span>Enter</span><span>→</span></button>
+  </form>
+</div>
+
 <!-- SITE HEADER -->
 <header class="site-header" id="siteHeader">
   <button class="hamburger" id="hamburger" aria-label="Open menu">
@@ -896,7 +1013,7 @@ footer {
 
   <div class="hero-copy">
     <div class="hero-rules"><span></span></div>
-    <h1 class="hero-headline">Where Wood Meets <span class="hero-script">Stone</span></h1>
+    <h1 class="hero-headline">Where Wood Meets<br><span class="hero-script">Stone</span></h1>
     <div class="hero-rules-bottom"><span></span></div>
     <p class="hero-eyebrow">Handcrafted in Europe</p>
   </div>
@@ -959,15 +1076,15 @@ footer {
       <div class="carousel-slide is-active">
         <div class="slide-visual">
           <img src="nero ovale.jpeg" alt="The Nero Ovale — Oak and Black Marquina Marble">
+          <div class="slide-gradient-top"></div>
           <div class="slide-gradient"></div>
         </div>
-        <div class="slide-overlay">
-          <div class="slide-meta">
-            <div class="slide-counter">Baumstein Originals</div>
-            <div class="slide-name">The Nero Ovale</div>
-            <div class="slide-material">Oak · Black Marquina Marble</div>
-          </div>
-          <a href="#contact" class="slide-enquire">Interested?</a>
+        <div class="slide-overlay-top">
+          <div class="slide-badge">Baumstein Originals</div>
+          <div class="slide-name">The Nero Ovale</div>
+        </div>
+        <div class="slide-overlay-bottom">
+          <div class="slide-material">Oak &nbsp;◆&nbsp; Black Marquina Marble</div>
         </div>
       </div>
 
@@ -975,15 +1092,15 @@ footer {
       <div class="carousel-slide">
         <div class="slide-visual">
           <img src="the aurum.jpeg" alt="The Aurum — Walnut and Golden Onyx">
+          <div class="slide-gradient-top"></div>
           <div class="slide-gradient"></div>
         </div>
-        <div class="slide-overlay">
-          <div class="slide-meta">
-            <div class="slide-counter">Baumstein Originals</div>
-            <div class="slide-name">The Aurum</div>
-            <div class="slide-material">Walnut · Golden Onyx</div>
-          </div>
-          <a href="#contact" class="slide-enquire">Interested?</a>
+        <div class="slide-overlay-top">
+          <div class="slide-badge">Baumstein Originals</div>
+          <div class="slide-name">The Aurum</div>
+        </div>
+        <div class="slide-overlay-bottom">
+          <div class="slide-material">Walnut &nbsp;◆&nbsp; Golden Onyx</div>
         </div>
       </div>
 
@@ -991,15 +1108,15 @@ footer {
       <div class="carousel-slide">
         <div class="slide-visual">
           <img src="the cinder.jpeg" alt="The Cinder — Smoked Oak and Dark Granite">
+          <div class="slide-gradient-top"></div>
           <div class="slide-gradient"></div>
         </div>
-        <div class="slide-overlay">
-          <div class="slide-meta">
-            <div class="slide-counter">Baumstein Originals</div>
-            <div class="slide-name">The Cinder</div>
-            <div class="slide-material">Smoked Oak · Dark Granite</div>
-          </div>
-          <a href="#contact" class="slide-enquire">Interested?</a>
+        <div class="slide-overlay-top">
+          <div class="slide-badge">Baumstein Originals</div>
+          <div class="slide-name">The Cinder</div>
+        </div>
+        <div class="slide-overlay-bottom">
+          <div class="slide-material">Smoked Oak &nbsp;◆&nbsp; Dark Granite</div>
         </div>
       </div>
 
@@ -1007,15 +1124,15 @@ footer {
       <div class="carousel-slide">
         <div class="slide-visual">
           <img src="the alba.jpeg" alt="The Alba — Ash and White Carrara">
+          <div class="slide-gradient-top"></div>
           <div class="slide-gradient"></div>
         </div>
-        <div class="slide-overlay">
-          <div class="slide-meta">
-            <div class="slide-counter">Baumstein Originals</div>
-            <div class="slide-name">The Alba</div>
-            <div class="slide-material">Ash · White Carrara</div>
-          </div>
-          <a href="#contact" class="slide-enquire">Interested?</a>
+        <div class="slide-overlay-top">
+          <div class="slide-badge">Baumstein Originals</div>
+          <div class="slide-name">The Alba</div>
+        </div>
+        <div class="slide-overlay-bottom">
+          <div class="slide-material">Ash &nbsp;◆&nbsp; White Carrara</div>
         </div>
       </div>
 
@@ -1079,7 +1196,7 @@ footer {
     </div>
 
     <div class="craft-close">
-      <em>Tell us what you imagine.</em>
+      <a href="#contact" class="craft-close-link"><em>Tell us what you imagine.</em></a>
     </div>
   </div>
 </section>
@@ -1362,6 +1479,33 @@ footer {
       allLangBtns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
     });
   });
+
+  // ── Password gate ──
+  (function () {
+    const PASS = 'ivisivis23';
+    const gate  = document.getElementById('passGate');
+    const form  = document.getElementById('gateForm');
+    const input = document.getElementById('gateInput');
+    const error = document.getElementById('gateError');
+
+    if (sessionStorage.getItem('bs_auth') === '1') {
+      gate.classList.add('is-unlocked');
+      return;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value === PASS) {
+        sessionStorage.setItem('bs_auth', '1');
+        gate.classList.add('is-unlocked');
+      } else {
+        error.textContent = 'Incorrect passphrase';
+        input.classList.add('is-wrong');
+        input.value = '';
+        setTimeout(() => { input.classList.remove('is-wrong'); error.textContent = ''; }, 1800);
+      }
+    });
+  })();
 
   // ── Scroll-aware header
   const header = document.getElementById('siteHeader');
