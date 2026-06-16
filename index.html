@@ -4,18 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baumstein — Wood & Stone</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { overflow-x: hidden; }
 
 :root {
-  --bg:         #0F0F0D;
-  --bg-lift:    #131311;
+  --bg:         #13110D;
+  --bg-lift:    #19160F;
   --platinum:   #C2BDB5;
   --walnut:     #A07850;
   --stone:      #D4CCBC;
-  --dim:        #8A867C;
+  --body:       #B4AEA4;
+  --dim:        #9C978C;
   --border:     rgba(194,189,181,0.10);
   --border-mid: rgba(194,189,181,0.20);
 }
@@ -84,7 +85,7 @@ body {
   text-shadow: 0 0 40px rgba(240,237,232,0.25);
 }
 .site-header.scrolled .header-brand { color: var(--stone); text-shadow: none; }
-.site-header.scrolled .header-brand { font-size: 14px; letter-spacing: 0.38em; }
+.site-header.scrolled .header-brand { font-size: 24px; font-weight: 600; letter-spacing: 0.32em; }
 .header-cta {
   position: absolute; right: 48px;
   font-family: 'DM Sans', sans-serif;
@@ -113,6 +114,12 @@ body {
   background: var(--bg);
   display: flex; align-items: center; justify-content: center;
 }
+.hero-video {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+  filter: saturate(1.1) contrast(1.02);
+}
 .hero-img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -126,14 +133,20 @@ body {
   0%   { transform: scale(1)    translateX(0)      translateY(0); }
   100% { transform: scale(1.07) translateX(-1.5%)  translateY(-1%); }
 }
-@media (prefers-reduced-motion: reduce) { .hero-img { animation: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hero-video { display: none; }
+  .hero-img { display: block; animation: none; }
+}
+@media not (prefers-reduced-motion: reduce) {
+  .hero-img { display: none; }
+}
 .hero-dark-overlay {
   position: absolute; inset: 0;
   background: rgba(6,5,4,0.15);
 }
 .hero-text-fade {
   position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
-  background: linear-gradient(to top, rgba(6,5,4,0.90) 0%, rgba(6,5,4,0.55) 35%, rgba(6,5,4,0.12) 70%, transparent 100%);
+  background: linear-gradient(to top, rgba(6,5,4,0.82) 0%, rgba(6,5,4,0.45) 35%, rgba(6,5,4,0.10) 70%, transparent 100%);
   pointer-events: none;
 }
 .hero-copy {
@@ -202,16 +215,6 @@ body {
 .btn-primary:hover::before { transform: scaleX(1); }
 .btn-primary:hover::after { transform: translateX(4px); }
 
-@media (max-width: 900px) {
-  .carousel-outer { height: 560px; min-height: 560px; }
-  .slide-overlay-top { padding: 28px 24px; }
-  .slide-overlay-bottom { padding: 24px; }
-  .slide-name { font-size: clamp(32px, 9vw, 48px); white-space: normal; }
-  .collection-intro { padding: 56px 32px 40px; }
-  .collection-desc { max-width: 100%; }
-  .carousel-dots { padding: 16px 0; }
-}
-
 .marquee-bar {
   background: var(--bg-lift); padding: 14px 0;
   overflow: hidden; white-space: nowrap;
@@ -232,6 +235,13 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--dim); padding: 0 28px;
+  vertical-align: middle;
+}
+.marquee-track .mat-wood {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; text-transform: none;
+  font-size: 18px; letter-spacing: 0.01em;
+  color: var(--stone);
 }
 .marquee-track .sep {
   font-size: 6px; color: var(--walnut); padding: 0;
@@ -266,11 +276,16 @@ section { padding: 120px 60px; }
 }
 
 /* Carousel wrapper — crossfade */
+.carousel-wrap {
+  max-width: 1200px; margin: 0 auto;
+  padding: 0 40px;
+}
 .carousel-outer {
   position: relative;
-  height: 700px; min-height: 700px;
+  height: 660px; min-height: 660px;
   cursor: grab; user-select: none; touch-action: pan-y;
   overflow: hidden;
+  border: 0.5px solid rgba(194,189,181,0.12);
 }
 .carousel-outer:active { cursor: grabbing; }
 .carousel-track {
@@ -286,7 +301,7 @@ section { padding: 120px 60px; }
 .slide-visual img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: cover; object-position: center bottom;
+  object-fit: cover; object-position: center 40%;
 }
 .slide-gradient {
   position: absolute; inset: 0;
@@ -365,8 +380,45 @@ section { padding: 120px 60px; }
 }
 .carousel-dot.is-active { background: var(--platinum); width: 24px; border-radius: 3px; }
 
+@media (max-width: 900px) {
+  .carousel-wrap { padding: 0; max-width: 100%; }
+  .carousel-outer { height: 560px; min-height: 560px; border: none; }
+  .slide-overlay-top { padding: 28px 24px; }
+  .slide-overlay-bottom { padding: 24px; }
+  .slide-name { font-size: clamp(32px, 9vw, 48px); white-space: normal; }
+  .collection-intro { padding: 56px 32px 40px; }
+  .collection-desc { max-width: 100%; }
+  .carousel-dots { padding: 16px 0; }
+}
+
 /* ── CRAFT ── */
 #craft { background: var(--bg-lift); padding: 120px 60px; }
+.craft-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 72px; align-items: center;
+  max-width: 1180px; margin: 0 auto;
+}
+.craft-text { min-width: 0; }
+.craft-visual { min-width: 0; }
+/* desktop feature image */
+.craft-feature {
+  position: relative; display: block; margin: 0;
+}
+.craft-feature img {
+  width: 100%; height: clamp(440px, 44vw, 560px);
+  object-fit: cover; object-position: 30% center; display: block;
+  border: 0.5px solid rgba(194,189,181,0.18);
+  box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+}
+.craft-feature figcaption {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px 22px;
+  background: linear-gradient(to top, rgba(6,5,4,0.78) 0%, transparent 100%);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 9px; letter-spacing: 0.42em; text-transform: uppercase;
+  color: rgba(240,237,232,0.82);
+}
 .craft-opener {
   font-family: 'Cormorant Garamond', serif;
   font-size: clamp(26px, 3.2vw, 42px);
@@ -380,18 +432,15 @@ section { padding: 120px 60px; }
 }
 .craft-body {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--dim);
+  font-size: 14px; color: var(--body);
   line-height: 1.9; font-weight: 300;
   max-width: 560px; margin-bottom: 16px;
 }
-/* ── POLAROID FRAMES ── */
-.craft-polaroids-wrap {
-  margin-top: 48px;
-}
+/* ── POLAROID FRAMES (mobile only) ── */
 .craft-polaroids {
   position: relative;
   height: 300px;
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: flex-end;
 }
@@ -439,7 +488,7 @@ section { padding: 120px 60px; }
 }
 
 .craft-material-duo {
-  display: flex; align-items: center; justify-content: center;
+  display: flex; align-items: center; justify-content: flex-start;
   gap: 18px; margin-top: 36px;
   border-top: 0.5px solid var(--border);
   padding-top: 28px;
@@ -470,10 +519,153 @@ section { padding: 120px 60px; }
 }
 @media (max-width: 900px) {
   #craft { padding: 80px 24px; }
-  .craft-visual { margin: 52px -24px 0; }
-  .craft-junction-img { height: 280px; object-position: 38% center; }
-  .craft-junction-label { bottom: 18px; }
+  .craft-layout { grid-template-columns: 1fr; gap: 0; }
+  .craft-feature { display: none; }
+  .craft-polaroids { display: flex; margin-top: 48px; }
+  .craft-material-duo { justify-content: center; }
   .craft-close { padding-top: 52px; }
+}
+
+/* ── CRAFT: material origins map ── */
+.craft-intro { max-width: 700px; margin: 0 auto 72px; text-align: center; }
+.craft-intro .section-label { justify-content: center; }
+.craft-intro .section-label::before { display: none; }
+.craft-intro .craft-opener { max-width: 100%; margin: 0 auto 28px; }
+.craft-intro .craft-body { max-width: 560px; margin: 0 auto 14px; }
+
+.origins {
+  position: relative;
+  display: grid; grid-template-columns: 1.7fr 1fr;
+  align-items: stretch;
+  max-width: 1340px; margin: 0 auto;
+  border: 0.5px solid var(--border);
+}
+
+/* left — zooming map viewport */
+.origins-map-wrap {
+  position: relative; overflow: hidden;
+  height: 100%; min-height: 480px;
+  background: #100E0A;
+}
+.origins-zoom {
+  position: absolute; top: 0; left: 0; width: 230%;
+  will-change: transform;
+  transition: transform 1.7s cubic-bezier(0.66, 0, 0.2, 1);
+}
+.origins-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    repeating-linear-gradient(to right, rgba(160,120,80,0.11) 0 1px, transparent 1px 8.5%),
+    repeating-linear-gradient(to bottom, rgba(160,120,80,0.11) 0 1px, transparent 1px 15%);
+}
+.origins-map { display: block; width: 100%; height: auto; opacity: 0.95; position: relative; z-index: 1; }
+.origins-fade {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(ellipse 70% 66% at 50% 50%, transparent 40%, rgba(16,14,10,0.5) 76%, #100E0A 100%);
+}
+.origins-reticle {
+  position: absolute; top: 50%; left: 50%; width: 52px; height: 52px;
+  z-index: 4; pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: left 1.7s cubic-bezier(0.66, 0, 0.2, 1), top 1.7s cubic-bezier(0.66, 0, 0.2, 1);
+}
+.origins-reticle::before {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 0.5px solid rgba(160,120,80,0.55);
+  animation: reticlePulse 3.4s ease-in-out infinite;
+}
+.origins-reticle::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%;
+  background: #F1DDBE; box-shadow: 0 0 12px 2px rgba(160,120,80,0.9);
+}
+@keyframes reticlePulse {
+  0%, 100% { transform: scale(0.72); opacity: 0.95; }
+  50%      { transform: scale(1.12); opacity: 0.3; }
+}
+.origins-corner { position: absolute; width: 12px; height: 12px; z-index: 4; pointer-events: none; border: 0.5px solid rgba(194,189,181,0.22); }
+.origins-corner.tl { top: 14px; left: 14px; border-width: 0.5px 0 0 0.5px; }
+.origins-corner.tr { top: 14px; right: 14px; border-width: 0.5px 0.5px 0 0; }
+.origins-corner.bl { bottom: 14px; left: 14px; border-width: 0 0 0.5px 0.5px; }
+.origins-corner.br { bottom: 14px; right: 14px; border-width: 0 0.5px 0.5px 0; }
+.origins-progress { position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; z-index: 4; background: rgba(194,189,181,0.07); }
+.origins-progress span { display: block; height: 100%; width: 0; background: var(--walnut); opacity: 0.65; }
+.origins-progress span.run { animation: progressFill 5.4s linear; }
+@keyframes progressFill { from { width: 0; } to { width: 100%; } }
+
+/* right — info panel */
+.origins-panel {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  padding: 64px 56px; background: var(--bg-lift);
+  border-left: 0.5px solid var(--border);
+}
+@keyframes panelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.origins-panel.is-anim { animation: panelIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+@media (prefers-reduced-motion: reduce) {
+  .origins-panel.is-anim { animation: none; }
+  .origins-zoom, .origins-reticle { transition: none; }
+  .origins-reticle::before { animation: none; }
+}
+.origins-eyebrow {
+  font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.36em;
+  text-transform: uppercase; color: var(--walnut); margin-bottom: 18px;
+}
+.origins-name {
+  font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.2vw, 52px);
+  font-weight: 300; color: var(--stone); line-height: 1.02;
+}
+.origins-loc { display: flex; align-items: center; gap: 9px; margin-top: 16px; }
+.origins-pin { width: 14px; height: 14px; fill: var(--walnut); flex: none; }
+.origins-loc span { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); }
+.origins-coord { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-top: 8px; }
+.origins-swatch { width: 100%; height: 210px; margin-top: 30px; border: 0.5px solid var(--border-mid); background-color: #1a1712; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+.origins-desc { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.85; color: var(--body); font-weight: 300; margin-top: 26px; }
+.origins-tag { display: flex; align-items: center; gap: 10px; margin-top: 30px; }
+.origins-hex { width: 19px; height: 19px; fill: none; stroke: var(--walnut); stroke-width: 1.2; }
+.origins-tag span { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--platinum); }
+
+/* swatch placeholders (CSS-generated; swap for real material photos later) */
+.sw-stone-light { background:
+  linear-gradient(118deg, transparent 42%, rgba(95,85,70,.4) 44%, transparent 47%),
+  linear-gradient(102deg, transparent 63%, rgba(150,120,80,.35) 64%, transparent 67%),
+  linear-gradient(135deg, #e7e1d6, #fbf8f2 45%, #e0dacd 60%, #f7f3ec); }
+.sw-stone-dark { background:
+  linear-gradient(125deg, transparent 43%, rgba(222,217,207,.6) 46%, transparent 50%),
+  linear-gradient(96deg, transparent 66%, rgba(200,195,185,.4) 67%, transparent 71%),
+  linear-gradient(135deg, #15140f, #28261f 50%, #100f0b); }
+.sw-stone-warm { background:
+  repeating-linear-gradient(7deg, rgba(110,85,55,.20) 0 6px, rgba(150,120,85,.08) 6px 15px),
+  linear-gradient(135deg, #9c7a52, #c9a877 50%, #8f6f48); }
+.sw-stone-glow { background:
+  radial-gradient(130% 110% at 28% 18%, rgba(255,212,142,.55), transparent 60%),
+  linear-gradient(120deg, #6e4f2a, #caa063 45%, #87632f 72%, #b98f50); }
+.sw-stone-green { background:
+  linear-gradient(122deg, transparent 40%, rgba(225,230,215,.5) 43%, transparent 47%),
+  linear-gradient(135deg, #1f3b2e, #356048 48%, #1b3526 75%, #2c4f3a); }
+.sw-stone-speckle { background-color: #2a2620; background-image:
+  radial-gradient(rgba(205,195,180,.5) 0.5px, transparent 1.2px),
+  radial-gradient(rgba(160,120,80,.4) 0.5px, transparent 1.2px);
+  background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 4px; }
+.sw-stone-cool { background:
+  linear-gradient(120deg, transparent 52%, rgba(220,225,235,.4) 54%, transparent 58%),
+  linear-gradient(140deg, #243140, #3c5168 50%, #1f2b38 80%, #324558); }
+.sw-wood-light { background:
+  repeating-linear-gradient(91deg, rgba(90,60,30,.20) 0 3px, rgba(140,100,60,.07) 3px 9px),
+  linear-gradient(180deg, #b08a5c, #caa074 50%, #a07c4e); }
+.sw-wood-mid { background:
+  repeating-linear-gradient(90deg, rgba(60,38,18,.28) 0 3px, rgba(110,75,42,.10) 3px 10px),
+  linear-gradient(180deg, #7a5230, #936a3e 50%, #694527); }
+.sw-wood-dark { background:
+  repeating-linear-gradient(89deg, rgba(28,18,10,.4) 0 4px, rgba(64,42,24,.13) 4px 11px),
+  linear-gradient(180deg, #3a281a, #4c3522 50%, #2c1d12); }
+
+@media (max-width: 900px) {
+  .craft-intro { margin-bottom: 44px; }
+  .origins { grid-template-columns: 1fr; }
+  .origins-map-wrap { min-height: 300px; }
+  .origins-panel { padding: 38px 26px 42px; align-items: center; text-align: center; border-left: none; border-top: 0.5px solid var(--border); }
+  .origins-loc, .origins-tag { justify-content: center; }
+  .origins-desc { max-width: 340px; }
 }
 
 /* ── PROMISE ── */
@@ -512,32 +704,57 @@ section { padding: 120px 60px; }
 }
 .step-desc {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--dim); line-height: 1.85; font-weight: 300;
+  font-size: 14px; color: var(--body); line-height: 1.85; font-weight: 300;
 }
-.promise-statements {
-  max-width: 760px; margin: 72px auto 0;
+.promise-standards {
+  max-width: 1080px; margin: 104px auto 0;
   border-top: 0.5px solid var(--border);
-  padding-top: 40px;
+  padding-top: 60px; text-align: center;
 }
 .promise-statements-label {
   font-family: 'DM Sans', sans-serif;
   font-size: 9px; letter-spacing: 0.36em; text-transform: uppercase;
-  color: var(--walnut); margin-bottom: 32px; display: block;
+  color: var(--walnut); margin-bottom: 16px; display: block;
 }
-.promise-statement {
-  padding: 24px 0; border-bottom: 0.5px solid var(--border);
+.promise-standards-rule {
+  width: 40px; height: 0.5px; background: var(--walnut);
+  opacity: 0.55; margin: 0 auto 60px;
+}
+.promise-standards-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+}
+.promise-standard {
+  padding: 8px 40px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.promise-standard + .promise-standard {
+  border-left: 0.5px solid var(--border);
+}
+.promise-standard-mark {
+  display: block; color: var(--walnut);
+  font-size: 8px; opacity: 0.65; margin-bottom: 24px;
+}
+.promise-standard-text {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(17px, 2vw, 24px); font-style: italic; font-weight: 300;
-  color: var(--stone);
+  font-size: clamp(20px, 2vw, 27px); font-style: italic; font-weight: 300;
+  color: var(--stone); line-height: 1.32; max-width: 280px;
   transition: color 0.25s;
 }
-.promise-statement:hover { color: var(--platinum); }
+.promise-standard:hover .promise-standard-text { color: var(--platinum); }
 @media (max-width: 900px) {
   #promise { padding: 80px 24px; }
   .promise-heading { padding-bottom: 52px; }
   .process-step { grid-template-columns: 64px 1fr; gap: 0 20px; padding: 40px 0; }
   .step-numeral { font-size: clamp(54px, 13vw, 80px); }
-  .promise-statement { font-size: clamp(16px, 4.5vw, 20px); }
+  .promise-standards { margin-top: 72px; padding-top: 48px; }
+  .promise-standards-rule { margin-bottom: 44px; }
+  .promise-standards-grid { grid-template-columns: 1fr; }
+  .promise-standard { padding: 34px 0; }
+  .promise-standard + .promise-standard {
+    border-left: none; border-top: 0.5px solid var(--border);
+  }
+  .promise-standard-mark { margin-bottom: 16px; }
+  .promise-standard-text { font-size: clamp(19px, 4.8vw, 22px); max-width: 320px; }
 }
 
 /* ── CONTACT ── */
@@ -552,7 +769,7 @@ section { padding: 120px 60px; }
 }
 .contact-intro {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--dim);
+  font-size: 14px; color: var(--body);
   line-height: 1.85; margin-bottom: 52px; font-weight: 300;
 }
 .contact-details { display: flex; flex-direction: column; gap: 32px; }
@@ -569,6 +786,7 @@ section { padding: 120px 60px; }
   letter-spacing: 0.01em; transition: color 0.2s;
 }
 a.cd-value:hover { color: var(--platinum); }
+.cd-tag { font-family: 'DM Sans', sans-serif; font-size: 8px; letter-spacing: 0.24em; text-transform: uppercase; color: var(--walnut); opacity: 0.85; margin-left: 11px; vertical-align: middle; }
 .cd-muted { font-style: italic; color: var(--dim); }
 .contact-form-wrap {
   padding: 80px 60px;
@@ -749,89 +967,6 @@ footer {
   .bg-vein { opacity: 0.048; }
 }
 
-/* ── PASSWORD GATE ── */
-#passGate {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-#passGate.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
-.gate-brand {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  letter-spacing: 0.55em; text-transform: uppercase;
-  color: var(--stone); margin-bottom: 6px;
-}
-.gate-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-style: italic; font-weight: 300;
-  color: var(--dim); letter-spacing: 0.06em; margin-bottom: 56px;
-}
-.gate-form {
-  width: 280px; display: flex; flex-direction: column; gap: 0;
-}
-.gate-input-wrap {
-  position: relative; padding-top: 22px; margin-bottom: 24px;
-}
-.gate-label {
-  position: absolute; left: 0; top: 28px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 300; color: var(--dim);
-  pointer-events: none;
-  transition: top 0.22s ease, font-size 0.22s ease, color 0.22s ease, letter-spacing 0.22s ease;
-}
-.gate-input:not(:placeholder-shown) ~ .gate-label,
-.gate-input:focus ~ .gate-label {
-  top: 0; font-size: 9px; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--walnut); opacity: 0.9;
-}
-.gate-input {
-  background: transparent; border: none;
-  border-bottom: 0.5px solid rgba(194,189,181,0.25);
-  padding: 8px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
-  color: var(--stone); outline: none;
-  transition: border-color 0.22s; -webkit-appearance: none;
-}
-.gate-input::placeholder { color: transparent; }
-.gate-input:focus { border-bottom-color: var(--walnut); }
-.gate-input.is-wrong { border-bottom-color: rgba(180,80,60,0.7); animation: gateShake 0.38s ease; }
-@keyframes gateShake {
-  0%,100% { transform: translateX(0); }
-  20%      { transform: translateX(-6px); }
-  60%      { transform: translateX(6px); }
-}
-.gate-error {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; letter-spacing: 0.15em;
-  color: rgba(200,100,80,0.8); margin-top: -16px; margin-bottom: 20px;
-  min-height: 14px; transition: opacity 0.2s;
-}
-.gate-btn {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  background: transparent; border: 0.5px solid rgba(160,120,80,0.5);
-  padding: 14px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--walnut); cursor: pointer;
-  position: relative; overflow: hidden;
-  transition: color 0.3s, gap 0.25s, border-color 0.3s;
-}
-.gate-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(160,120,80,0.1);
-  transform: scaleX(0); transform-origin: left center;
-  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.gate-btn:hover { color: var(--stone); gap: 18px; border-color: var(--walnut); }
-.gate-btn:hover::before { transform: scaleX(1); }
-.gate-btn span { position: relative; z-index: 1; }
-.gate-hairline {
-  width: 40px; height: 0.5px; background: var(--border-mid); margin: 0 auto 40px;
-}
-
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
@@ -849,6 +984,18 @@ footer {
   .reveal { opacity: 1; transform: none; transition: none; }
 }
 
+/* Great Vibes script font is Latin-only — fall back to serif italic for LV/RU.
+   (.hero-script is excluded — the hero headline stays English in all languages.) */
+html[lang="lv"] .craft-opener .script,
+html[lang="ru"] .craft-opener .script,
+html[lang="lv"] .craft-close em,
+html[lang="ru"] .craft-close em,
+html[lang="lv"] .form-success-title,
+html[lang="ru"] .form-success-title {
+  font-family: 'Cormorant Garamond', serif !important;
+  font-style: italic;
+}
+
 
 
 /* Page grain texture overlay */
@@ -860,17 +1007,42 @@ footer {
   mix-blend-mode: screen;
 }
 
-/* ── LANGUAGE SELECTOR ── */
+/* ── LANGUAGE SELECTOR (collapsed dropdown) ── */
 .lang-select {
   position: absolute; right: 48px;
-  display: flex; align-items: center; gap: 6px;
   opacity: 0; pointer-events: none;
   transition: opacity 0.4s ease 0.05s;
 }
 .site-header.scrolled .lang-select { opacity: 1; pointer-events: auto; }
+.lang-trigger {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: none; border: none; cursor: pointer; padding: 4px 2px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--stone); transition: color 0.2s ease;
+}
+.lang-trigger:hover { color: var(--walnut); }
+.lang-caret {
+  font-size: 8px; line-height: 1; color: var(--walnut);
+  transition: transform 0.28s ease;
+}
+.lang-select.is-open .lang-caret { transform: rotate(180deg); }
+.lang-menu {
+  position: absolute; top: calc(100% + 12px); right: 0;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+  background: rgba(8,8,7,0.97);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  border: 0.5px solid var(--border-mid);
+  padding: 12px 18px;
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+.lang-select.is-open .lang-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+.lang-menu .lang-btn.is-active { display: none; }
 .lang-btn {
   font-family: 'DM Sans', sans-serif;
-  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
   background: none; border: none; cursor: pointer; padding: 4px 2px;
   color: var(--dim); transition: color 0.2s ease;
 }
@@ -879,6 +1051,7 @@ footer {
 .lang-sep { font-size: 7px; color: rgba(194,189,181,0.3); user-select: none; }
 @media (max-width: 900px) {
   .lang-select { right: 24px; }
+  .site-header.scrolled .header-brand { font-size: 20px; letter-spacing: 0.24em; }
 }
 
 /* ── NAV OVERLAY ── */
@@ -988,20 +1161,23 @@ footer {
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
-<div id="passGate">
-  <p class="gate-brand">Baumstein</p>
-  <p class="gate-sub">Wood &amp; Stone</p>
-  <div class="gate-hairline"></div>
-  <form class="gate-form" id="gateForm" autocomplete="off">
-    <div class="gate-input-wrap">
-      <input type="password" id="gateInput" class="gate-input" placeholder=" " autocomplete="new-password">
-      <label class="gate-label" for="gateInput">Passphrase</label>
-    </div>
-    <p class="gate-error" id="gateError"></p>
-    <button type="submit" class="gate-btn"><span>Enter</span><span>→</span></button>
-  </form>
-</div>
+<body>
+
+<script>
+const password = "ivisivis23";
+
+if (sessionStorage.getItem("siteUnlocked") !== "true") {
+  const input = prompt("Enter password:");
+
+  if (input === password) {
+    sessionStorage.setItem("siteUnlocked", "true");
+  } else {
+    document.body.innerHTML = "Access denied";
+  }
+}
+</script>
+
+</body>
 
 <!-- SITE HEADER -->
 <header class="site-header" id="siteHeader">
@@ -1010,11 +1186,15 @@ footer {
   </button>
   <a href="#" class="header-brand">Baumstein</a>
   <div class="lang-select" id="headerLang">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">·</span>
-    <button class="lang-btn" data-lang="lv">LV</button>
-    <span class="lang-sep">·</span>
-    <button class="lang-btn" data-lang="ru">RU</button>
+    <button class="lang-trigger" id="langTrigger" aria-haspopup="true" aria-expanded="false" aria-label="Select language">
+      <span class="lang-current" id="langCurrent">EN</span>
+      <span class="lang-caret">▾</span>
+    </button>
+    <div class="lang-menu" id="langMenu">
+      <button class="lang-btn is-active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="lv">LV</button>
+      <button class="lang-btn" data-lang="ru">RU</button>
+    </div>
   </div>
 </header>
 
@@ -1045,6 +1225,9 @@ footer {
 
 <!-- HERO -->
 <section class="hero-full">
+  <video class="hero-video" autoplay muted loop playsinline poster="heroimage.png" id="heroVideo">
+    <source src="b72c844c1d1d2b65f5cf28d788c14e11_1781550517_abcanllu.mp4" type="video/mp4">
+  </video>
   <img src="heroimage.png" alt="Baumstein — handcrafted wood and stone tables" class="hero-img">
   <div class="hero-dark-overlay"></div>
   <div class="hero-text-fade"></div>
@@ -1061,38 +1244,26 @@ footer {
 <!-- MARQUEE -->
 <div class="marquee-bar">
   <div class="marquee-track">
-    <span class="mat">Oak</span><span class="sep">◆</span>
-    <span class="mat">Calacatta</span><span class="sep">◆</span>
-    <span class="mat">Walnut</span><span class="sep">◆</span>
-    <span class="mat">Nero Marquina</span><span class="sep">◆</span>
-    <span class="mat">Smoked Oak</span><span class="sep">◆</span>
-    <span class="mat">Onyx</span><span class="sep">◆</span>
-    <span class="mat">Ash</span><span class="sep">◆</span>
-    <span class="mat">Travertine</span><span class="sep">◆</span>
-    <span class="mat">Wenge</span><span class="sep">◆</span>
-    <span class="mat">White Carrara</span><span class="sep">◆</span>
-    <span class="mat">Black Walnut</span><span class="sep">◆</span>
-    <span class="mat">Emperador</span><span class="sep">◆</span>
-    <span class="mat">Fumed Oak</span><span class="sep">◆</span>
-    <span class="mat">Portoro</span><span class="sep">◆</span>
-    <span class="mat">Elm</span><span class="sep">◆</span>
+    <span class="mat">Granite</span><span class="sep">◆</span>
+    <span class="mat">Marble</span><span class="sep">◆</span>
     <span class="mat">Quartzite</span><span class="sep">◆</span>
-    <span class="mat">Oak</span><span class="sep">◆</span>
-    <span class="mat">Calacatta</span><span class="sep">◆</span>
-    <span class="mat">Walnut</span><span class="sep">◆</span>
-    <span class="mat">Nero Marquina</span><span class="sep">◆</span>
-    <span class="mat">Smoked Oak</span><span class="sep">◆</span>
     <span class="mat">Onyx</span><span class="sep">◆</span>
-    <span class="mat">Ash</span><span class="sep">◆</span>
     <span class="mat">Travertine</span><span class="sep">◆</span>
-    <span class="mat">Wenge</span><span class="sep">◆</span>
-    <span class="mat">White Carrara</span><span class="sep">◆</span>
-    <span class="mat">Black Walnut</span><span class="sep">◆</span>
-    <span class="mat">Emperador</span><span class="sep">◆</span>
-    <span class="mat">Fumed Oak</span><span class="sep">◆</span>
-    <span class="mat">Portoro</span><span class="sep">◆</span>
-    <span class="mat">Elm</span><span class="sep">◆</span>
+    <span class="mat">Terrazzo</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Smoked Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Fumed Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">American Walnut</span><span class="sep">◆</span>
+    <span class="mat">Granite</span><span class="sep">◆</span>
+    <span class="mat">Marble</span><span class="sep">◆</span>
     <span class="mat">Quartzite</span><span class="sep">◆</span>
+    <span class="mat">Onyx</span><span class="sep">◆</span>
+    <span class="mat">Travertine</span><span class="sep">◆</span>
+    <span class="mat">Terrazzo</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Smoked Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">Fumed Oak</span><span class="sep">◆</span>
+    <span class="mat mat-wood">American Walnut</span><span class="sep">◆</span>
   </div>
 </div>
 
@@ -1105,6 +1276,7 @@ footer {
     <p class="collection-desc">Four original designs. Each one a distinct conversation between wood and stone.</p>
   </div>
 
+  <div class="carousel-wrap">
   <div class="carousel-outer" id="collectionCarousel">
     <div class="carousel-track" id="carouselTrack">
 
@@ -1177,6 +1349,7 @@ footer {
     <button class="carousel-btn carousel-btn-prev" aria-label="Previous slide">&#8592;</button>
     <button class="carousel-btn carousel-btn-next" aria-label="Next slide">&#8594;</button>
   </div><!-- /outer -->
+  </div><!-- /wrap -->
 
   <div class="carousel-dots">
     <button class="carousel-dot is-active" aria-label="Slide 1"></button>
@@ -1197,37 +1370,44 @@ footer {
     <path d="M 1060 280 C 980 360 1060 440 980 540 C 900 640 940 720 880 820" stroke="#C8BAA8" stroke-width="0.5"/>
   </svg>
   <div class="reveal">
-    <div class="section-label">The Craft</div>
-    <p class="craft-opener">
-      Every table begins as <em class="script">a conversation.</em>
-    </p>
-    <p class="craft-body">The wood determines the warmth. The stone determines the character. Together they become something that could only ever belong to you — never catalogued, never repeated.</p>
-    <p class="craft-body">We source only European hardwoods, hand-selected for grain and colour. Every stone slab is chosen for its unique veining — the same slab will never appear in another table.</p>
+    <div class="craft-intro">
+      <div class="section-label">The Craft</div>
+      <p class="craft-opener">
+        Every table begins as <em class="script">a conversation.</em>
+      </p>
+      <p class="craft-body">The wood determines the warmth. The stone determines the character. Together they become something that could only ever belong to you — never catalogued, never repeated.</p>
+      <p class="craft-body">We travel for our materials — the finest stone and timber, drawn from the places that have perfected them over centuries.</p>
+    </div>
 
-    <div class="craft-polaroids-wrap">
-      <div class="craft-polaroids">
-
-        <div class="craft-polaroid">
-          <img src="cross section.jpeg" alt="Oak meets Emperador" loading="lazy" style="object-position: 15% center;">
-          <div class="craft-polaroid-base"><div class="craft-polaroid-base-dot"></div></div>
+    <div class="origins" id="origins">
+      <div class="origins-map-wrap" id="originsWrap">
+        <div class="origins-zoom" id="originsZoom">
+          <div class="origins-grid"></div>
+          <img class="origins-map" src="worldmap.svg" alt="World map of Baumstein material origins">
         </div>
-
-        <div class="craft-polaroid">
-          <img src="cross section.jpeg" alt="Walnut meets Calacatta" loading="lazy" style="object-position: 50% center;">
-          <div class="craft-polaroid-base"><div class="craft-polaroid-base-dot"></div></div>
-        </div>
-
-        <div class="craft-polaroid">
-          <img src="cross section.jpeg" alt="Smoked Oak meets Nero Marquina" loading="lazy" style="object-position: 85% center;">
-          <div class="craft-polaroid-base"><div class="craft-polaroid-base-dot"></div></div>
-        </div>
-
+        <div class="origins-fade"></div>
+        <div class="origins-reticle" id="originsReticle"></div>
+        <span class="origins-corner tl"></span>
+        <span class="origins-corner tr"></span>
+        <span class="origins-corner bl"></span>
+        <span class="origins-corner br"></span>
+        <div class="origins-progress"><span id="originsProgress"></span></div>
       </div>
 
-      <div class="craft-material-duo">
-        <span>The Wood</span>
-        <span class="cmd-sep">◆</span>
-        <span>The Stone</span>
+      <div class="origins-panel" id="originsPanel">
+        <span class="origins-eyebrow" id="originEyebrow">Stone Origin</span>
+        <h3 class="origins-name" id="originName">—</h3>
+        <div class="origins-loc">
+          <svg class="origins-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"></path></svg>
+          <span id="originLoc">—</span>
+        </div>
+        <span class="origins-coord" id="originCoord">—</span>
+        <div class="origins-swatch" id="originSwatch"></div>
+        <p class="origins-desc" id="originDesc">—</p>
+        <div class="origins-tag">
+          <svg class="origins-hex" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"></path></svg>
+          <span id="originTagText">Stone</span>
+        </div>
       </div>
     </div>
 
@@ -1247,32 +1427,29 @@ footer {
   <div class="promise-heading reveal">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">From Vision<br>to <em>Heirloom</em></h2>
-    <p class="promise-lead">Four stages. Six to ten weeks. One table made entirely for you.</p>
+    <p class="promise-lead">Four stages. Six to eight weeks. One table made entirely for you.</p>
   </div>
 
   <div class="process-steps reveal">
     <div class="process-step">
       <div class="step-numeral">I</div>
       <div class="step-content">
-        <span class="step-duration">Week 1</span>
         <h3 class="step-title">Consultation</h3>
-        <p class="step-desc">We discuss your space, your vision, your materials — in person or by video call. No catalogue, no templates. Just a conversation.</p>
+        <p class="step-desc">We discuss your space, your vision, your materials — in person or by call or chat.</p>
       </div>
     </div>
 
     <div class="process-step">
       <div class="step-numeral">II</div>
       <div class="step-content">
-        <span class="step-duration">Weeks 2 – 3</span>
         <h3 class="step-title">Design</h3>
-        <p class="step-desc">Technical drawings and material samples prepared for your approval. You see exactly what will be built before a single cut is made.</p>
+        <p class="step-desc">Technical drawings and visualisations prepared for your approval. You see exactly what will be built before a single cut is made.</p>
       </div>
     </div>
 
     <div class="process-step">
       <div class="step-numeral">III</div>
       <div class="step-content">
-        <span class="step-duration">Weeks 3 – 10</span>
         <h3 class="step-title">Crafting</h3>
         <p class="step-desc">Hand-built in our Latvian workshop. The same craftsmen work the piece from first cut to final polish. We own every stage of the process.</p>
       </div>
@@ -1281,18 +1458,29 @@ footer {
     <div class="process-step">
       <div class="step-numeral">IV</div>
       <div class="step-content">
-        <span class="step-duration">On Completion</span>
         <h3 class="step-title">Delivery & Installation</h3>
-        <p class="step-desc">We deliver personally and install your table ourselves. We don't leave until every detail is exactly right.</p>
+        <p class="step-desc">We deliver personally and install your table ourselves.</p>
       </div>
     </div>
   </div>
 
-  <div class="promise-statements reveal">
+  <div class="promise-standards reveal">
     <span class="promise-statements-label">Our Standards</span>
-    <p class="promise-statement">One craftsman. Your table. Start to finish.</p>
-    <p class="promise-statement">We work only with materials we would use in our own home.</p>
-    <p class="promise-statement">We deliver it. We install it. We leave when it's right.</p>
+    <div class="promise-standards-rule"></div>
+    <div class="promise-standards-grid">
+      <div class="promise-standard">
+        <span class="promise-standard-mark">◆</span>
+        <p class="promise-standard-text">One craftsman. Your table. Start to finish.</p>
+      </div>
+      <div class="promise-standard">
+        <span class="promise-standard-mark">◆</span>
+        <p class="promise-standard-text">We work only with materials we would use in our own home.</p>
+      </div>
+      <div class="promise-standard">
+        <span class="promise-standard-mark">◆</span>
+        <p class="promise-standard-text">We deliver it. We install it. We leave when it's right.</p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1310,8 +1498,8 @@ footer {
       </div>
       <div class="contact-detail">
         <span class="cd-label">Phone</span>
-        <a href="tel:+37122056266" class="cd-value">+371 22 056 266</a>
-        <a href="tel:+37126660168" class="cd-value">+371 26 660 168</a>
+        <a href="tel:+37126660168" class="cd-value">+371 26 660 168<span class="cd-tag">EN · LV</span></a>
+        <a href="tel:+37122056266" class="cd-value">+371 22 056 266<span class="cd-tag">RU</span></a>
       </div>
       <div class="contact-detail">
         <span class="cd-label">Based in</span>
@@ -1356,7 +1544,6 @@ footer {
             <option value="" disabled selected>— Choose one —</option>
             <option>Dining Table</option>
             <option>Coffee Table</option>
-            <option>Console / Sideboard</option>
             <option>Custom Commission</option>
             <option>Other</option>
           </select>
@@ -1386,7 +1573,7 @@ footer {
       <img src="baumstein logo no bg.png" alt="Baumstein" class="footer-logo-img">
       <div class="footer-wordmark">Baumstein<small>Wood &amp; Stone</small></div>
     </div>
-    <p class="footer-tagline">Each table a singular object — made once, made to last.</p>
+    <p class="footer-tagline">No two are ever alike.</p>
     <div class="footer-contact">
       <a href="mailto:info@baumstein.eu">info@baumstein.eu</a>
       <span>Riga, Latvia</span>
@@ -1506,14 +1693,165 @@ footer {
   })();
 
 
-  // ── Language selector — keeps header + overlay in sync
-  const allLangBtns = document.querySelectorAll('.lang-btn');
-  allLangBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const lang = btn.dataset.lang;
-      allLangBtns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
+  // ── Language selector + i18n engine (EN / LV / RU) ──
+  (function () {
+    // [selector, mode, LV, RU]  — EN is captured live from the DOM.
+    // Single match → string value; multiple matches → array aligned by index.
+    const T = [
+      ['.nav-ol', 'text',
+        ['Kolekcija', 'Meistarība', 'Process', 'Kontakti'],
+        ['Коллекция', 'Мастерство', 'Процесс', 'Контакты']],
+      ['.hero-eyebrow', 'text', 'Roku darbs Eiropā', 'Ручная работа в Европе'],
+      ['.nav-overlay-foot span:nth-of-type(3)', 'text', 'Roku darbs Eiropā', 'Ручная работа в Европе'],
+
+      ['.collection-intro .section-label', 'text', 'Kolekcija', 'Коллекция'],
+      ['.collection-intro .section-title', 'html',
+        'Daba kļūst par<br><em>mēbelēm</em>',
+        'Природа становится<br><em>мебелью</em>'],
+      ['.collection-desc', 'text',
+        'Četri oriģināli dizaini. Katrs — savs dialogs starp koku un akmeni.',
+        'Четыре оригинальных дизайна. Каждый — особый диалог дерева и камня.'],
+      ['.slide-material', 'text',
+        ['Ozols ◆ Melnais Marquina marmors', 'Riekstkoks ◆ Zelta onikss', 'Kūpināts ozols ◆ Tumšs granīts', 'Osis ◆ Baltais Carrara'],
+        ['Дуб ◆ Чёрный мрамор Marquina', 'Орех ◆ Золотой оникс', 'Морёный дуб ◆ Тёмный гранит', 'Ясень ◆ Белый мрамор Carrara']],
+
+      ['.craft-intro .section-label', 'text', 'Meistarība', 'Мастерство'],
+      ['.craft-opener', 'html',
+        'Katrs galds sākas ar <em class="script">sarunu.</em>',
+        'Каждый стол начинается с <em class="script">разговора.</em>'],
+      ['.craft-body', 'text',
+        ['Koks nosaka siltumu. Akmens nosaka raksturu. Kopā tie kļūst par kaut ko, kas var piederēt vienīgi jums — nekad nekatalogizēts, nekad neatkārtots.',
+         'Mēs ceļojam savu materiālu dēļ — vislabākais akmens un koks, kas iegūts vietās, kuras tos gadsimtiem ilgi ir pilnveidojušas.'],
+        ['Дерево задаёт тепло. Камень задаёт характер. Вместе они становятся тем, что может принадлежать только вам — никогда не каталогизированным, никогда не повторённым.',
+         'Мы путешествуем за нашими материалами — лучший камень и древесина из мест, где их совершенствовали веками.']],
+      ['.craft-close-link em', 'text', 'Pastāstiet, ko jūs iztēlojaties.', 'Расскажите, что вы представляете.'],
+
+      ['.promise-heading .section-label', 'text', 'Kā tas notiek', 'Как это работает'],
+      ['.promise-heading .section-title', 'html',
+        'No ieceres<br>līdz <em>mantojumam</em>',
+        'От замысла<br>до <em>наследия</em>'],
+      ['.promise-lead', 'text',
+        'Četri posmi. Sešas līdz astoņas nedēļas. Viens galds, radīts tikai jums.',
+        'Четыре этапа. От шести до восьми недель. Один стол, созданный только для вас.'],
+      ['.step-title', 'text',
+        ['Konsultācija', 'Dizains', 'Izgatavošana', 'Piegāde un uzstādīšana'],
+        ['Консультация', 'Дизайн', 'Изготовление', 'Доставка и установка']],
+      ['.step-desc', 'text',
+        ['Pārrunājam jūsu telpu, jūsu ieceri, jūsu materiālus — klātienē, zvanā vai sarakstē.',
+         'Tehniskie rasējumi un vizualizācijas tiek sagatavotas jūsu apstiprinājumam. Jūs precīzi redzat, kas tiks izgatavots, vēl pirms tiek veikts pirmais griezums.',
+         'Roku darbs mūsu darbnīcā Latvijā. Vieni un tie paši meistari strādā ar darbu no pirmā griezuma līdz pēdējai pulēšanai. Mēs paši kontrolējam katru procesa posmu.',
+         'Piegādājam personīgi un uzstādām jūsu galdu paši.'],
+        ['Обсуждаем ваше пространство, ваш замысел, ваши материалы — лично, по звонку или в переписке.',
+         'Технические чертежи и визуализации готовятся на ваше утверждение. Вы видите точно, что будет создано, ещё до первого распила.',
+         'Ручная работа в нашей мастерской в Латвии. Одни и те же мастера ведут изделие от первого распила до финальной полировки. Мы контролируем каждый этап.',
+         'Доставляем лично и устанавливаем ваш стол сами.']],
+      ['.promise-statements-label', 'text', 'Mūsu principi', 'Наши принципы'],
+      ['.promise-standard-text', 'text',
+        ['Viens meistars. Jūsu galds. No sākuma līdz galam.',
+         'Strādājam tikai ar materiāliem, kurus izmantotu paši savās mājās.',
+         'Piegādājam. Uzstādām. Aizejam tikai tad, kad viss ir kā nākas.'],
+        ['Один мастер. Ваш стол. От начала до конца.',
+         'Работаем только с материалами, которые использовали бы в своём доме.',
+         'Доставляем. Устанавливаем. Уходим только тогда, когда всё безупречно.']],
+
+      ['.contact-left .section-label', 'text', 'Sazinieties', 'Свяжитесь с нами'],
+      ['.contact-left .section-title', 'html', 'Gatavi <em>sākt?</em>', 'Готовы <em>начать?</em>'],
+      ['.contact-intro', 'text',
+        'Mēs labprāt radītu kaut ko izcilu jūsu mājām. Pastāstiet par savu ieceri — bez saistībām, tikai saruna.',
+        'Мы с радостью создадим нечто исключительное для вашего дома. Расскажите о своём проекте — никаких обязательств, только разговор.'],
+      ['.cd-label', 'text', ['E-pasts', 'Tālrunis', 'Atrodamies'], ['Эл. почта', 'Телефон', 'Находимся']],
+      ['.cd-muted', 'text', 'Rīga, Latvija', 'Рига, Латвия'],
+      ['.form-title', 'text', 'Nosūtiet mums ziņu', 'Напишите нам'],
+      ['.form-label', 'text',
+        ['Vārds', 'Uzvārds', 'E-pasta adrese', 'Tālruņa numurs', 'Pastāstiet par savu ieceri'],
+        ['Имя', 'Фамилия', 'Адрес эл. почты', 'Номер телефона', 'Расскажите о своём проекте']],
+      ['.form-label-static', 'text', 'Interesē', 'Интересует'],
+      ['.form-select option', 'text',
+        ['— Izvēlieties —', 'Pusdienu galds', 'Žurnālgaldiņš', 'Individuāls pasūtījums', 'Cits'],
+        ['— Выберите —', 'Обеденный стол', 'Журнальный столик', 'Индивидуальный заказ', 'Другое']],
+      ['.submit-btn span:first-child', 'text', 'Nosūtīt ziņu', 'Отправить'],
+
+      ['.footer-wordmark small', 'text', 'Koks un akmens', 'Дерево и камень'],
+      ['.footer-tagline', 'text', 'Nav divu vienādu.', 'Двух одинаковых не бывает.'],
+      ['.footer-contact span', 'text', 'Rīga, Latvija', 'Рига, Латвия'],
+      ['.footer-copy', 'text', '© 2026 Baumstein. Visas tiesības aizsargātas.', '© 2026 Baumstein. Все права защищены.']
+    ];
+
+    // dynamic (JS-generated) form strings
+    window.BS_FORM = {
+      en: { sending: 'Sending…', title: 'Thank you.', text: "We've received your message and will be in touch shortly.", error: 'Something went wrong — please email us directly at info@baumstein.eu', submit: 'Send Message' },
+      lv: { sending: 'Sūta…', title: 'Paldies.', text: 'Mēs saņēmām jūsu ziņu un drīz sazināsimies.', error: 'Kaut kas nogāja greizi — rakstiet mums tieši uz info@baumstein.eu', submit: 'Nosūtīt ziņu' },
+      ru: { sending: 'Отправка…', title: 'Спасибо.', text: 'Мы получили ваше сообщение и скоро свяжемся с вами.', error: 'Что-то пошло не так — напишите нам напрямую на info@baumstein.eu', submit: 'Отправить' }
+    };
+
+    // Build the registry, capturing EN live from the DOM
+    const groups = T.map(([sel, mode, lv, ru]) => {
+      const els = Array.from(document.querySelectorAll(sel));
+      const en = els.map(el => mode === 'html' ? el.innerHTML : el.textContent);
+      return { els, mode, en, lv, ru };
     });
-  });
+
+    function setVal(el, mode, v) {
+      if (v == null) return;
+      if (mode === 'html') el.innerHTML = v; else el.textContent = v;
+    }
+
+    function apply(lang) {
+      document.documentElement.lang = lang;
+      window.BS_LANG = lang;
+      groups.forEach(g => {
+        g.els.forEach((el, i) => {
+          let v;
+          if (lang === 'en') v = g.en[i];
+          else { const t = (lang === 'lv' ? g.lv : g.ru); v = Array.isArray(t) ? t[i] : t; }
+          setVal(el, g.mode, v);
+        });
+      });
+      document.dispatchEvent(new CustomEvent('bs:lang', { detail: lang }));
+      try { localStorage.setItem('bs_lang', lang); } catch (e) {}
+    }
+
+    // ── dropdown + button wiring ──
+    const sel     = document.getElementById('headerLang');
+    const trigger = document.getElementById('langTrigger');
+    const current = document.getElementById('langCurrent');
+    const allLangBtns = document.querySelectorAll('.lang-btn');
+
+    function closeMenu() {
+      if (!sel) return;
+      sel.classList.remove('is-open');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
+    function setActive(lang) {
+      allLangBtns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
+      if (current) current.textContent = lang.toUpperCase();
+    }
+
+    if (trigger && sel) {
+      trigger.addEventListener('click', e => {
+        e.stopPropagation();
+        const open = sel.classList.toggle('is-open');
+        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      document.addEventListener('click', e => { if (!sel.contains(e.target)) closeMenu(); });
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+    }
+
+    allLangBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        setActive(lang);
+        apply(lang);
+        closeMenu();
+      });
+    });
+
+    // ── init from saved preference ──
+    let saved = 'en';
+    try { saved = localStorage.getItem('bs_lang') || 'en'; } catch (e) {}
+    window.BS_LANG = saved;
+    if (saved !== 'en') { setActive(saved); apply(saved); }
+  })();
 
   // ── Textarea auto-resize ──
   document.querySelectorAll('.form-textarea').forEach(function(ta) {
@@ -1532,8 +1870,9 @@ footer {
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
+      const F = (window.BS_FORM && window.BS_FORM[window.BS_LANG]) || (window.BS_FORM && window.BS_FORM.en) || { sending: 'Sending…', title: 'Thank you.', text: "We've received your message and will be in touch shortly.", error: 'Something went wrong — please email us directly at info@baumstein.eu', submit: 'Send Message' };
       btn.disabled = true;
-      btn.querySelectorAll('span')[0].textContent = 'Sending…';
+      btn.querySelectorAll('span')[0].textContent = F.sending;
 
       const data = {
         first_name: form.first_name.value,
@@ -1554,49 +1893,203 @@ footer {
         box.innerHTML = `
           <div class="form-success-state">
             <div class="form-success-rule"></div>
-            <p class="form-success-title">Thank you.</p>
-            <p class="form-success-text">We've received your message and will be in touch shortly.</p>
+            <p class="form-success-title">${F.title}</p>
+            <p class="form-success-text">${F.text}</p>
             <div class="form-success-rule-bottom"></div>
           </div>`;
       } catch {
         btn.disabled = false;
-        btn.querySelectorAll('span')[0].textContent = 'Send Message';
+        btn.querySelectorAll('span')[0].textContent = F.submit;
         let err = form.querySelector('.form-send-error');
         if (!err) {
           err = document.createElement('p');
           err.className = 'form-send-error';
           form.appendChild(err);
         }
-        err.textContent = 'Something went wrong — please email us directly at info@baumstein.eu';
+        err.textContent = F.error;
       }
     });
   })();
 
-  // ── Password gate ──
+  // ── The Craft — interactive material origins map ──
   (function () {
-    const PASS = 'ivisivis23';
-    const gate  = document.getElementById('passGate');
-    const form  = document.getElementById('gateForm');
-    const input = document.getElementById('gateInput');
-    const error = document.getElementById('gateError');
+    const root = document.getElementById('origins');
+    if (!root) return;
+    const panel     = document.getElementById('originsPanel');
+    const elEyebrow = document.getElementById('originEyebrow');
+    const elName    = document.getElementById('originName');
+    const elLoc     = document.getElementById('originLoc');
+    const elDesc    = document.getElementById('originDesc');
+    const elTag     = document.getElementById('originTagText');
+    const elSwatch  = document.getElementById('originSwatch');
+    const mapImg    = root.querySelector('.origins-map');
 
-    if (sessionStorage.getItem('bs_auth') === '1') {
-      gate.classList.add('is-unlocked');
-      return;
+    const wrap    = document.getElementById('originsWrap');
+    const zoom    = document.getElementById('originsZoom');
+    const reticle = document.getElementById('originsReticle');
+    const prog    = document.getElementById('originsProgress');
+    const elCoord = document.getElementById('originCoord');
+
+    const LABELS = {
+      stone: { eyebrow: { en: 'Stone Origin', lv: 'Akmens izcelsme', ru: 'Происхождение камня' }, tag: { en: 'Stone', lv: 'Akmens', ru: 'Камень' } },
+      wood:  { eyebrow: { en: 'Wood Origin',  lv: 'Koka izcelsme',   ru: 'Происхождение дерева' }, tag: { en: 'Wood',  lv: 'Koks',   ru: 'Дерево' } }
+    };
+
+    // x / y are % positions on the equirectangular map (x = (lng+180)/360, y = (75-lat)/132)
+    const ORIGINS = [
+      { type: 'stone', x: 52.8, y: 23.4, swatch: 'sw-stone-light', coord: '44.1° N · 10.1° E',
+        name: { en: 'Calacatta Marble', lv: 'Calacatta marmors', ru: 'Мрамор Calacatta' },
+        loc:  { en: 'Carrara, Italy', lv: 'Karrāra, Itālija', ru: 'Каррара, Италия' },
+        desc: { en: 'Quarried in the Apuan Alps above Carrara — a luminous white field crossed by bold, sweeping veins.',
+                lv: 'Iegūts Apuānu Alpos virs Karrāras — mirdzoši balta pamatne ar drosmīgām, plašām dzīslām.',
+                ru: 'Добывается в Апуанских Альпах над Каррарой — сияющий белый фон с широкими, выразительными прожилками.' } },
+      { type: 'stone', x: 49.3, y: 24.0, swatch: 'sw-stone-dark', coord: '43.3° N · 2.5° W',
+        name: { en: 'Nero Marquina', lv: 'Nero Marquina', ru: 'Nero Marquina' },
+        loc:  { en: 'Markina, Spain', lv: 'Markina, Spānija', ru: 'Маркина, Испания' },
+        desc: { en: 'A near-black marble veined in crisp white, cut from the Basque hills for over four centuries.',
+                lv: 'Gandrīz melns marmors ar asām baltām dzīslām, jau vairāk nekā četrus gadsimtus iegūts Basku kalnos.',
+                ru: 'Почти чёрный мрамор с чёткими белыми прожилками, добываемый в баскских холмах более четырёх веков.' } },
+      { type: 'stone', x: 58.1, y: 28.2, swatch: 'sw-stone-warm', coord: '37.8° N · 29.1° E',
+        name: { en: 'Travertine', lv: 'Travertīns', ru: 'Травертин' },
+        loc:  { en: 'Denizli, Turkey', lv: 'Denizli, Turcija', ru: 'Денизли, Турция' },
+        desc: { en: 'Laid down by ancient hot springs near Denizli — warm, earthy, with a soft tactile grain.',
+                lv: 'Veidojies seno karsto avotu tuvumā pie Denizli — silts, zemisks, ar maigu, taustāmu faktūru.',
+                ru: 'Образован древними горячими источниками близ Денизли — тёплый, землистый, с мягкой текстурой.' } },
+      { type: 'stone', x: 64.4, y: 32.1, swatch: 'sw-stone-glow', coord: '32.7° N · 51.7° E',
+        name: { en: 'Honey Onyx', lv: 'Medus onikss', ru: 'Медовый оникс' },
+        loc:  { en: 'Esfahan, Iran', lv: 'Isfahāna, Irāna', ru: 'Исфахан, Иран' },
+        desc: { en: 'A translucent stone that glows when lit from behind — every slab an amber landscape of its own.',
+                lv: 'Caurspīdīgs akmens, kas mirdz, izgaismots no aizmugures — katra plātne ir sava dzintara ainava.',
+                ru: 'Полупрозрачный камень, светящийся на просвет — каждая плита неповторимый янтарный пейзаж.' } },
+      { type: 'stone', x: 52.0, y: 22.2, swatch: 'sw-stone-green', coord: '45.7° N · 7.3° E',
+        name: { en: 'Verde Alpi', lv: 'Verde Alpi', ru: 'Verde Alpi' },
+        loc:  { en: 'Aosta Valley, Italy', lv: 'Aostas ieleja, Itālija', ru: 'Долина Аоста, Италия' },
+        desc: { en: 'Deep forest-green marble from the Aosta Valley, marbled with white and emerald veining.',
+                lv: 'Dziļi meža zaļš marmors no Aostas ielejas, izrakstīts baltām un smaragda dzīslām.',
+                ru: 'Глубокий лесной-зелёный мрамор из долины Аоста, с белыми и изумрудными прожилками.' } },
+      { type: 'stone', x: 49.7, y: 28.0, swatch: 'sw-stone-warm', coord: '38.0° N · 1.1° W',
+        name: { en: 'Emperador', lv: 'Emperador', ru: 'Emperador' },
+        loc:  { en: 'Murcia, Spain', lv: 'Mursija, Spānija', ru: 'Мурсия, Испания' },
+        desc: { en: 'A rich brown marble from Murcia, threaded with fine, golden-grey veins.',
+                lv: 'Bagātīgi brūns marmors no Mursijas, caurausts smalkām, zeltaini pelēkām dzīslām.',
+                ru: 'Насыщенно-коричневый мрамор из Мурсии, пронизанный тонкими золотисто-серыми прожилками.' } },
+      { type: 'stone', x: 37.8, y: 71.9, swatch: 'sw-stone-speckle', coord: '19.9° S · 43.9° W',
+        name: { en: 'Brazilian Granite', lv: 'Brazīlijas granīts', ru: 'Бразильский гранит' },
+        loc:  { en: 'Minas Gerais, Brazil', lv: 'Minas Žerais, Brazīlija', ru: 'Минас-Жерайс, Бразилия' },
+        desc: { en: 'Drawn from ancient bedrock in Minas Gerais — among the hardest, most enduring stones on earth.',
+                lv: 'Iegūts no senā pamatieža Minas Žeraisas reģionā — viens no cietākajiem un izturīgākajiem akmeņiem pasaulē.',
+                ru: 'Добыт из древней породы в Минас-Жерайс — один из твёрдейших и долговечнейших камней на земле.' } },
+      { type: 'stone', x: 39.3, y: 66.6, swatch: 'sw-stone-light', coord: '13.0° S · 38.5° W',
+        name: { en: 'White Quartzite', lv: 'Baltais kvarcīts', ru: 'Белый кварцит' },
+        loc:  { en: 'Bahia, Brazil', lv: 'Baija, Brazīlija', ru: 'Баия, Бразилия' },
+        desc: { en: 'Harder than marble and just as bright — a glacial-white quartzite from the hills of Bahia.',
+                lv: 'Cietāks par marmoru un tikpat gaišs — ledāji balts kvarcīts no Baijas pakalniem.',
+                ru: 'Твёрже мрамора и столь же светлый — ледниково-белый кварцит с холмов Баии.' } },
+      { type: 'stone', x: 54.3, y: 73.1, swatch: 'sw-stone-cool', coord: '21.5° S · 15.5° E',
+        name: { en: 'Blue Sodalite', lv: 'Zilais sodalīts', ru: 'Синий содалит' },
+        loc:  { en: 'Erongo, Namibia', lv: 'Erongo, Namībija', ru: 'Эронго, Намибия' },
+        desc: { en: 'A rare royal-blue stone flecked with white, sourced from the deserts of Namibia.',
+                lv: 'Rets karaliski zils akmens ar baltiem plankumiem, iegūts Namībijas tuksnešos.',
+                ru: 'Редкий королевский-синий камень с белыми вкраплениями из пустынь Намибии.' } },
+      { type: 'stone', x: 48.9, y: 16.6, swatch: 'sw-stone-cool', coord: '53.1° N · 4.0° W',
+        name: { en: 'Welsh Slate', lv: 'Velsas slāneklis', ru: 'Уэльский сланец' },
+        loc:  { en: 'Snowdonia, Wales', lv: 'Snaudonija, Velsa', ru: 'Сноудония, Уэльс' },
+        desc: { en: 'Split by hand from the mountains of Snowdonia — a deep, matte blue-grey with quiet character.',
+                lv: 'Ar rokām šķelts Snaudonijas kalnos — dziļi matēts zilganpelēks ar klusu raksturu.',
+                ru: 'Раскалывается вручную в горах Сноудонии — глубокий матовый сине-серый со сдержанным характером.' } },
+      { type: 'wood', x: 56.7, y: 13.7, swatch: 'sw-wood-light', coord: '57.0° N · 24.1° E',
+        name: { en: 'European Oak', lv: 'Eiropas ozols', ru: 'Европейский дуб' },
+        loc:  { en: 'Riga, Latvia', lv: 'Rīga, Latvija', ru: 'Рига, Латвия' },
+        desc: { en: 'Slow-grown in Baltic forests and milled close to our workshop — dense, warm, built to outlast us.',
+                lv: 'Lēni audzis Baltijas mežos un apstrādāts netālu no mūsu darbnīcas — blīvs, silts, radīts pārdzīvot mūs.',
+                ru: 'Медленно растёт в балтийских лесах и обрабатывается рядом с мастерской — плотный, тёплый, на века.' } },
+      { type: 'wood', x: 56.9, y: 21.2, swatch: 'sw-wood-light', coord: '47.0° N · 25.0° E',
+        name: { en: 'Ash', lv: 'Osis', ru: 'Ясень' },
+        loc:  { en: 'Carpathians, Romania', lv: 'Karpati, Rumānija', ru: 'Карпаты, Румыния' },
+        desc: { en: 'A pale, resilient hardwood from the Carpathians, with a long, expressive straight grain.',
+                lv: 'Gaišs, izturīgs cietkoks no Karpatiem, ar garu, izteiksmīgu taisnu tekstūru.',
+                ru: 'Светлая, упругая древесина из Карпат, с длинным, выразительным прямым рисунком.' } },
+      { type: 'wood', x: 24.3, y: 27.6, swatch: 'sw-wood-mid', coord: '38.5° N · 92.5° W',
+        name: { en: 'American Walnut', lv: 'Amerikāņu riekstkoks', ru: 'Американский орех' },
+        loc:  { en: 'Missouri, USA', lv: 'Misūri, ASV', ru: 'Миссури, США' },
+        desc: { en: 'A chocolate-toned hardwood with flowing grain, long prized by the finest furniture makers.',
+                lv: 'Šokolādes toņa cietkoks ar plūstošu tekstūru, sen iecienīts labāko mēbeļu meistaru vidū.',
+                ru: 'Древесина шоколадного оттенка с плавным рисунком, издавна ценимая лучшими мебельщиками.' } },
+      { type: 'wood', x: 80.6, y: 62.5, swatch: 'sw-wood-mid', coord: '7.5° S · 110.0° E',
+        name: { en: 'Teak', lv: 'Tīkkoks', ru: 'Тик' },
+        loc:  { en: 'Java, Indonesia', lv: 'Java, Indonēzija', ru: 'Ява, Индонезия' },
+        desc: { en: 'A golden, naturally oil-rich hardwood from Java — warm in tone and famously durable.',
+                lv: 'Zeltains, dabīgi eļļains cietkoks no Javas — silts tonī un slavens ar savu izturību.',
+                ru: 'Золотистая, природно маслянистая древесина с Явы — тёплого тона и знаменитой прочности.' } },
+      { type: 'wood', x: 56.5, y: 57.6, swatch: 'sw-wood-dark', coord: '1.0° S · 23.5° E',
+        name: { en: 'Wenge', lv: 'Venge', ru: 'Венге' },
+        loc:  { en: 'Congo Basin, DR Congo', lv: 'Kongo baseins, KDR', ru: 'Бассейн Конго, ДР Конго' },
+        desc: { en: 'A dark, dramatic hardwood from the Congo Basin — near-black with a fine, straight grain.',
+                lv: 'Tumšs, dramatisks cietkoks no Kongo baseina — gandrīz melns ar smalku, taisnu tekstūru.',
+                ru: 'Тёмная, выразительная древесина из бассейна Конго — почти чёрная с тонким прямым рисунком.' } }
+    ];
+
+    const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let active = -1, timer = null, hovering = false;
+    const lang = () => window.BS_LANG || 'en';
+    const tr = obj => obj[lang()] || obj.en;
+
+    function render() {
+      const o = ORIGINS[active], L = LABELS[o.type];
+      elEyebrow.textContent = tr(L.eyebrow);
+      elName.textContent    = tr(o.name);
+      elLoc.textContent     = tr(o.loc);
+      elCoord.textContent   = o.coord;
+      elDesc.textContent    = tr(o.desc);
+      elTag.textContent     = tr(L.tag);
+      elSwatch.className     = 'origins-swatch ' + o.swatch;
     }
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (input.value === PASS) {
-        sessionStorage.setItem('bs_auth', '1');
-        gate.classList.add('is-unlocked');
-      } else {
-        error.textContent = 'Incorrect passphrase';
-        input.classList.add('is-wrong');
-        input.value = '';
-        setTimeout(() => { input.classList.remove('is-wrong'); error.textContent = ''; }, 1800);
-      }
-    });
+    function pan() {
+      if (active < 0) return;
+      const o = ORIGINS[active];
+      const ww = wrap.clientWidth, wh = wrap.clientHeight;
+      const mw = mapImg.offsetWidth, mh = mapImg.offsetHeight;
+      if (!mw || !mh) return;
+      const fx = o.x / 100, fy = o.y / 100;
+      let tx = ww / 2 - fx * mw, ty = wh / 2 - fy * mh;
+      tx = Math.max(ww - mw, Math.min(0, tx));
+      ty = Math.max(wh - mh, Math.min(0, ty));
+      zoom.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
+      reticle.style.left = (fx * mw + tx) + 'px';
+      reticle.style.top  = (fy * mh + ty) + 'px';
+    }
+
+    function runProgress() {
+      if (!prog || REDUCED) return;
+      prog.classList.remove('run'); void prog.offsetWidth; prog.classList.add('run');
+    }
+
+    function show(i) {
+      active = i;
+      panel.classList.remove('is-anim'); void panel.offsetWidth; panel.classList.add('is-anim');
+      render(); pan(); runProgress();
+    }
+
+    function nextRandom() {
+      if (ORIGINS.length < 2) return 0;
+      let n; do { n = Math.floor(Math.random() * ORIGINS.length); } while (n === active);
+      return n;
+    }
+    function start() { if (REDUCED || hovering || timer) return; timer = setInterval(() => show(nextRandom()), 5400); }
+    function stop() { clearInterval(timer); timer = null; }
+
+    // pure slideshow: no selection on hover/click. Pause only to let a slide be read, and when the tab is hidden.
+    root.addEventListener('mouseenter', () => { hovering = true; stop(); });
+    root.addEventListener('mouseleave', () => { hovering = false; start(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
+    window.addEventListener('resize', pan);
+    document.addEventListener('bs:lang', render);
+
+    function init() { show(Math.floor(Math.random() * ORIGINS.length)); start(); }
+    if (mapImg.complete && mapImg.offsetWidth) init();
+    else mapImg.addEventListener('load', init);
+    window.addEventListener('load', () => { if (active < 0) init(); else pan(); });
   })();
 
   // ── Scroll-aware header
