@@ -216,16 +216,21 @@ body {
 .btn-primary:hover::after { transform: translateX(4px); }
 
 .marquee-bar {
-  background: var(--bg-lift); padding: 14px 0;
-  overflow: hidden; white-space: nowrap;
   position: relative;
+  padding: 18px 0;
+  overflow: hidden; white-space: nowrap;
+  background:
+    radial-gradient(140% 220% at 50% 50%, rgba(160,120,80,0.07), transparent 60%),
+    linear-gradient(180deg, #1c1810 0%, #15110a 100%);
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
 }
 .marquee-bar::before, .marquee-bar::after {
-  content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 1;
+  content: ''; position: absolute; top: 0; bottom: 0; width: 130px; z-index: 1;
   pointer-events: none;
 }
-.marquee-bar::before { left: 0; background: linear-gradient(to right, var(--bg-lift), transparent); }
-.marquee-bar::after  { right: 0; background: linear-gradient(to left, var(--bg-lift), transparent); }
+.marquee-bar::before { left: 0; background: linear-gradient(to right, #16130c, transparent); }
+.marquee-bar::after  { right: 0; background: linear-gradient(to left, #16130c, transparent); }
 .marquee-track {
   display: inline-block;
   animation: marquee 52s linear infinite;
@@ -237,11 +242,10 @@ body {
   color: var(--dim); padding: 0 28px;
   vertical-align: middle;
 }
-.marquee-track .mat-wood {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; text-transform: none;
-  font-size: 18px; letter-spacing: 0.01em;
-  color: var(--stone);
+.marquee-track .sep-line {
+  display: inline-block; width: 1px; height: 11px;
+  background: rgba(194,189,181,0.38);
+  vertical-align: middle;
 }
 .marquee-track .sep {
   font-size: 6px; color: var(--walnut); padding: 0;
@@ -501,29 +505,8 @@ section { padding: 120px 60px; }
 .craft-material-duo .cmd-sep {
   color: var(--walnut); font-size: 6px; opacity: 0.7;
 }
-.craft-close {
-  text-align: center; padding: 72px 0 0; position: relative;
-}
-.craft-close::before {
-  content: ''; display: block; width: 200px; height: 0.5px;
-  background: var(--border-mid); margin: 0 auto 40px;
-}
-.craft-close-link {
-  text-decoration: none; display: inline-block;
-  transition: opacity 0.25s;
-}
-.craft-close-link:hover { opacity: 0.7; }
-.craft-close em {
-  font-family: 'Great Vibes', cursive; font-style: normal;
-  font-size: clamp(28px, 3.5vw, 44px); color: var(--stone);
-}
 @media (max-width: 900px) {
   #craft { padding: 80px 24px; }
-  .craft-layout { grid-template-columns: 1fr; gap: 0; }
-  .craft-feature { display: none; }
-  .craft-polaroids { display: flex; margin-top: 48px; }
-  .craft-material-duo { justify-content: center; }
-  .craft-close { padding-top: 52px; }
 }
 
 /* ── CRAFT: material origins map ── */
@@ -606,23 +589,25 @@ section { padding: 120px 60px; }
   .origins-zoom, .origins-reticle { transition: none; }
   .origins-reticle::before { animation: none; }
 }
-.origins-eyebrow {
-  font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.36em;
-  text-transform: uppercase; color: var(--walnut); margin-bottom: 18px;
+.origins-type {
+  display: inline-flex; align-items: center; gap: 9px;
+  font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--platinum); margin-bottom: 20px;
 }
+.origins-hex { width: 15px; height: 15px; fill: none; stroke: var(--walnut); stroke-width: 1.2; flex: none; }
 .origins-name {
   font-family: 'Cormorant Garamond', serif; font-size: clamp(34px, 3.2vw, 52px);
   font-weight: 300; color: var(--stone); line-height: 1.02;
 }
-.origins-loc { display: flex; align-items: center; gap: 9px; margin-top: 16px; }
+.origins-loc { display: flex; align-items: center; gap: 9px; margin-top: 14px; }
 .origins-pin { width: 14px; height: 14px; fill: var(--walnut); flex: none; }
 .origins-loc span { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); }
-.origins-coord { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--dim); margin-top: 8px; }
-.origins-swatch { width: 100%; height: 210px; margin-top: 30px; border: 0.5px solid var(--border-mid); background-color: #1a1712; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
-.origins-desc { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.85; color: var(--body); font-weight: 300; margin-top: 26px; }
-.origins-tag { display: flex; align-items: center; gap: 10px; margin-top: 30px; }
-.origins-hex { width: 19px; height: 19px; fill: none; stroke: var(--walnut); stroke-width: 1.2; }
-.origins-tag span { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--platinum); }
+.origins-swatch { width: 100%; height: 200px; margin-top: 28px; border: 0.5px solid var(--border-mid); background-color: #1a1712; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+.origins-desc { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.8; color: var(--body); font-weight: 300; margin-top: 24px; }
+.origins-pairs { margin-top: 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--stone); }
+.origins-pairs-label { color: var(--walnut); text-transform: uppercase; letter-spacing: 0.22em; font-size: 9px; margin-right: 12px; }
+.origins-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; margin-top: 30px; padding-top: 16px; border-top: 0.5px solid var(--border); }
+.origins-coord, .origins-index { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--dim); }
 
 /* swatch placeholders (CSS-generated; swap for real material photos later) */
 .sw-stone-light { background:
@@ -664,7 +649,7 @@ section { padding: 120px 60px; }
   .origins { grid-template-columns: 1fr; }
   .origins-map-wrap { min-height: 300px; }
   .origins-panel { padding: 38px 26px 42px; align-items: center; text-align: center; border-left: none; border-top: 0.5px solid var(--border); }
-  .origins-loc, .origins-tag { justify-content: center; }
+  .origins-loc { justify-content: center; }
   .origins-desc { max-width: 340px; }
 }
 
@@ -967,6 +952,89 @@ footer {
   .bg-vein { opacity: 0.048; }
 }
 
+/* ── PASSWORD GATE ── */
+#passGate {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+#passGate.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
+.gate-brand {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.55em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: 6px;
+}
+.gate-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px; font-style: italic; font-weight: 300;
+  color: var(--dim); letter-spacing: 0.06em; margin-bottom: 56px;
+}
+.gate-form {
+  width: 280px; display: flex; flex-direction: column; gap: 0;
+}
+.gate-input-wrap {
+  position: relative; padding-top: 22px; margin-bottom: 24px;
+}
+.gate-label {
+  position: absolute; left: 0; top: 28px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 300; color: var(--dim);
+  pointer-events: none;
+  transition: top 0.22s ease, font-size 0.22s ease, color 0.22s ease, letter-spacing 0.22s ease;
+}
+.gate-input:not(:placeholder-shown) ~ .gate-label,
+.gate-input:focus ~ .gate-label {
+  top: 0; font-size: 9px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--walnut); opacity: 0.9;
+}
+.gate-input {
+  background: transparent; border: none;
+  border-bottom: 0.5px solid rgba(194,189,181,0.25);
+  padding: 8px 0; width: 100%;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
+  color: var(--stone); outline: none;
+  transition: border-color 0.22s; -webkit-appearance: none;
+}
+.gate-input::placeholder { color: transparent; }
+.gate-input:focus { border-bottom-color: var(--walnut); }
+.gate-input.is-wrong { border-bottom-color: rgba(180,80,60,0.7); animation: gateShake 0.38s ease; }
+@keyframes gateShake {
+  0%,100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  60%      { transform: translateX(6px); }
+}
+.gate-error {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px; letter-spacing: 0.15em;
+  color: rgba(200,100,80,0.8); margin-top: -16px; margin-bottom: 20px;
+  min-height: 14px; transition: opacity 0.2s;
+}
+.gate-btn {
+  display: flex; align-items: center; justify-content: center; gap: 12px;
+  background: transparent; border: 0.5px solid rgba(160,120,80,0.5);
+  padding: 14px 0; width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--walnut); cursor: pointer;
+  position: relative; overflow: hidden;
+  transition: color 0.3s, gap 0.25s, border-color 0.3s;
+}
+.gate-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(160,120,80,0.1);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gate-btn:hover { color: var(--stone); gap: 18px; border-color: var(--walnut); }
+.gate-btn:hover::before { transform: scaleX(1); }
+.gate-btn span { position: relative; z-index: 1; }
+.gate-hairline {
+  width: 40px; height: 0.5px; background: var(--border-mid); margin: 0 auto 40px;
+}
+
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
@@ -988,8 +1056,6 @@ footer {
    (.hero-script is excluded — the hero headline stays English in all languages.) */
 html[lang="lv"] .craft-opener .script,
 html[lang="ru"] .craft-opener .script,
-html[lang="lv"] .craft-close em,
-html[lang="ru"] .craft-close em,
 html[lang="lv"] .form-success-title,
 html[lang="ru"] .form-success-title {
   font-family: 'Cormorant Garamond', serif !important;
@@ -1161,23 +1227,20 @@ html[lang="ru"] .form-success-title {
 </head>
 <body>
 
-<body>
-
-<script>
-const password = "ivisivis23";
-
-if (sessionStorage.getItem("siteUnlocked") !== "true") {
-  const input = prompt("Enter password:");
-
-  if (input === password) {
-    sessionStorage.setItem("siteUnlocked", "true");
-  } else {
-    document.body.innerHTML = "Access denied";
-  }
-}
-</script>
-
-</body>
+<!-- PASSWORD GATE -->
+<div id="passGate">
+  <p class="gate-brand">Baumstein</p>
+  <p class="gate-sub">Wood &amp; Stone</p>
+  <div class="gate-hairline"></div>
+  <form class="gate-form" id="gateForm" autocomplete="off">
+    <div class="gate-input-wrap">
+      <input type="password" id="gateInput" class="gate-input" placeholder=" " autocomplete="new-password">
+      <label class="gate-label" for="gateInput">Passphrase</label>
+    </div>
+    <p class="gate-error" id="gateError"></p>
+    <button type="submit" class="gate-btn"><span>Enter</span><span>→</span></button>
+  </form>
+</div>
 
 <!-- SITE HEADER -->
 <header class="site-header" id="siteHeader">
@@ -1244,26 +1307,22 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
 <!-- MARQUEE -->
 <div class="marquee-bar">
   <div class="marquee-track">
+    <span class="mat">Oak</span><span class="sep-line"></span>
     <span class="mat">Granite</span><span class="sep">◆</span>
     <span class="mat">Marble</span><span class="sep">◆</span>
     <span class="mat">Quartzite</span><span class="sep">◆</span>
-    <span class="mat">Onyx</span><span class="sep">◆</span>
+    <span class="mat">Onyx</span><span class="sep-line"></span>
+    <span class="mat">American Walnut</span><span class="sep-line"></span>
     <span class="mat">Travertine</span><span class="sep">◆</span>
-    <span class="mat">Terrazzo</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Smoked Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Fumed Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">American Walnut</span><span class="sep">◆</span>
+    <span class="mat">Terrazzo</span><span class="sep-line"></span>
+    <span class="mat">Oak</span><span class="sep-line"></span>
     <span class="mat">Granite</span><span class="sep">◆</span>
     <span class="mat">Marble</span><span class="sep">◆</span>
     <span class="mat">Quartzite</span><span class="sep">◆</span>
-    <span class="mat">Onyx</span><span class="sep">◆</span>
+    <span class="mat">Onyx</span><span class="sep-line"></span>
+    <span class="mat">American Walnut</span><span class="sep-line"></span>
     <span class="mat">Travertine</span><span class="sep">◆</span>
-    <span class="mat">Terrazzo</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Smoked Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">Fumed Oak</span><span class="sep">◆</span>
-    <span class="mat mat-wood">American Walnut</span><span class="sep">◆</span>
+    <span class="mat">Terrazzo</span><span class="sep-line"></span>
   </div>
 </div>
 
@@ -1273,7 +1332,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
   <div class="collection-intro reveal">
     <div class="section-label">The Collection</div>
     <h2 class="section-title">Nature Becomes<br><em>Furniture</em></h2>
-    <p class="collection-desc">Four original designs. Each one a distinct conversation between wood and stone.</p>
+    <p class="collection-desc">Four designs. Each one a pairing of wood and stone.</p>
   </div>
 
   <div class="carousel-wrap">
@@ -1375,8 +1434,8 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       <p class="craft-opener">
         Every table begins as <em class="script">a conversation.</em>
       </p>
-      <p class="craft-body">The wood determines the warmth. The stone determines the character. Together they become something that could only ever belong to you — never catalogued, never repeated.</p>
-      <p class="craft-body">We travel for our materials — the finest stone and timber, drawn from the places that have perfected them over centuries.</p>
+      <p class="craft-body">Wood brings the warmth. Stone brings the character. Each table is made once, for one home.</p>
+      <p class="craft-body">We source our stone and wood where each is at its best.</p>
     </div>
 
     <div class="origins" id="origins">
@@ -1395,25 +1454,25 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       </div>
 
       <div class="origins-panel" id="originsPanel">
-        <span class="origins-eyebrow" id="originEyebrow">Stone Origin</span>
+        <span class="origins-type">
+          <svg class="origins-hex" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"></path></svg>
+          <span id="originType">Stone</span>
+        </span>
         <h3 class="origins-name" id="originName">—</h3>
         <div class="origins-loc">
           <svg class="origins-pin" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"></path></svg>
           <span id="originLoc">—</span>
         </div>
-        <span class="origins-coord" id="originCoord">—</span>
         <div class="origins-swatch" id="originSwatch"></div>
         <p class="origins-desc" id="originDesc">—</p>
-        <div class="origins-tag">
-          <svg class="origins-hex" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8.5 5v10L12 22l-8.5-5V7z"></path></svg>
-          <span id="originTagText">Stone</span>
+        <div class="origins-pairs"><span class="origins-pairs-label">Pairs with</span><span id="originPairs">—</span></div>
+        <div class="origins-meta">
+          <span class="origins-coord" id="originCoord">—</span>
+          <span class="origins-index" id="originIndex">—</span>
         </div>
       </div>
     </div>
 
-    <div class="craft-close">
-      <a href="#contact" class="craft-close-link"><em>Tell us what you imagine.</em></a>
-    </div>
   </div>
 </section>
 
@@ -1427,7 +1486,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
   <div class="promise-heading reveal">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">From Vision<br>to <em>Heirloom</em></h2>
-    <p class="promise-lead">Four stages. Six to eight weeks. One table made entirely for you.</p>
+    <p class="promise-lead">Four stages. Six to eight weeks. One table, made for you.</p>
   </div>
 
   <div class="process-steps reveal">
@@ -1435,7 +1494,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       <div class="step-numeral">I</div>
       <div class="step-content">
         <h3 class="step-title">Consultation</h3>
-        <p class="step-desc">We discuss your space, your vision, your materials — in person or by call or chat.</p>
+        <p class="step-desc">We talk through your space, your idea, your materials — in person, by call, or by chat.</p>
       </div>
     </div>
 
@@ -1443,7 +1502,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       <div class="step-numeral">II</div>
       <div class="step-content">
         <h3 class="step-title">Design</h3>
-        <p class="step-desc">Technical drawings and visualisations prepared for your approval. You see exactly what will be built before a single cut is made.</p>
+        <p class="step-desc">Technical drawings and visualisations for your approval. You see the exact table before the first cut.</p>
       </div>
     </div>
 
@@ -1451,7 +1510,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       <div class="step-numeral">III</div>
       <div class="step-content">
         <h3 class="step-title">Crafting</h3>
-        <p class="step-desc">Hand-built in our Latvian workshop. The same craftsmen work the piece from first cut to final polish. We own every stage of the process.</p>
+        <p class="step-desc">Hand-built in our Latvian workshop. The same craftsmen take it from first cut to final polish.</p>
       </div>
     </div>
 
@@ -1459,7 +1518,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       <div class="step-numeral">IV</div>
       <div class="step-content">
         <h3 class="step-title">Delivery & Installation</h3>
-        <p class="step-desc">We deliver personally and install your table ourselves.</p>
+        <p class="step-desc">We deliver and install your table ourselves.</p>
       </div>
     </div>
   </div>
@@ -1490,7 +1549,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
   <div class="contact-left reveal">
     <div class="section-label">Get in Touch</div>
     <h2 class="section-title">Ready to <em>Begin?</em></h2>
-    <p class="contact-intro">We'd love to create something exceptional for your home. Tell us about your project — there's no obligation, only a conversation.</p>
+    <p class="contact-intro">Tell us about your project. No obligation.</p>
     <div class="contact-details">
       <div class="contact-detail">
         <span class="cd-label">Email</span>
@@ -1498,8 +1557,8 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       </div>
       <div class="contact-detail">
         <span class="cd-label">Phone</span>
+        <a href="tel:+37122056266" class="cd-value">+371 22 056 266<span class="cd-tag">LV · RU</span></a>
         <a href="tel:+37126660168" class="cd-value">+371 26 660 168<span class="cd-tag">EN · LV</span></a>
-        <a href="tel:+37122056266" class="cd-value">+371 22 056 266<span class="cd-tag">RU</span></a>
       </div>
       <div class="contact-detail">
         <span class="cd-label">Based in</span>
@@ -1709,8 +1768,8 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
         'Daba kļūst par<br><em>mēbelēm</em>',
         'Природа становится<br><em>мебелью</em>'],
       ['.collection-desc', 'text',
-        'Četri oriģināli dizaini. Katrs — savs dialogs starp koku un akmeni.',
-        'Четыре оригинальных дизайна. Каждый — особый диалог дерева и камня.'],
+        'Četri dizaini. Katrs — koka un akmens savienojums.',
+        'Четыре дизайна. Каждый — сочетание дерева и камня.'],
       ['.slide-material', 'text',
         ['Ozols ◆ Melnais Marquina marmors', 'Riekstkoks ◆ Zelta onikss', 'Kūpināts ozols ◆ Tumšs granīts', 'Osis ◆ Baltais Carrara'],
         ['Дуб ◆ Чёрный мрамор Marquina', 'Орех ◆ Золотой оникс', 'Морёный дуб ◆ Тёмный гранит', 'Ясень ◆ Белый мрамор Carrara']],
@@ -1720,31 +1779,30 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
         'Katrs galds sākas ar <em class="script">sarunu.</em>',
         'Каждый стол начинается с <em class="script">разговора.</em>'],
       ['.craft-body', 'text',
-        ['Koks nosaka siltumu. Akmens nosaka raksturu. Kopā tie kļūst par kaut ko, kas var piederēt vienīgi jums — nekad nekatalogizēts, nekad neatkārtots.',
-         'Mēs ceļojam savu materiālu dēļ — vislabākais akmens un koks, kas iegūts vietās, kuras tos gadsimtiem ilgi ir pilnveidojušas.'],
-        ['Дерево задаёт тепло. Камень задаёт характер. Вместе они становятся тем, что может принадлежать только вам — никогда не каталогизированным, никогда не повторённым.',
-         'Мы путешествуем за нашими материалами — лучший камень и древесина из мест, где их совершенствовали веками.']],
-      ['.craft-close-link em', 'text', 'Pastāstiet, ko jūs iztēlojaties.', 'Расскажите, что вы представляете.'],
+        ['Koks dod siltumu. Akmens — raksturu. Katrs galds top tikai vienreiz, vienām mājām.',
+         'Akmeni un koku iegūstam tur, kur tie ir vislabākie.'],
+        ['Дерево даёт тепло. Камень — характер. Каждый стол создаётся лишь однажды, для одного дома.',
+         'Камень и дерево берём там, где они лучшие.']],
 
       ['.promise-heading .section-label', 'text', 'Kā tas notiek', 'Как это работает'],
       ['.promise-heading .section-title', 'html',
         'No ieceres<br>līdz <em>mantojumam</em>',
         'От замысла<br>до <em>наследия</em>'],
       ['.promise-lead', 'text',
-        'Četri posmi. Sešas līdz astoņas nedēļas. Viens galds, radīts tikai jums.',
-        'Четыре этапа. От шести до восьми недель. Один стол, созданный только для вас.'],
+        'Četri posmi. Sešas līdz astoņas nedēļas. Viens galds, radīts jums.',
+        'Четыре этапа. Шесть–восемь недель. Один стол, созданный для вас.'],
       ['.step-title', 'text',
         ['Konsultācija', 'Dizains', 'Izgatavošana', 'Piegāde un uzstādīšana'],
         ['Консультация', 'Дизайн', 'Изготовление', 'Доставка и установка']],
       ['.step-desc', 'text',
-        ['Pārrunājam jūsu telpu, jūsu ieceri, jūsu materiālus — klātienē, zvanā vai sarakstē.',
-         'Tehniskie rasējumi un vizualizācijas tiek sagatavotas jūsu apstiprinājumam. Jūs precīzi redzat, kas tiks izgatavots, vēl pirms tiek veikts pirmais griezums.',
-         'Roku darbs mūsu darbnīcā Latvijā. Vieni un tie paši meistari strādā ar darbu no pirmā griezuma līdz pēdējai pulēšanai. Mēs paši kontrolējam katru procesa posmu.',
-         'Piegādājam personīgi un uzstādām jūsu galdu paši.'],
-        ['Обсуждаем ваше пространство, ваш замысел, ваши материалы — лично, по звонку или в переписке.',
-         'Технические чертежи и визуализации готовятся на ваше утверждение. Вы видите точно, что будет создано, ещё до первого распила.',
-         'Ручная работа в нашей мастерской в Латвии. Одни и те же мастера ведут изделие от первого распила до финальной полировки. Мы контролируем каждый этап.',
-         'Доставляем лично и устанавливаем ваш стол сами.']],
+        ['Pārrunājam jūsu telpu, ideju un materiālus — klātienē, pa tālruni vai sarakstē.',
+         'Tehniskie rasējumi un vizualizācijas jūsu apstiprinājumam. Redzat precīzu galdu vēl pirms pirmā griezuma.',
+         'Roku darbs mūsu darbnīcā Latvijā. Vieni un tie paši meistari ved galdu no pirmā griezuma līdz pēdējai pulēšanai.',
+         'Piegādājam un uzstādām galdu paši.'],
+        ['Обсуждаем пространство, идею и материалы — лично, по телефону или в переписке.',
+         'Технические чертежи и визуализации на ваше утверждение. Вы видите точный стол ещё до первого распила.',
+         'Ручная работа в нашей мастерской в Латвии. Одни и те же мастера ведут стол от первого распила до финальной полировки.',
+         'Доставляем и устанавливаем стол сами.']],
       ['.promise-statements-label', 'text', 'Mūsu principi', 'Наши принципы'],
       ['.promise-standard-text', 'text',
         ['Viens meistars. Jūsu galds. No sākuma līdz galam.',
@@ -1752,16 +1810,16 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
          'Piegādājam. Uzstādām. Aizejam tikai tad, kad viss ir kā nākas.'],
         ['Один мастер. Ваш стол. От начала до конца.',
          'Работаем только с материалами, которые использовали бы в своём доме.',
-         'Доставляем. Устанавливаем. Уходим только тогда, когда всё безупречно.']],
+         'Доставляем. Устанавливаем. Уходим, только когда всё как надо.']],
 
       ['.contact-left .section-label', 'text', 'Sazinieties', 'Свяжитесь с нами'],
       ['.contact-left .section-title', 'html', 'Gatavi <em>sākt?</em>', 'Готовы <em>начать?</em>'],
       ['.contact-intro', 'text',
-        'Mēs labprāt radītu kaut ko izcilu jūsu mājām. Pastāstiet par savu ieceri — bez saistībām, tikai saruna.',
-        'Мы с радостью создадим нечто исключительное для вашего дома. Расскажите о своём проекте — никаких обязательств, только разговор.'],
+        'Pastāstiet par savu ieceri. Bez saistībām.',
+        'Расскажите о вашем проекте. Без обязательств.'],
       ['.cd-label', 'text', ['E-pasts', 'Tālrunis', 'Atrodamies'], ['Эл. почта', 'Телефон', 'Находимся']],
       ['.cd-muted', 'text', 'Rīga, Latvija', 'Рига, Латвия'],
-      ['.form-title', 'text', 'Nosūtiet mums ziņu', 'Напишите нам'],
+      ['.form-title', 'text', 'Rakstiet mums', 'Напишите нам'],
       ['.form-label', 'text',
         ['Vārds', 'Uzvārds', 'E-pasta adrese', 'Tālruņa numurs', 'Pastāstiet par savu ieceri'],
         ['Имя', 'Фамилия', 'Адрес эл. почты', 'Номер телефона', 'Расскажите о своём проекте']],
@@ -1779,9 +1837,9 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
 
     // dynamic (JS-generated) form strings
     window.BS_FORM = {
-      en: { sending: 'Sending…', title: 'Thank you.', text: "We've received your message and will be in touch shortly.", error: 'Something went wrong — please email us directly at info@baumstein.eu', submit: 'Send Message' },
-      lv: { sending: 'Sūta…', title: 'Paldies.', text: 'Mēs saņēmām jūsu ziņu un drīz sazināsimies.', error: 'Kaut kas nogāja greizi — rakstiet mums tieši uz info@baumstein.eu', submit: 'Nosūtīt ziņu' },
-      ru: { sending: 'Отправка…', title: 'Спасибо.', text: 'Мы получили ваше сообщение и скоро свяжемся с вами.', error: 'Что-то пошло не так — напишите нам напрямую на info@baumstein.eu', submit: 'Отправить' }
+      en: { sending: 'Sending…', title: 'Thank you.', text: 'We got your message and will reply soon.', error: 'Something went wrong — please email us at info@baumstein.eu', submit: 'Send Message' },
+      lv: { sending: 'Sūta…', title: 'Paldies.', text: 'Saņēmām jūsu ziņu un drīz atbildēsim.', error: 'Kaut kas nogāja greizi — rakstiet mums uz info@baumstein.eu', submit: 'Nosūtīt ziņu' },
+      ru: { sending: 'Отправка…', title: 'Спасибо.', text: 'Мы получили ваше сообщение и скоро ответим.', error: 'Что-то пошло не так — напишите нам на info@baumstein.eu', submit: 'Отправить' }
     };
 
     // Build the registry, capturing EN live from the DOM
@@ -1916,11 +1974,12 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
     const root = document.getElementById('origins');
     if (!root) return;
     const panel     = document.getElementById('originsPanel');
-    const elEyebrow = document.getElementById('originEyebrow');
+    const elType    = document.getElementById('originType');
     const elName    = document.getElementById('originName');
     const elLoc     = document.getElementById('originLoc');
     const elDesc    = document.getElementById('originDesc');
-    const elTag     = document.getElementById('originTagText');
+    const elPairs   = document.getElementById('originPairs');
+    const elIndex   = document.getElementById('originIndex');
     const elSwatch  = document.getElementById('originSwatch');
     const mapImg    = root.querySelector('.origins-map');
 
@@ -1940,93 +1999,91 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
       { type: 'stone', x: 52.8, y: 23.4, swatch: 'sw-stone-light', coord: '44.1° N · 10.1° E',
         name: { en: 'Calacatta Marble', lv: 'Calacatta marmors', ru: 'Мрамор Calacatta' },
         loc:  { en: 'Carrara, Italy', lv: 'Karrāra, Itālija', ru: 'Каррара, Италия' },
-        desc: { en: 'Quarried in the Apuan Alps above Carrara — a luminous white field crossed by bold, sweeping veins.',
-                lv: 'Iegūts Apuānu Alpos virs Karrāras — mirdzoši balta pamatne ar drosmīgām, plašām dzīslām.',
-                ru: 'Добывается в Апуанских Альпах над Каррарой — сияющий белый фон с широкими, выразительными прожилками.' } },
+        desc: { en: 'Quarried above Carrara. Bright white, with bold grey veining.',
+                lv: 'Iegūts virs Karrāras. Spilgti balts, ar izteiktām pelēkām dzīslām.',
+                ru: 'Добывается над Каррарой. Ярко-белый, с выразительными серыми прожилками.' } },
       { type: 'stone', x: 49.3, y: 24.0, swatch: 'sw-stone-dark', coord: '43.3° N · 2.5° W',
         name: { en: 'Nero Marquina', lv: 'Nero Marquina', ru: 'Nero Marquina' },
         loc:  { en: 'Markina, Spain', lv: 'Markina, Spānija', ru: 'Маркина, Испания' },
-        desc: { en: 'A near-black marble veined in crisp white, cut from the Basque hills for over four centuries.',
-                lv: 'Gandrīz melns marmors ar asām baltām dzīslām, jau vairāk nekā četrus gadsimtus iegūts Basku kalnos.',
-                ru: 'Почти чёрный мрамор с чёткими белыми прожилками, добываемый в баскских холмах более четырёх веков.' } },
+        desc: { en: 'Near-black marble with sharp white veins, from the Basque Country.',
+                lv: 'Gandrīz melns marmors ar asām baltām dzīslām, no Basku zemes.',
+                ru: 'Почти чёрный мрамор с чёткими белыми прожилками, из Страны Басков.' } },
       { type: 'stone', x: 58.1, y: 28.2, swatch: 'sw-stone-warm', coord: '37.8° N · 29.1° E',
         name: { en: 'Travertine', lv: 'Travertīns', ru: 'Травертин' },
         loc:  { en: 'Denizli, Turkey', lv: 'Denizli, Turcija', ru: 'Денизли, Турция' },
-        desc: { en: 'Laid down by ancient hot springs near Denizli — warm, earthy, with a soft tactile grain.',
-                lv: 'Veidojies seno karsto avotu tuvumā pie Denizli — silts, zemisks, ar maigu, taustāmu faktūru.',
-                ru: 'Образован древними горячими источниками близ Денизли — тёплый, землистый, с мягкой текстурой.' } },
+        desc: { en: 'Formed by hot springs near Denizli. Warm and earthy, with a soft texture.',
+                lv: 'Veidojies karsto avotu tuvumā pie Denizli. Silts, zemes toņos, ar mīkstu faktūru.',
+                ru: 'Образован горячими источниками у Денизли. Тёплый, землистый, с мягкой фактурой.' } },
       { type: 'stone', x: 64.4, y: 32.1, swatch: 'sw-stone-glow', coord: '32.7° N · 51.7° E',
         name: { en: 'Honey Onyx', lv: 'Medus onikss', ru: 'Медовый оникс' },
         loc:  { en: 'Esfahan, Iran', lv: 'Isfahāna, Irāna', ru: 'Исфахан, Иран' },
-        desc: { en: 'A translucent stone that glows when lit from behind — every slab an amber landscape of its own.',
-                lv: 'Caurspīdīgs akmens, kas mirdz, izgaismots no aizmugures — katra plātne ir sava dzintara ainava.',
-                ru: 'Полупрозрачный камень, светящийся на просвет — каждая плита неповторимый янтарный пейзаж.' } },
+        desc: { en: 'Translucent stone that glows when lit from behind. Every slab is different.',
+                lv: 'Caurspīdīgs akmens, kas spīd, izgaismots no aizmugures. Katra plātne ir citāda.',
+                ru: 'Полупрозрачный камень, светится на просвет. Каждая плита разная.' } },
       { type: 'stone', x: 52.0, y: 22.2, swatch: 'sw-stone-green', coord: '45.7° N · 7.3° E',
         name: { en: 'Verde Alpi', lv: 'Verde Alpi', ru: 'Verde Alpi' },
         loc:  { en: 'Aosta Valley, Italy', lv: 'Aostas ieleja, Itālija', ru: 'Долина Аоста, Италия' },
-        desc: { en: 'Deep forest-green marble from the Aosta Valley, marbled with white and emerald veining.',
-                lv: 'Dziļi meža zaļš marmors no Aostas ielejas, izrakstīts baltām un smaragda dzīslām.',
-                ru: 'Глубокий лесной-зелёный мрамор из долины Аоста, с белыми и изумрудными прожилками.' } },
+        desc: { en: 'Deep green marble from the Aosta Valley, with white veining.',
+                lv: 'Tumši zaļš marmors no Aostas ielejas, ar baltām dzīslām.',
+                ru: 'Тёмно-зелёный мрамор из долины Аоста, с белыми прожилками.' } },
       { type: 'stone', x: 49.7, y: 28.0, swatch: 'sw-stone-warm', coord: '38.0° N · 1.1° W',
         name: { en: 'Emperador', lv: 'Emperador', ru: 'Emperador' },
         loc:  { en: 'Murcia, Spain', lv: 'Mursija, Spānija', ru: 'Мурсия, Испания' },
-        desc: { en: 'A rich brown marble from Murcia, threaded with fine, golden-grey veins.',
-                lv: 'Bagātīgi brūns marmors no Mursijas, caurausts smalkām, zeltaini pelēkām dzīslām.',
-                ru: 'Насыщенно-коричневый мрамор из Мурсии, пронизанный тонкими золотисто-серыми прожилками.' } },
+        desc: { en: 'Brown marble from Murcia, with fine pale veins.',
+                lv: 'Brūns marmors no Mursijas, ar smalkām gaišām dzīslām.',
+                ru: 'Коричневый мрамор из Мурсии, с тонкими светлыми прожилками.' } },
       { type: 'stone', x: 37.8, y: 71.9, swatch: 'sw-stone-speckle', coord: '19.9° S · 43.9° W',
         name: { en: 'Brazilian Granite', lv: 'Brazīlijas granīts', ru: 'Бразильский гранит' },
         loc:  { en: 'Minas Gerais, Brazil', lv: 'Minas Žerais, Brazīlija', ru: 'Минас-Жерайс, Бразилия' },
-        desc: { en: 'Drawn from ancient bedrock in Minas Gerais — among the hardest, most enduring stones on earth.',
-                lv: 'Iegūts no senā pamatieža Minas Žeraisas reģionā — viens no cietākajiem un izturīgākajiem akmeņiem pasaulē.',
-                ru: 'Добыт из древней породы в Минас-Жерайс — один из твёрдейших и долговечнейших камней на земле.' } },
+        desc: { en: 'From ancient rock in Minas Gerais. One of the hardest, most durable stones.',
+                lv: 'No senā Minas Žeraisas ieža. Viens no cietākajiem un izturīgākajiem akmeņiem.',
+                ru: 'Из древней породы Минас-Жерайс. Один из самых твёрдых и прочных камней.' } },
       { type: 'stone', x: 39.3, y: 66.6, swatch: 'sw-stone-light', coord: '13.0° S · 38.5° W',
         name: { en: 'White Quartzite', lv: 'Baltais kvarcīts', ru: 'Белый кварцит' },
         loc:  { en: 'Bahia, Brazil', lv: 'Baija, Brazīlija', ru: 'Баия, Бразилия' },
-        desc: { en: 'Harder than marble and just as bright — a glacial-white quartzite from the hills of Bahia.',
-                lv: 'Cietāks par marmoru un tikpat gaišs — ledāji balts kvarcīts no Baijas pakalniem.',
-                ru: 'Твёрже мрамора и столь же светлый — ледниково-белый кварцит с холмов Баии.' } },
+        desc: { en: 'Harder than marble, just as bright. A white quartzite from Bahia.',
+                lv: 'Cietāks par marmoru, tikpat gaišs. Balts kvarcīts no Baijas.',
+                ru: 'Твёрже мрамора и такой же светлый. Белый кварцит из Баии.' } },
       { type: 'stone', x: 54.3, y: 73.1, swatch: 'sw-stone-cool', coord: '21.5° S · 15.5° E',
         name: { en: 'Blue Sodalite', lv: 'Zilais sodalīts', ru: 'Синий содалит' },
         loc:  { en: 'Erongo, Namibia', lv: 'Erongo, Namībija', ru: 'Эронго, Намибия' },
-        desc: { en: 'A rare royal-blue stone flecked with white, sourced from the deserts of Namibia.',
-                lv: 'Rets karaliski zils akmens ar baltiem plankumiem, iegūts Namībijas tuksnešos.',
-                ru: 'Редкий королевский-синий камень с белыми вкраплениями из пустынь Намибии.' } },
+        desc: { en: 'A rare deep-blue stone flecked with white, from Namibia.',
+                lv: 'Rets tumši zils akmens ar baltiem plankumiem, no Namībijas.',
+                ru: 'Редкий тёмно-синий камень с белыми вкраплениями, из Намибии.' } },
       { type: 'stone', x: 48.9, y: 16.6, swatch: 'sw-stone-cool', coord: '53.1° N · 4.0° W',
         name: { en: 'Welsh Slate', lv: 'Velsas slāneklis', ru: 'Уэльский сланец' },
         loc:  { en: 'Snowdonia, Wales', lv: 'Snaudonija, Velsa', ru: 'Сноудония, Уэльс' },
-        desc: { en: 'Split by hand from the mountains of Snowdonia — a deep, matte blue-grey with quiet character.',
-                lv: 'Ar rokām šķelts Snaudonijas kalnos — dziļi matēts zilganpelēks ar klusu raksturu.',
-                ru: 'Раскалывается вручную в горах Сноудонии — глубокий матовый сине-серый со сдержанным характером.' } },
-      { type: 'wood', x: 56.7, y: 13.7, swatch: 'sw-wood-light', coord: '57.0° N · 24.1° E',
+        desc: { en: 'Hand-split in the mountains of Wales. Matte blue-grey.',
+                lv: 'Ar rokām šķelts Velsas kalnos. Matēts zilganpelēks.',
+                ru: 'Раскалывается вручную в горах Уэльса. Матовый сине-серый.' } },
+      { type: 'wood', x: 57.0, y: 13.4, swatch: 'sw-wood-light', coord: '57.3° N · 25.3° E',
         name: { en: 'European Oak', lv: 'Eiropas ozols', ru: 'Европейский дуб' },
-        loc:  { en: 'Riga, Latvia', lv: 'Rīga, Latvija', ru: 'Рига, Латвия' },
-        desc: { en: 'Slow-grown in Baltic forests and milled close to our workshop — dense, warm, built to outlast us.',
-                lv: 'Lēni audzis Baltijas mežos un apstrādāts netālu no mūsu darbnīcas — blīvs, silts, radīts pārdzīvot mūs.',
-                ru: 'Медленно растёт в балтийских лесах и обрабатывается рядом с мастерской — плотный, тёплый, на века.' } },
-      { type: 'wood', x: 56.9, y: 21.2, swatch: 'sw-wood-light', coord: '47.0° N · 25.0° E',
-        name: { en: 'Ash', lv: 'Osis', ru: 'Ясень' },
-        loc:  { en: 'Carpathians, Romania', lv: 'Karpati, Rumānija', ru: 'Карпаты, Румыния' },
-        desc: { en: 'A pale, resilient hardwood from the Carpathians, with a long, expressive straight grain.',
-                lv: 'Gaišs, izturīgs cietkoks no Karpatiem, ar garu, izteiksmīgu taisnu tekstūru.',
-                ru: 'Светлая, упругая древесина из Карпат, с длинным, выразительным прямым рисунком.' } },
+        loc:  { en: 'Vidzeme, Latvia', lv: 'Vidzeme, Latvija', ru: 'Видземе, Латвия' },
+        desc: { en: 'Grown in Baltic forests, milled near our workshop. Dense and warm.',
+                lv: 'Audzis Baltijas mežos, apstrādāts pie mūsu darbnīcas. Blīvs un silts.',
+                ru: 'Растёт в балтийских лесах, обрабатывается рядом с мастерской. Плотный и тёплый.' } },
       { type: 'wood', x: 24.3, y: 27.6, swatch: 'sw-wood-mid', coord: '38.5° N · 92.5° W',
         name: { en: 'American Walnut', lv: 'Amerikāņu riekstkoks', ru: 'Американский орех' },
         loc:  { en: 'Missouri, USA', lv: 'Misūri, ASV', ru: 'Миссури, США' },
-        desc: { en: 'A chocolate-toned hardwood with flowing grain, long prized by the finest furniture makers.',
-                lv: 'Šokolādes toņa cietkoks ar plūstošu tekstūru, sen iecienīts labāko mēbeļu meistaru vidū.',
-                ru: 'Древесина шоколадного оттенка с плавным рисунком, издавна ценимая лучшими мебельщиками.' } },
-      { type: 'wood', x: 80.6, y: 62.5, swatch: 'sw-wood-mid', coord: '7.5° S · 110.0° E',
-        name: { en: 'Teak', lv: 'Tīkkoks', ru: 'Тик' },
-        loc:  { en: 'Java, Indonesia', lv: 'Java, Indonēzija', ru: 'Ява, Индонезия' },
-        desc: { en: 'A golden, naturally oil-rich hardwood from Java — warm in tone and famously durable.',
-                lv: 'Zeltains, dabīgi eļļains cietkoks no Javas — silts tonī un slavens ar savu izturību.',
-                ru: 'Золотистая, природно маслянистая древесина с Явы — тёплого тона и знаменитой прочности.' } },
-      { type: 'wood', x: 56.5, y: 57.6, swatch: 'sw-wood-dark', coord: '1.0° S · 23.5° E',
-        name: { en: 'Wenge', lv: 'Venge', ru: 'Венге' },
-        loc:  { en: 'Congo Basin, DR Congo', lv: 'Kongo baseins, KDR', ru: 'Бассейн Конго, ДР Конго' },
-        desc: { en: 'A dark, dramatic hardwood from the Congo Basin — near-black with a fine, straight grain.',
-                lv: 'Tumšs, dramatisks cietkoks no Kongo baseina — gandrīz melns ar smalku, taisnu tekstūru.',
-                ru: 'Тёмная, выразительная древесина из бассейна Конго — почти чёрная с тонким прямым рисунком.' } }
+        desc: { en: 'Chocolate-brown hardwood with flowing grain, from the American Midwest.',
+                lv: 'Šokolādes brūns cietkoks ar plūstošu tekstūru, no Amerikas vidienes.',
+                ru: 'Шоколадно-коричневая древесина с плавным рисунком, из Среднего Запада США.' } }
+    ];
+
+    // suggested wood↔stone pairing per material (aligned to ORIGINS by index)
+    const PAIRS = [
+      { en: 'Walnut', lv: 'Riekstkoks', ru: 'Орех' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Walnut', lv: 'Riekstkoks', ru: 'Орех' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Walnut', lv: 'Riekstkoks', ru: 'Орех' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
+      { en: 'Nero Marquina · Travertine', lv: 'Nero Marquina · Travertīns', ru: 'Nero Marquina · Травертин' },
+      { en: 'Calacatta · Honey Onyx', lv: 'Calacatta · Medus onikss', ru: 'Calacatta · Медовый оникс' }
     ];
 
     const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2036,13 +2093,14 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
 
     function render() {
       const o = ORIGINS[active], L = LABELS[o.type];
-      elEyebrow.textContent = tr(L.eyebrow);
-      elName.textContent    = tr(o.name);
-      elLoc.textContent     = tr(o.loc);
-      elCoord.textContent   = o.coord;
-      elDesc.textContent    = tr(o.desc);
-      elTag.textContent     = tr(L.tag);
-      elSwatch.className     = 'origins-swatch ' + o.swatch;
+      elType.textContent  = tr(L.tag);
+      elName.textContent  = tr(o.name);
+      elLoc.textContent   = tr(o.loc);
+      elSwatch.className   = 'origins-swatch ' + o.swatch;
+      elDesc.textContent  = tr(o.desc);
+      elPairs.textContent = tr(PAIRS[active]);
+      elCoord.textContent = o.coord;
+      elIndex.textContent = 'Nº ' + String(active + 1).padStart(2, '0') + ' / ' + ORIGINS.length;
     }
 
     function pan() {
@@ -2079,9 +2137,7 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
     function start() { if (REDUCED || hovering || timer) return; timer = setInterval(() => show(nextRandom()), 5400); }
     function stop() { clearInterval(timer); timer = null; }
 
-    // pure slideshow: no selection on hover/click. Pause only to let a slide be read, and when the tab is hidden.
-    root.addEventListener('mouseenter', () => { hovering = true; stop(); });
-    root.addEventListener('mouseleave', () => { hovering = false; start(); });
+    // pure slideshow: cursor never affects it. Pause only when the tab is hidden (saves resources).
     document.addEventListener('visibilitychange', () => { if (document.hidden) stop(); else start(); });
     window.addEventListener('resize', pan);
     document.addEventListener('bs:lang', render);
@@ -2090,6 +2146,34 @@ if (sessionStorage.getItem("siteUnlocked") !== "true") {
     if (mapImg.complete && mapImg.offsetWidth) init();
     else mapImg.addEventListener('load', init);
     window.addEventListener('load', () => { if (active < 0) init(); else pan(); });
+  })();
+
+  // ── Password gate ──
+  (function () {
+    const PASS = 'ivisivis23';
+    const gate  = document.getElementById('passGate');
+    const form  = document.getElementById('gateForm');
+    const input = document.getElementById('gateInput');
+    const error = document.getElementById('gateError');
+    if (!gate || !form) return;
+
+    if (sessionStorage.getItem('bs_auth') === '1') {
+      gate.classList.add('is-unlocked');
+      return;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (input.value === PASS) {
+        sessionStorage.setItem('bs_auth', '1');
+        gate.classList.add('is-unlocked');
+      } else {
+        error.textContent = 'Incorrect passphrase';
+        input.classList.add('is-wrong');
+        input.value = '';
+        setTimeout(() => { input.classList.remove('is-wrong'); error.textContent = ''; }, 1800);
+      }
+    });
   })();
 
   // ── Scroll-aware header
