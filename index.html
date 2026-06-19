@@ -34,7 +34,7 @@ body {
   color: var(--stone);
   font-weight: 300;
   line-height: 1.7;
-  font-size: 15px;
+  font-size: 16px;
   overflow-x: hidden;
 }
 
@@ -260,9 +260,16 @@ section { padding: 120px 60px; }
 .section-title em { font-style: italic; color: var(--walnut); }
 
 /* ── COLLECTION ── */
-#collection { background: var(--bg); padding: 0; }
+#collection {
+  position: relative; padding: 0; overflow: hidden;
+  background:
+    radial-gradient(ellipse 56% 46% at 50% 50%, rgba(160,120,80,0.06), transparent 72%),
+    radial-gradient(ellipse 94% 84% at 50% 50%, transparent 56%, rgba(7,5,3,0.5)),
+    var(--bg);
+}
 
 .collection-intro {
+  position: relative; z-index: 1;
   display: flex; flex-direction: column; align-items: center;
   text-align: center; padding: 72px 40px 52px; gap: 0;
 }
@@ -274,16 +281,44 @@ section { padding: 120px 60px; }
 }
 .collection-desc {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(15px, 2vw, 18px); font-style: italic; font-weight: 300;
+  font-size: clamp(16px, 2vw, 19px); font-style: italic; font-weight: 300;
   color: var(--dim); line-height: 1.6; max-width: 360px;
   margin-top: 28px; padding-top: 24px; border-top: 0.5px solid var(--border);
 }
 
 /* Carousel wrapper — crossfade */
 .carousel-wrap {
-  max-width: 1200px; margin: 0 auto;
+  max-width: 1340px; margin: 0 auto;
   padding: 0 40px;
 }
+/* desktop gallery stage — lifted backdrop, matte frame, caption placard */
+.carousel-wrap { position: relative; z-index: 1; }
+/* faint stone veining drifting behind the frame */
+.collection-vein {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.05;
+}
+.carousel-wrap::before {
+  content: ''; position: absolute;
+  left: 50%; top: 48%; transform: translate(-50%, -50%);
+  width: 86%; height: 96%;
+  background: radial-gradient(ellipse at center, rgba(160,120,80,0.13), transparent 66%);
+  pointer-events: none; z-index: 0;
+}
+.carousel-stage {
+  position: relative; z-index: 1;
+  background: var(--bg-lift);
+  border: 1px solid var(--border-mid);
+  padding: 14px;
+  box-shadow: 0 34px 90px -55px rgba(0,0,0,0.85);
+}
+/* refined double-mat: a thin inner hairline between the matte and the image */
+.carousel-stage::before {
+  content: ''; position: absolute; inset: 7px; z-index: 3;
+  border: 0.5px solid rgba(194,189,181,0.12); pointer-events: none;
+}
+.carousel-stage .carousel-outer { border: 0.5px solid rgba(0,0,0,0.5); }
 .carousel-outer {
   position: relative;
   height: 660px; min-height: 660px;
@@ -386,7 +421,10 @@ section { padding: 120px 60px; }
 
 @media (max-width: 900px) {
   .carousel-wrap { padding: 0; max-width: 100%; }
-  .carousel-outer { height: 560px; min-height: 560px; border: none; }
+  .carousel-wrap::before { display: none; }
+  .carousel-stage { background: none; border: none; padding: 0; box-shadow: none; }
+  .carousel-stage::before { display: none; }
+  .carousel-outer, .carousel-stage .carousel-outer { height: 560px; min-height: 560px; border: none; }
   .slide-overlay-top { padding: 28px 24px; }
   .slide-overlay-bottom { padding: 24px; }
   .slide-name { font-size: clamp(32px, 9vw, 48px); white-space: normal; }
@@ -436,8 +474,8 @@ section { padding: 120px 60px; }
 }
 .craft-body {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--body);
-  line-height: 1.9; font-weight: 300;
+  font-size: 16px; color: var(--body);
+  line-height: 1.85; font-weight: 300;
   max-width: 560px; margin-bottom: 16px;
 }
 /* ── POLAROID FRAMES (mobile only) ── */
@@ -520,6 +558,7 @@ section { padding: 120px 60px; }
   position: relative;
   display: grid; grid-template-columns: 1.7fr 1fr;
   align-items: stretch;
+  height: 700px;
   max-width: 1340px; margin: 0 auto;
   border: 0.5px solid var(--border);
 }
@@ -531,7 +570,7 @@ section { padding: 120px 60px; }
   background: #100E0A;
 }
 .origins-zoom {
-  position: absolute; top: 0; left: 0; width: 230%;
+  position: absolute; top: 0; left: 0; width: 300%; z-index: 1;
   will-change: transform;
   transition: transform 1.7s cubic-bezier(0.66, 0, 0.2, 1);
 }
@@ -579,8 +618,9 @@ section { padding: 120px 60px; }
 /* right — info panel */
 .origins-panel {
   display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-  padding: 64px 56px; background: var(--bg-lift);
+  padding: 48px 52px; background: var(--bg-lift);
   border-left: 0.5px solid var(--border);
+  overflow: hidden;
 }
 @keyframes panelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .origins-panel.is-anim { animation: panelIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
@@ -601,10 +641,10 @@ section { padding: 120px 60px; }
 }
 .origins-loc { display: flex; align-items: center; gap: 9px; margin-top: 14px; }
 .origins-pin { width: 14px; height: 14px; fill: var(--walnut); flex: none; }
-.origins-loc span { font-family: 'DM Sans', sans-serif; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); }
-.origins-swatch { width: 100%; height: 200px; margin-top: 28px; border: 0.5px solid var(--border-mid); background-color: #1a1712; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
-.origins-desc { font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.8; color: var(--body); font-weight: 300; margin-top: 24px; }
-.origins-pairs { margin-top: 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--stone); }
+.origins-loc span { font-family: 'DM Sans', sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone); }
+.origins-swatch { width: 100%; height: 150px; margin-top: 22px; border: 0.5px solid var(--border-mid); background-color: #1a1712; box-shadow: 0 18px 50px rgba(0,0,0,0.5); }
+.origins-desc { font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.75; color: var(--body); font-weight: 300; margin-top: 22px; }
+.origins-pairs { margin-top: 18px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--stone); }
 .origins-pairs-label { color: var(--walnut); text-transform: uppercase; letter-spacing: 0.22em; font-size: 9px; margin-right: 12px; }
 .origins-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; margin-top: 30px; padding-top: 16px; border-top: 0.5px solid var(--border); }
 .origins-coord, .origins-index { font-family: 'DM Sans', sans-serif; font-size: 10px; letter-spacing: 0.2em; color: var(--dim); }
@@ -646,8 +686,8 @@ section { padding: 120px 60px; }
 
 @media (max-width: 900px) {
   .craft-intro { margin-bottom: 44px; }
-  .origins { grid-template-columns: 1fr; }
-  .origins-map-wrap { min-height: 300px; }
+  .origins { grid-template-columns: 1fr; height: auto; }
+  .origins-map-wrap { min-height: 320px; height: 320px; }
   .origins-panel { padding: 38px 26px 42px; align-items: center; text-align: center; border-left: none; border-top: 0.5px solid var(--border); }
   .origins-loc { justify-content: center; }
   .origins-desc { max-width: 340px; }
@@ -689,7 +729,7 @@ section { padding: 120px 60px; }
 }
 .step-desc {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--body); line-height: 1.85; font-weight: 300;
+  font-size: 16px; color: var(--body); line-height: 1.8; font-weight: 300;
 }
 .promise-standards {
   max-width: 1080px; margin: 104px auto 0;
@@ -742,6 +782,46 @@ section { padding: 120px 60px; }
   .promise-standard-text { font-size: clamp(19px, 4.8vw, 22px); max-width: 320px; }
 }
 
+/* desktop: two-column editorial — sticky heading + standards on the left, steps sequenced on the right */
+@media (min-width: 901px) {
+  .promise-grid {
+    display: grid;
+    grid-template-columns: minmax(300px, 0.82fr) 1.4fr;
+    grid-template-areas: "head steps" "stand steps";
+    column-gap: 84px;
+    max-width: 1240px; margin: 0 auto;
+    align-items: start;
+  }
+  .promise-heading {
+    grid-area: head; position: sticky; top: 110px;
+    text-align: left; padding-bottom: 0;
+  }
+  .promise-heading .section-label { justify-content: flex-start; }
+  .promise-heading .section-label::before { display: block; background: var(--walnut); }
+
+  .process-steps { grid-area: steps; max-width: none; margin: 0; display: block; }
+  .process-step:first-child { padding-top: 0; border-top: none; }
+
+  .promise-standards {
+    grid-area: stand; align-self: start;
+    max-width: none; text-align: left;
+    margin: 56px 0 0; padding-top: 40px;
+    border-top: 0.5px solid var(--border);
+  }
+  .promise-statements-label { text-align: left; }
+  .promise-standards-rule { margin: 14px 0 28px; }
+  .promise-standards-grid { grid-template-columns: 1fr; }
+  .promise-standard {
+    flex-direction: row; align-items: flex-start; gap: 14px;
+    padding: 16px 0; text-align: left;
+  }
+  .promise-standard + .promise-standard {
+    border-left: none; border-top: 0.5px solid var(--border);
+  }
+  .promise-standard-mark { margin: 5px 0 0; }
+  .promise-standard-text { max-width: none; font-size: clamp(18px, 1.5vw, 21px); }
+}
+
 /* ── CONTACT ── */
 #contact {
   background: var(--bg-lift);
@@ -754,8 +834,8 @@ section { padding: 120px 60px; }
 }
 .contact-intro {
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; color: var(--body);
-  line-height: 1.85; margin-bottom: 52px; font-weight: 300;
+  font-size: 16px; color: var(--body);
+  line-height: 1.8; margin-bottom: 52px; font-weight: 300;
 }
 .contact-details { display: flex; flex-direction: column; gap: 32px; }
 .contact-detail { border-left: 1px solid rgba(160,120,80,0.30); padding-left: 18px; }
@@ -795,7 +875,7 @@ a.cd-value:hover { color: var(--platinum); }
 .form-label {
   position: absolute; left: 0; top: 28px;
   font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 300; color: var(--dim);
+  font-size: 15px; font-weight: 300; color: var(--dim);
   pointer-events: none;
   transition: top 0.22s ease, font-size 0.22s ease, color 0.22s ease, letter-spacing 0.22s ease;
 }
@@ -816,7 +896,7 @@ a.cd-value:hover { color: var(--platinum); }
   background: transparent; border: none;
   border-bottom: 0.5px solid rgba(194,189,181,0.25);
   padding: 8px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 300;
   color: var(--stone); outline: none;
   transition: border-color 0.22s; -webkit-appearance: none;
 }
@@ -827,7 +907,7 @@ a.cd-value:hover { color: var(--platinum); }
   background: transparent; border: none;
   border-bottom: 0.5px solid rgba(194,189,181,0.25);
   padding: 8px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 300;
   color: var(--dim); outline: none; cursor: pointer;
   -webkit-appearance: none; appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B6860' stroke-width='1' fill='none'/%3E%3C/svg%3E");
@@ -928,7 +1008,7 @@ footer {
 }
 .footer-contact a, .footer-contact span {
   font-family: 'DM Sans', sans-serif;
-  font-size: 11px; color: var(--dim); text-decoration: none;
+  font-size: 12px; color: var(--dim); text-decoration: none;
   letter-spacing: 0.06em; transition: color 0.2s;
 }
 .footer-contact a:hover { color: var(--stone); }
@@ -1289,7 +1369,7 @@ html[lang="ru"] .form-success-title {
 <!-- HERO -->
 <section class="hero-full">
   <video class="hero-video" autoplay muted loop playsinline poster="heroimage.png" id="heroVideo">
-    <source src="b72c844c1d1d2b65f5cf28d788c14e11_1781550517_abcanllu.mp4" type="video/mp4">
+    <source src="https://baumstein.b-cdn.net/hero1%20baumst.mp4" type="video/mp4">
   </video>
   <img src="heroimage.png" alt="Baumstein — handcrafted wood and stone tables" class="hero-img">
   <div class="hero-dark-overlay"></div>
@@ -1306,15 +1386,7 @@ html[lang="ru"] .form-success-title {
 
 <!-- MARQUEE -->
 <div class="marquee-bar">
-  <div class="marquee-track">
-    <span class="mat">Oak</span><span class="sep-line"></span>
-    <span class="mat">Granite</span><span class="sep">◆</span>
-    <span class="mat">Marble</span><span class="sep">◆</span>
-    <span class="mat">Quartzite</span><span class="sep">◆</span>
-    <span class="mat">Onyx</span><span class="sep-line"></span>
-    <span class="mat">American Walnut</span><span class="sep-line"></span>
-    <span class="mat">Travertine</span><span class="sep">◆</span>
-    <span class="mat">Terrazzo</span><span class="sep-line"></span>
+  <div class="marquee-track" id="marqueeTrack">
     <span class="mat">Oak</span><span class="sep-line"></span>
     <span class="mat">Granite</span><span class="sep">◆</span>
     <span class="mat">Marble</span><span class="sep">◆</span>
@@ -1329,6 +1401,13 @@ html[lang="ru"] .form-success-title {
 <!-- COLLECTION -->
 <section id="collection">
 
+  <svg class="collection-vein" aria-hidden="true" viewBox="0 0 1400 900" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <path d="M -40 250 C 240 180 420 360 700 290 C 980 220 1160 400 1440 320" stroke="#C8BAA8" stroke-width="1.3"/>
+    <path d="M -40 540 C 280 470 460 600 700 540 C 940 480 1180 600 1440 520" stroke="#C8BAA8" stroke-width="0.8"/>
+    <path d="M 120 700 C 380 640 560 760 760 690 C 980 615 1180 720 1340 660" stroke="#A07850" stroke-width="0.6"/>
+    <path d="M -40 380 C 220 340 360 270 560 320 C 760 370 900 300 1100 350" stroke="#A07850" stroke-width="0.5"/>
+  </svg>
+
   <div class="collection-intro reveal">
     <div class="section-label">The Collection</div>
     <h2 class="section-title">Nature Becomes<br><em>Furniture</em></h2>
@@ -1336,6 +1415,7 @@ html[lang="ru"] .form-success-title {
   </div>
 
   <div class="carousel-wrap">
+  <div class="carousel-stage">
   <div class="carousel-outer" id="collectionCarousel">
     <div class="carousel-track" id="carouselTrack">
 
@@ -1408,6 +1488,7 @@ html[lang="ru"] .form-success-title {
     <button class="carousel-btn carousel-btn-prev" aria-label="Previous slide">&#8592;</button>
     <button class="carousel-btn carousel-btn-next" aria-label="Next slide">&#8594;</button>
   </div><!-- /outer -->
+  </div><!-- /stage -->
   </div><!-- /wrap -->
 
   <div class="carousel-dots">
@@ -1440,8 +1521,8 @@ html[lang="ru"] .form-success-title {
 
     <div class="origins" id="origins">
       <div class="origins-map-wrap" id="originsWrap">
+        <div class="origins-grid"></div>
         <div class="origins-zoom" id="originsZoom">
-          <div class="origins-grid"></div>
           <img class="origins-map" src="worldmap.svg" alt="World map of Baumstein material origins">
         </div>
         <div class="origins-fade"></div>
@@ -1483,6 +1564,7 @@ html[lang="ru"] .form-success-title {
     <path d="M -120 1200 C 20 1040 -60 880 100 720 C 260 560 100 400 220 240 C 300 120 340 60 400 -60" stroke="#C8BAA8" stroke-width="0.75"/>
     <path d="M 140 920 C 220 800 160 680 260 560 C 340 460 300 360 380 240" stroke="#C8BAA8" stroke-width="0.5"/>
   </svg>
+  <div class="promise-grid">
   <div class="promise-heading reveal">
     <div class="section-label">How It Works</div>
     <h2 class="section-title">From Vision<br>to <em>Heirloom</em></h2>
@@ -1540,6 +1622,7 @@ html[lang="ru"] .form-success-title {
         <p class="promise-standard-text">We deliver it. We install it. We leave when it's right.</p>
       </div>
     </div>
+  </div>
   </div>
 </div>
 
@@ -1749,6 +1832,21 @@ html[lang="ru"] .form-success-title {
       });
     }, { rootMargin: '-60px 0px', threshold: 0.08 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  })();
+
+  // ── Marquee: repeat the unit so one half always exceeds the viewport (no gap on wide screens) ──
+  (function () {
+    const track = document.getElementById('marqueeTrack');
+    if (!track) return;
+    const unit = track.innerHTML;
+    function build() {
+      track.innerHTML = unit;
+      const oneWidth = track.scrollWidth || 1;
+      const halfCopies = Math.max(2, Math.ceil(window.innerWidth / oneWidth) + 1);
+      track.innerHTML = unit.repeat(halfCopies * 2);
+    }
+    build();
+    let t; window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(build, 250); });
   })();
 
 
@@ -2050,12 +2148,6 @@ html[lang="ru"] .form-success-title {
         desc: { en: 'A rare deep-blue stone flecked with white, from Namibia.',
                 lv: 'Rets tumši zils akmens ar baltiem plankumiem, no Namībijas.',
                 ru: 'Редкий тёмно-синий камень с белыми вкраплениями, из Намибии.' } },
-      { type: 'stone', x: 48.9, y: 16.6, swatch: 'sw-stone-cool', coord: '53.1° N · 4.0° W',
-        name: { en: 'Welsh Slate', lv: 'Velsas slāneklis', ru: 'Уэльский сланец' },
-        loc:  { en: 'Snowdonia, Wales', lv: 'Snaudonija, Velsa', ru: 'Сноудония, Уэльс' },
-        desc: { en: 'Hand-split in the mountains of Wales. Matte blue-grey.',
-                lv: 'Ar rokām šķelts Velsas kalnos. Matēts zilganpelēks.',
-                ru: 'Раскалывается вручную в горах Уэльса. Матовый сине-серый.' } },
       { type: 'wood', x: 57.0, y: 13.4, swatch: 'sw-wood-light', coord: '57.3° N · 25.3° E',
         name: { en: 'European Oak', lv: 'Eiropas ozols', ru: 'Европейский дуб' },
         loc:  { en: 'Vidzeme, Latvia', lv: 'Vidzeme, Latvija', ru: 'Видземе, Латвия' },
@@ -2080,7 +2172,6 @@ html[lang="ru"] .form-success-title {
       { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
       { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
       { en: 'Walnut', lv: 'Riekstkoks', ru: 'Орех' },
-      { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
       { en: 'Oak', lv: 'Ozols', ru: 'Дуб' },
       { en: 'Nero Marquina · Travertine', lv: 'Nero Marquina · Travertīns', ru: 'Nero Marquina · Травертин' },
       { en: 'Calacatta · Honey Onyx', lv: 'Calacatta · Medus onikss', ru: 'Calacatta · Медовый оникс' }
@@ -2110,12 +2201,8 @@ html[lang="ru"] .form-success-title {
       const mw = mapImg.offsetWidth, mh = mapImg.offsetHeight;
       if (!mw || !mh) return;
       const fx = o.x / 100, fy = o.y / 100;
-      let tx = ww / 2 - fx * mw, ty = wh / 2 - fy * mh;
-      tx = Math.max(ww - mw, Math.min(0, tx));
-      ty = Math.max(wh - mh, Math.min(0, ty));
+      const tx = ww / 2 - fx * mw, ty = wh / 2 - fy * mh;
       zoom.style.transform = 'translate(' + tx + 'px, ' + ty + 'px)';
-      reticle.style.left = (fx * mw + tx) + 'px';
-      reticle.style.top  = (fy * mh + ty) + 'px';
     }
 
     function runProgress() {
