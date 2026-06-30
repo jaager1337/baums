@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baumstein — Wood & Stone</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Great+Vibes&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -14,16 +18,16 @@ html { overflow-x: hidden; }
   --bg-lift:    #19160F;
   --platinum:   #C2BDB5;
   --walnut:     #A07850;
-  --stone:      #D4CCBC;
-  --body:       #B4AEA4;
-  --dim:        #9C978C;
+  --stone:      #F1DABF;
+  --body:       #D8C7AC;
+  --dim:        #92817A;
   --border:     rgba(194,189,181,0.10);
   --border-mid: rgba(194,189,181,0.20);
   /* warm-brown framed panels lifted over the dark canvas (showcases / cards) */
-  --panel-top:  #201a11;
-  --panel-bot:  #16110a;
-  --frame:      rgba(160,120,80,0.24);
-  --mat:        rgba(160,120,80,0.14);
+  --panel-top:  #44301d;
+  --panel-bot:  #322110;
+  --frame:      rgba(160,120,80,0.36);
+  --mat:        rgba(160,120,80,0.18);
 }
 
 html { scroll-behavior: smooth; }
@@ -308,23 +312,23 @@ section { padding: 120px 60px; }
 }
 .carousel-stage {
   position: relative; z-index: 1;
-  background: linear-gradient(180deg, var(--panel-top), var(--panel-bot));
-  border: 1px solid var(--frame);
-  padding: 14px;
-  box-shadow: 0 34px 90px -55px rgba(0,0,0,0.85);
+  background: #3d2a18;
+  border: 0.5px solid rgba(160,120,80,0.28);
+  padding: 18px;
+  box-shadow: 0 40px 100px -58px rgba(0,0,0,0.9);
 }
-/* refined double-mat: a thin walnut inner hairline between the matte and the image */
+/* single crisp walnut fillet hugging the image edge */
 .carousel-stage::before {
-  content: ''; position: absolute; inset: 7px; z-index: 3;
-  border: 0.5px solid var(--mat); pointer-events: none;
+  content: ''; position: absolute; inset: 18px; z-index: 3;
+  border: 1px solid rgba(160,120,80,0.55); pointer-events: none;
 }
-.carousel-stage .carousel-outer { border: 0.5px solid rgba(0,0,0,0.5); }
+.carousel-stage .carousel-outer { border: none; }
 .carousel-outer {
   position: relative;
   height: 660px; min-height: 660px;
   cursor: grab; user-select: none; touch-action: pan-y;
   overflow: hidden;
-  border: 0.5px solid rgba(194,189,181,0.12);
+  border: none;
 }
 .carousel-outer:active { cursor: grabbing; }
 .carousel-track {
@@ -1056,89 +1060,6 @@ footer {
   .bg-vein { opacity: 0.048; }
 }
 
-/* ── PASSWORD GATE ── */
-#passGate {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  transition: opacity 0.6s ease, visibility 0.6s ease;
-}
-#passGate.is-unlocked { opacity: 0; visibility: hidden; pointer-events: none; }
-.gate-brand {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px; font-weight: 500;
-  letter-spacing: 0.55em; text-transform: uppercase;
-  color: var(--stone); margin-bottom: 6px;
-}
-.gate-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 13px; font-style: italic; font-weight: 300;
-  color: var(--dim); letter-spacing: 0.06em; margin-bottom: 56px;
-}
-.gate-form {
-  width: 280px; display: flex; flex-direction: column; gap: 0;
-}
-.gate-input-wrap {
-  position: relative; padding-top: 22px; margin-bottom: 24px;
-}
-.gate-label {
-  position: absolute; left: 0; top: 28px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px; font-weight: 300; color: var(--dim);
-  pointer-events: none;
-  transition: top 0.22s ease, font-size 0.22s ease, color 0.22s ease, letter-spacing 0.22s ease;
-}
-.gate-input:not(:placeholder-shown) ~ .gate-label,
-.gate-input:focus ~ .gate-label {
-  top: 0; font-size: 9px; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--walnut); opacity: 0.9;
-}
-.gate-input {
-  background: transparent; border: none;
-  border-bottom: 0.5px solid rgba(194,189,181,0.25);
-  padding: 8px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 300;
-  color: var(--stone); outline: none;
-  transition: border-color 0.22s; -webkit-appearance: none;
-}
-.gate-input::placeholder { color: transparent; }
-.gate-input:focus { border-bottom-color: var(--walnut); }
-.gate-input.is-wrong { border-bottom-color: rgba(180,80,60,0.7); animation: gateShake 0.38s ease; }
-@keyframes gateShake {
-  0%,100% { transform: translateX(0); }
-  20%      { transform: translateX(-6px); }
-  60%      { transform: translateX(6px); }
-}
-.gate-error {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 10px; letter-spacing: 0.15em;
-  color: rgba(200,100,80,0.8); margin-top: -16px; margin-bottom: 20px;
-  min-height: 14px; transition: opacity 0.2s;
-}
-.gate-btn {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  background: transparent; border: 0.5px solid rgba(160,120,80,0.5);
-  padding: 14px 0; width: 100%;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
-  color: var(--walnut); cursor: pointer;
-  position: relative; overflow: hidden;
-  transition: color 0.3s, gap 0.25s, border-color 0.3s;
-}
-.gate-btn::before {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(160,120,80,0.1);
-  transform: scaleX(0); transform-origin: left center;
-  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.gate-btn:hover { color: var(--stone); gap: 18px; border-color: var(--walnut); }
-.gate-btn:hover::before { transform: scaleX(1); }
-.gate-btn span { position: relative; z-index: 1; }
-.gate-hairline {
-  width: 40px; height: 0.5px; background: var(--border-mid); margin: 0 auto 40px;
-}
-
 /* ── SCROLL REVEAL ── */
 .reveal {
   opacity: 0;
@@ -1331,21 +1252,6 @@ html[lang="ru"] .form-success-title {
 </head>
 <body>
 
-<!-- PASSWORD GATE -->
-<div id="passGate">
-  <p class="gate-brand">Baumstein</p>
-  <p class="gate-sub">Wood &amp; Stone</p>
-  <div class="gate-hairline"></div>
-  <form class="gate-form" id="gateForm" autocomplete="off">
-    <div class="gate-input-wrap">
-      <input type="password" id="gateInput" class="gate-input" placeholder=" " autocomplete="new-password">
-      <label class="gate-label" for="gateInput">Passphrase</label>
-    </div>
-    <p class="gate-error" id="gateError"></p>
-    <button type="submit" class="gate-btn"><span>Enter</span><span>→</span></button>
-  </form>
-</div>
-
 <!-- SITE HEADER -->
 <header class="site-header" id="siteHeader">
   <button class="hamburger" id="hamburger" aria-label="Open menu">
@@ -1537,10 +1443,10 @@ html[lang="ru"] .form-success-title {
     <div class="craft-intro">
       <div class="section-label">The Craft</div>
       <p class="craft-opener">
-        Every table begins as <em class="script">a conversation.</em>
+        Every table starts with <em class="script">an idea.</em>
       </p>
-      <p class="craft-body">Wood brings the warmth. Stone brings the character. Each table is made once, for one home.</p>
-      <p class="craft-body">We source our stone and wood where each is at its best.</p>
+      <p class="craft-body">We combine carefully selected hardwoods with natural stone to create furniture designed specifically for your space. Every piece is built to order, shaped by hand, and made only once.</p>
+      <p class="craft-body">We source each material for its quality, character, and longevity — so every table is as individual as the home it belongs in.</p>
     </div>
 
     <div class="origins" id="origins">
@@ -1591,8 +1497,8 @@ html[lang="ru"] .form-success-title {
   <div class="promise-inner">
   <div class="promise-heading reveal">
     <div class="section-label">How It Works</div>
-    <h2 class="section-title">From Vision<br>to <em>Heirloom</em></h2>
-    <p class="promise-lead">Four stages. Six to eight weeks. One table, made for you.</p>
+    <h2 class="section-title">From Concept<br>to <em>Completion</em></h2>
+    <p class="promise-lead">Every table is made to order through a simple four-step process.</p>
   </div>
 
   <div class="roadmap reveal">
@@ -1604,7 +1510,7 @@ html[lang="ru"] .form-success-title {
         <div class="step-node"><span class="step-numeral">I</span></div>
         <div class="step-content">
           <h3 class="step-title">Consultation</h3>
-          <p class="step-desc">We talk through your space, your idea, your materials — in person, by call, or by chat.</p>
+          <p class="step-desc">We discuss your space, style, dimensions, and material preferences — in person, over the phone, or online.</p>
         </div>
       </div>
 
@@ -1612,15 +1518,15 @@ html[lang="ru"] .form-success-title {
         <div class="step-node"><span class="step-numeral">II</span></div>
         <div class="step-content">
           <h3 class="step-title">Design</h3>
-          <p class="step-desc">Technical drawings and visualisations for your approval. You see the exact table before the first cut.</p>
+          <p class="step-desc">We prepare detailed drawings and realistic visualisations so you can approve every detail before production begins.</p>
         </div>
       </div>
 
       <div class="process-step">
         <div class="step-node"><span class="step-numeral">III</span></div>
         <div class="step-content">
-          <h3 class="step-title">Crafting</h3>
-          <p class="step-desc">Hand-built in our Latvian workshop. The same craftsmen take it from first cut to final polish.</p>
+          <h3 class="step-title">Craftsmanship</h3>
+          <p class="step-desc">Your table is handcrafted in our Latvian workshop by the same team from start to finish, ensuring consistency and attention to detail throughout the process.</p>
         </div>
       </div>
 
@@ -1628,7 +1534,7 @@ html[lang="ru"] .form-success-title {
         <div class="step-node"><span class="step-numeral">IV</span></div>
         <div class="step-content">
           <h3 class="step-title">Delivery & Installation</h3>
-          <p class="step-desc">We deliver and install your table ourselves.</p>
+          <p class="step-desc">Once complete, we deliver and install your table, making sure everything is exactly as intended.</p>
         </div>
       </div>
     </div>
@@ -1903,35 +1809,35 @@ html[lang="ru"] .form-success-title {
         ['Ozols ◆ Melnais Marquina marmors', 'Riekstkoks ◆ Zelta onikss', 'Kūpināts ozols ◆ Tumšs granīts', 'Osis ◆ Baltais Carrara'],
         ['Дуб ◆ Чёрный мрамор Marquina', 'Орех ◆ Золотой оникс', 'Морёный дуб ◆ Тёмный гранит', 'Ясень ◆ Белый мрамор Carrara']],
 
-      ['.craft-intro .section-label', 'text', 'Meistarība', 'Мастерство'],
+      ['.craft-intro .section-label', 'text', 'Mūsu pieeja', 'Наш подход'],
       ['.craft-opener', 'html',
-        'Katrs galds sākas ar <em class="script">sarunu.</em>',
-        'Каждый стол начинается с <em class="script">разговора.</em>'],
+        'Katrs galds tiek izgatavots <em class="script">pēc pasūtījuma.</em>',
+        'Каждый стол начинается <em class="script">с идеи.</em>'],
       ['.craft-body', 'text',
-        ['Koks dod siltumu. Akmens — raksturu. Katrs galds top tikai vienreiz, vienām mājām.',
-         'Akmeni un koku iegūstam tur, kur tie ir vislabākie.'],
-        ['Дерево даёт тепло. Камень — характер. Каждый стол создаётся лишь однажды, для одного дома.',
-         'Камень и дерево берём там, где они лучшие.']],
+        ['Mēs apvienojam rūpīgi atlasītu masīvkoku un dabīgo akmeni, lai radītu galdu, kas ir piemērots tieši jūsu telpai. Katrs projekts ir unikāls un tiek izgatavots mūsu darbnīcā Latvijā.',
+         'Izvēlamies materiālus to kvalitātes, izturības un dabiskā rakstura dēļ, lai radītu galdu, kas kalpo ilgtermiņā.'],
+        ['Мы объединяем тщательно отобранную древесину и натуральный камень, чтобы создать мебель, которая идеально впишется в ваше пространство. Каждый стол изготавливается на заказ и создаётся вручную.',
+         'Мы выбираем материалы за их качество, природную красоту и долговечность, чтобы ваш стол служил долгие годы.']],
 
       ['.promise-heading .section-label', 'text', 'Kā tas notiek', 'Как это работает'],
       ['.promise-heading .section-title', 'html',
-        'No ieceres<br>līdz <em>mantojumam</em>',
-        'От замысла<br>до <em>наследия</em>'],
+        'Kā top<br>jūsu <em>galds</em>',
+        'Как создаётся<br>ваш <em>стол</em>'],
       ['.promise-lead', 'text',
-        'Četri posmi. Sešas līdz astoņas nedēļas. Viens galds, radīts jums.',
-        'Четыре этапа. Шесть–восемь недель. Один стол, созданный для вас.'],
+        'Katrs galds top četros posmos, no pirmās sarunas līdz piegādei un uzstādīšanai. Process ir pārdomāts, skaidrs un pielāgots katram projektam.',
+        'Каждый стол проходит четыре этапа — от первой консультации до доставки и установки.'],
       ['.step-title', 'text',
         ['Konsultācija', 'Dizains', 'Izgatavošana', 'Piegāde un uzstādīšana'],
         ['Консультация', 'Дизайн', 'Изготовление', 'Доставка и установка']],
       ['.step-desc', 'text',
-        ['Pārrunājam jūsu telpu, ideju un materiālus — klātienē, pa tālruni vai sarakstē.',
-         'Tehniskie rasējumi un vizualizācijas jūsu apstiprinājumam. Redzat precīzu galdu vēl pirms pirmā griezuma.',
-         'Roku darbs mūsu darbnīcā Latvijā. Vieni un tie paši meistari ved galdu no pirmā griezuma līdz pēdējai pulēšanai.',
-         'Piegādājam un uzstādām galdu paši.'],
-        ['Обсуждаем пространство, идею и материалы — лично, по телефону или в переписке.',
-         'Технические чертежи и визуализации на ваше утверждение. Вы видите точный стол ещё до первого распила.',
-         'Ручная работа в нашей мастерской в Латвии. Одни и те же мастера ведут стол от первого распила до финальной полировки.',
-         'Доставляем и устанавливаем стол сами.']],
+        ['Pārrunājam jūsu vajadzības, telpu, izmērus un materiālu izvēli. Konsultācija var notikt klātienē, telefoniski vai attālināti.',
+         'Sagatavojam tehniskos rasējumus un vizualizācijas, lai pirms izgatavošanas jūs varētu apstiprināt detaļas.',
+         'Pēc dizaina apstiprināšanas galds tiek izgatavots mūsu darbnīcā.',
+         'Pēc izgatavošanas vienojamies par piegādes laiku un uzstādām jūsu galdu.'],
+        ['Обсуждаем ваши пожелания, пространство, размеры и выбор материалов. Консультация может пройти лично, по телефону или онлайн.',
+         'Подготавливаем технические чертежи и визуализации, чтобы вы могли утвердить все детали до начала изготовления.',
+         'После утверждения проекта мы приступаем к изготовлению вашего стола в нашей мастерской.',
+         'После завершения изготовления согласовываем удобное время доставки и устанавливаем ваш стол.']],
 
       ['.contact-left .section-label', 'text', 'Sazinieties', 'Свяжитесь с нами'],
       ['.contact-left .section-title', 'html', 'Gatavi <em>sākt?</em>', 'Готовы <em>начать?</em>'],
@@ -2255,39 +2161,6 @@ html[lang="ru"] .form-success-title {
     if (mapImg.complete && mapImg.offsetWidth) init();
     else mapImg.addEventListener('load', init);
     window.addEventListener('load', () => { if (active < 0) init(); else pan(); });
-  })();
-
-  // ── Password gate ──
-  (function () {
-    const PASS = 'ivisivis23';
-    const gate  = document.getElementById('passGate');
-    const form  = document.getElementById('gateForm');
-    const input = document.getElementById('gateInput');
-    const error = document.getElementById('gateError');
-    if (!gate || !form) return;
-
-    // Skip the gate during local preview (localhost / opened-as-file) — it still guards the live site
-    const isLocal = ['localhost', '127.0.0.1', '0.0.0.0', ''].includes(location.hostname)
-      || location.hostname.endsWith('.local');
-    if (isLocal) { gate.classList.add('is-unlocked'); return; }
-
-    if (sessionStorage.getItem('bs_auth') === '1') {
-      gate.classList.add('is-unlocked');
-      return;
-    }
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      if (input.value === PASS) {
-        sessionStorage.setItem('bs_auth', '1');
-        gate.classList.add('is-unlocked');
-      } else {
-        error.textContent = 'Incorrect passphrase';
-        input.classList.add('is-wrong');
-        input.value = '';
-        setTimeout(() => { input.classList.remove('is-wrong'); error.textContent = ''; }, 1800);
-      }
-    });
   })();
 
   // ── Scroll-aware header
